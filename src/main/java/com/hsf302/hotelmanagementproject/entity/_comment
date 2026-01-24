@@ -1,0 +1,278 @@
+1️⃣ User
+🔹 Ý nghĩa
+
+Đại diện cho người dùng hệ thống:
+
+Khách hàng (GUEST)
+
+Nhân viên / admin (ADMIN, STAFF)
+
+🔹 Liên kết
+
+User 1 —— n Booking
+
+Một user có thể đặt nhiều booking
+
+User 1 —— 1 AiProfile
+
+User 1 —— n SearchHistory
+
+🔹 Dùng ở workflow
+
+WF1: đăng nhập, đặt phòng
+
+WF2: hủy phòng
+
+WF6: AI học hành vi
+
+📌 Vì sao User không có List<Booking>?
+
+Để tránh mapping 2 chiều phức tạp, phù hợp checkpoint 1.
+
+2️⃣ Hotel
+🔹 Ý nghĩa
+
+Đại diện cho một khách sạn vật lý
+(vì hệ thống có thể mở rộng nhiều khách sạn)
+
+🔹 Liên kết
+
+Hotel 1 —— n RoomType
+
+🔹 Dùng ở workflow
+
+Gián tiếp trong WF1, WF5
+
+Chủ yếu để mở rộng về sau
+
+📌 Hiện tại chưa cần dùng mạnh → vẫn OK.
+
+3️⃣ RoomType
+🔹 Ý nghĩa
+
+Đại diện cho loại phòng (Deluxe, Standard, Suite…)
+
+Đây là entity quan trọng nhất khi tìm kiếm phòng
+
+🔹 Liên kết
+
+RoomType n —— 1 Hotel
+
+RoomType 1 —— n Room
+
+RoomType 1 —— n PricePolicy
+
+RoomType 1 —— n Booking
+
+RoomType 1 —— n Recommendation
+
+🔹 Dùng ở workflow
+
+WF1: tìm kiếm, xem chi tiết, đặt phòng
+
+WF5: quản trị phòng & giá
+
+WF6: AI gợi ý
+
+📌 Lý do Booking gắn với RoomType thay vì Room:
+
+Khi đặt phòng online, khách chỉ chọn loại phòng, chưa biết phòng cụ thể.
+
+4️⃣ Room
+🔹 Ý nghĩa
+
+Đại diện cho phòng vật lý cụ thể:
+
+P101, P102, P201…
+
+🔹 Liên kết
+
+Room n —— 1 RoomType
+
+Room 1 —— n Booking (theo thời gian)
+
+🔹 Dùng ở workflow
+
+WF3 (Check-in): gán phòng thật cho booking
+
+WF5: quản lý phòng
+
+📌 Trong WF1:
+
+room = NULL → rất đúng nghiệp vụ.
+
+5️⃣ RoomImage
+🔹 Ý nghĩa
+
+Lưu ảnh minh họa cho loại phòng
+
+🔹 Liên kết
+
+RoomType 1 —— n RoomImage
+
+🔹 Dùng ở workflow
+
+WF1: xem chi tiết phòng
+
+6️⃣ PricePolicy
+🔹 Ý nghĩa
+
+Đại diện cho chính sách giá theo thời gian
+
+Lễ
+
+Cuối tuần
+
+Mùa cao điểm
+
+🔹 Liên kết
+
+RoomType 1 —— n PricePolicy
+
+🔹 Dùng ở workflow
+
+WF5: admin thiết lập giá
+
+WF1: tính tổng tiền
+
+📌 Ví dụ:
+
+base_price = 1tr
+multiplier = 1.2 → giá lễ = 1.2tr
+
+7️⃣ Booking (TRUNG TÂM HỆ THỐNG)
+🔹 Ý nghĩa
+
+Đại diện cho một lần đặt phòng
+
+🔹 Liên kết
+
+Booking n —— 1 User
+
+Booking n —— 1 RoomType
+
+Booking n —— 1 Room (nullable)
+
+Booking 1 —— 1 Payment
+
+Booking 1 —— n ServiceUsage
+
+Booking 1 —— 1 Review
+
+🔹 Dùng ở workflow
+
+WF1: tạo booking
+
+WF2: hủy & hoàn tiền
+
+WF3: check-in / check-out
+
+WF4: review
+
+📌 Booking.status là state machine:
+
+PENDING → CONFIRMED → CHECKED_IN → COMPLETED
+           ↓
+       CANCELLED
+
+8️⃣ Payment
+🔹 Ý nghĩa
+
+Đại diện cho giao dịch thanh toán cho booking
+
+🔹 Liên kết
+
+Payment 1 —— 1 Booking
+
+🔹 Dùng ở workflow
+
+WF1: thanh toán
+
+WF2: hoàn tiền
+
+📌 Vì sao tách Payment khỏi Booking?
+
+Để tách nghiệp vụ tài chính ra khỏi nghiệp vụ đặt phòng → đúng thiết kế.
+
+9️⃣ ServiceUsage
+🔹 Ý nghĩa
+
+Đại diện cho chi phí phát sinh trong thời gian ở
+
+Ăn uống
+
+Giặt ủi
+
+Mini bar
+
+🔹 Liên kết
+
+Booking 1 —— n ServiceUsage
+
+🔹 Dùng ở workflow
+
+WF3: check-in / check-out
+
+🔟 Review
+🔹 Ý nghĩa
+
+Đánh giá của khách sau khi ở xong
+
+🔹 Liên kết
+
+Review 1 —— 1 Booking
+
+🔹 Dùng ở workflow
+
+WF4: review & rating
+
+📌 1 booking → 1 review → rất chuẩn.
+
+1️⃣1️⃣ SearchHistory
+🔹 Ý nghĩa
+
+Lưu hành vi tìm kiếm của user
+
+🔹 Liên kết
+
+User 1 —— n SearchHistory
+
+🔹 Dùng ở workflow
+
+WF6: AI học sở thích
+
+1️⃣2️⃣ AiProfile
+🔹 Ý nghĩa
+
+Hồ sơ sở thích của user cho AI
+
+Giá
+
+Số người
+
+Loại phòng
+
+🔹 Liên kết
+
+AiProfile 1 —— 1 User
+
+AiProfile 1 —— n Recommendation
+
+🔹 Dùng ở workflow
+
+WF6
+
+1️⃣3️⃣ Recommendation
+🔹 Ý nghĩa
+
+Kết quả gợi ý phòng của AI
+
+🔹 Liên kết
+
+Recommendation n —— 1 AiProfile
+
+Recommendation n —— 1 RoomType
+
+🔹 Dùng ở workflow
+
+WF6
