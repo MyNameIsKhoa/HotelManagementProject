@@ -1,10 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<div th:fragment="header" xmlns:th="http://www.thymeleaf.org" class="site-header">
+    <nav>
+        <a th:href="@{/}">Home</a> |
+        <span th:if="${session.currentUser == null}">
+            <a th:href="@{/auth/login}">Login</a> |
+            <a th:href="@{/auth/register}">Register</a>
+        </span>
+        <span th:if="${session.currentUser != null}">
+            Welcome,
+            <strong th:text="${session.currentUser.fullName != null ? session.currentUser.fullName : session.currentUser.email}">User</strong>
+            (<span th:text="${session.currentUser.email}">email</span>)
+            | <a th:href="@{/auth/logout}">Logout</a>
+        </span>
+    </nav>
+    <hr/>
+</div>

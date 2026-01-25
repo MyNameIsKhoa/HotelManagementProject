@@ -3,31 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Hotel Booking System</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
 </head>
 <body>
 
-<h1>🏨 Hotel Booking System</h1>
-<p>Trang chủ (test Thymeleaf)</p>
+<div th:replace="fragments/header :: header"></div>
 
-<hr>
+<div class="container">
+    <h1>🏨 Hotel Booking</h1>
+    <p>Trang chủ Hotel HSF302</p>
 
-<h2>Tìm kiếm phòng</h2>
+    <hr/>
 
-<form th:action="@{/search}" method="get">
-    <label>
-        Check-in:
-        <input type="date" name="checkinDate" required>
-    </label>
-    <br><br>
+    <h2>Tìm kiếm phòng</h2>
 
-    <label>
-        Check-out:
-        <input type="date" name="checkoutDate" required>
-    </label>
-    <br><br>
+    <form th:action="@{/search}" method="get">
+        <label>
+            Check-in:
+            <input type="date" name="checkinDate" required>
+        </label>
+        <br><br>
 
-    <button type="submit">Tìm phòng</button>
-</form>
+        <label>
+            Check-out:
+            <input type="date" name="checkoutDate" required>
+        </label>
+        <br><br>
+
+        <button type="submit">Tìm phòng</button>
+    </form>
+</div>
 
 </body>
 </html>
