@@ -3,6 +3,7 @@ package com.hsf302.hotelmanagementproject.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "room_types")
@@ -32,4 +33,10 @@ public class RoomType {
 
     @Column(name = "total_rooms")
     private Integer totalRooms;
+
+    @OneToMany(mappedBy = "roomType", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<RoomImage> images;
+
 }
