@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
 <body>
 
-</body>
-</html>
+<footer th:fragment="footer" class="site-footer">
+
+    <div class="footer-container">
+
+        <!-- Brand -->
+        <div class="footer-col">
+            <h3>Green Diamond Hotel</h3>
+            <p>
+                Hệ thống đặt phòng khách sạn mô phỏng nghiệp vụ thực tế,
+                được xây dựng bằng Spring Boot & Thymeleaf.
+            </p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="footer-col">
+            <h4>Liên kết nhanh</h4>
+            <ul>
+                <li><a th:href="@{/}">Trang chủ</a></li>
+                <li><a th:href="@{/search}">Tìm phòng</a></li>
+                <li><a th:href="@{/my-bookings}">Đơn đặt phòng</a></li>
+                <li><a th:href="@{/auth/login}">Đă

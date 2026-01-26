@@ -4,7 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
@@ -33,5 +36,6 @@
         Don't have an account? <a th:href="@{/auth/register}">Register</a>
     </p>
 </div>
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

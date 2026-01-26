@@ -1,93 +1,55 @@
-/* file: src/main/resources/static/css/main.css */
+/* ===== GLOBAL VARIABLES ===== */
 :root {
-    --primary: #000080; /* navy */
+    --primary: #1e3a8a;
+    --primary-dark: #0f2458;
     --primary-contrast: #ffffff;
-    --primary-dark: #000050;
     --muted: #6b7280;
     --bg: #ffffff;
+    --light-bg: #f8fafc;
+}
+
+/* ===== RESET ===== */
+* {
+    box-sizing: border-box;
 }
 
 html, body {
-    height: 100%;
     margin: 0;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
     background: var(--bg);
-    color: #111827;
+    color: #0f172a;
 }
 
-/* Header / nav */
-.site-header {
-    background: linear-gradient(180deg, var(--primary), var(--primary-dark));
-    color: var(--primary-contrast);
-    padding: 0.75rem 1rem;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-.site-header nav {
-    display: flex;
-    gap: 0.75rem;
-    align-items: center;
-    flex-wrap: wrap;
-}
-.site-header a {
-    color: var(--primary-contrast);
-    text-decoration: none;
-    font-weight: 600;
-}
-.site-header a:hover,
-.site-header a:focus {
-    text-decoration: underline;
-    opacity: 0.95;
-}
-.site-header .welcome {
-    margin-left: auto;
-    font-weight: 600;
+/* ===== LAYOUT ===== */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
 }
 
-/* Buttons and inputs */
-button, .btn {
+/* ===== FORM STYLING ===== */
+button[type="submit"] {
     background: var(--primary);
-    color: var(--primary-contrast);
-    border: 1px solid rgba(255,255,255,0.08);
-    padding: 0.45rem 0.9rem;
+    color: white;
+    padding: 0.6rem 1.5rem;
+    border: none;
     border-radius: 6px;
-    cursor: pointer;
     font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: inherit;
 }
-button:hover, .btn:hover {
+
+button[type="submit"]:hover {
     background: var(--primary-dark);
 }
 
-/* Forms */
-form input[type="email"],
-form input[type="password"],
-form input[type="text"],
-form input[type="date"] {
-    border: 1px solid #d1d5db;
-    padding: 0.45rem 0.6rem;
+.form-error {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 0.75rem;
     border-radius: 6px;
-    width: 20rem;
-    max-width: 100%;
-    box-sizing: border-box;
-}
-form label { display: block; margin: 0.4rem 0; color: #0f172a; }
-
-/* Error messages */
-.form-error, .error {
-    color: #b91c1c;
-    background: #fff1f2;
+    margin-bottom: 1rem;
     border: 1px solid #fecaca;
-    padding: 0.5rem;
-    border-radius: 6px;
-    margin-bottom: 0.6rem;
 }
 
-/* Footer / small text */
-.footer {
-    color: var(--muted);
-    font-size: 0.9rem;
-    padding: 1rem;
-    text-align: center;
-}
-
-/* Utility */
-.container { padding: 1rem; max-width: 960px; margin: 0 auto; }

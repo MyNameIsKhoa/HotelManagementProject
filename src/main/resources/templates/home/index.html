@@ -1,38 +1,84 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Hotel Booking System</title>
-    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <title>HSF302 Hotel Booking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+
 </head>
 <body>
 
+<!-- HEADER -->
 <div th:replace="fragments/header :: header"></div>
 
-<div class="container">
-    <h1>🏨 Hotel Booking</h1>
-    <p>Trang chủ Hotel HSF302</p>
+<!-- HERO SECTION --><!-- HERO SECTION -->
+<section class="hero"
+         th:style="|background-image: url('/images/hotel-hero.jpg');|">
 
-    <hr/>
+    <div class="hero-overlay"></div>
 
-    <h2>Tìm kiếm phòng</h2>
+    <div class="hero-content">
+        <h1>HSF302 Hotel Booking System</h1>
+        <p class="hero-sub">
+            Trải nghiệm đặt phòng khách sạn nhanh chóng – tiện lợi – chuyên nghiệp
+        </p>
 
-    <form th:action="@{/search}" method="get">
-        <label>
-            Check-in:
-            <input type="date" name="checkinDate" required>
-        </label>
-        <br><br>
+        <!-- SEARCH FORM -->
+        <form class="search-box" th:action="@{/search}" method="get">
+            <div class="search-field">
+                <label>Nhận phòng</label>
+                <input type="date" name="checkinDate" required>
+            </div>
 
-        <label>
-            Check-out:
-            <input type="date" name="checkoutDate" required>
-        </label>
-        <br><br>
+            <div class="search-field">
+                <label>Trả phòng</label>
+                <input type="date" name="checkoutDate" required>
+            </div>
 
-        <button type="submit">Tìm phòng</button>
-    </form>
-</div>
+            <div class="search-field search-btn">
+                <button type="submit">🔍 Tìm phòng</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+
+<!-- INTRO SECTION -->
+<section class="container intro">
+    <h2>Tại sao chọn HSF302 Hotel?</h2>
+    <p class="intro-desc">
+        Hệ thống được xây dựng mô phỏng nghiệp vụ khách sạn thực tế,
+        hỗ trợ đặt phòng, thanh toán, hủy phòng và đánh giá sau lưu trú.
+    </p>
+
+    <div class="features">
+        <div class="feature-card">
+            <img src="/images/room.jpg" alt="Room">
+            <h3>Phòng tiện nghi</h3>
+            <p>Nhiều loại phòng phù hợp cho cá nhân, gia đình và doanh nhân.</p>
+        </div>
+
+        <div class="feature-card">
+            <img src="/images/service.jpg" alt="Service">
+            <h3>Dịch vụ chất lượng</h3>
+            <p>Quản lý lưu trú, phụ thu dịch vụ rõ ràng, minh bạch.</p>
+        </div>
+
+        <div class="feature-card">
+            <img src="/images/payment.jpg" alt="Payment">
+            <h3>Thanh toán linh hoạt</h3>
+            <p>Hỗ trợ thanh toán tại quầy, dễ dàng hoàn tiền khi hủy.</p>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<div th:replace="fragments/footer :: footer"></div>
 
 </body>
 </html>

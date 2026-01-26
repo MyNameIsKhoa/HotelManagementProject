@@ -1,0 +1,107 @@
+/*header*/
+/* ===== HEADER (NAVBAR) ===== */
+
+.site-header {
+    background: linear-gradient(180deg, #1e3a8a, #0f2458); /* Navy */
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+/* Container */
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+/* Logo */
+.logo a {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #ffffff;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+}
+
+.logo a:hover {
+    opacity: 0.95;
+}
+
+/* Navigation links */
+.nav-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.35rem 0.6rem;
+    border-radius: 4px;
+}
+
+.nav-links a:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+/* Auth area */
+.auth-area {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+/* Buttons */
+.btn-primary {
+    background: #ffffff;
+    color: #1e3a8a;
+    padding: 0.35rem 0.9rem;
+    border-radius: 6px;
+    font-weight: 700;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.4);
+}
+
+.btn-primary:hover {
+    background: #f1f5f9;
+}
+
+.btn-outline {
+    color: #ffffff;
+    padding: 0.35rem 0.9rem;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.6);
+}
+
+.btn-outline:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+/* Logged-in user */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.welcome-text {
+    font-size: 0.9rem;
+    opacity: 0.95;
+}
+
+.logout-link {
+    color: #fde68a; /* vàng nhạt accent */
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.logout-link:hover {
+    text-decoration: underline;
+}
