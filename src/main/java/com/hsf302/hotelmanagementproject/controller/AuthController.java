@@ -57,11 +57,19 @@ public class AuthController {
             Model model
     ) {
         try {
+            if (email == null || email.trim().isEmpty()) {
+                throw new IllegalArgumentException("Email is required");
+            }
+            if (password == null /*|| password.length() < 6*/) {
+                throw new IllegalArgumentException("Password must be at least 6 characters");
+            }
             User user = authService.register(email, password, fullName);
             session.setAttribute("currentUser", user);
             return "redirect:/";
         } catch (IllegalArgumentException ex) {
             model.addAttribute("error", ex.getMessage());
+            model.addAttribute("email", email);
+            model.addAttribute("fullName", fullName);
             return "auth/register";
         }
     }

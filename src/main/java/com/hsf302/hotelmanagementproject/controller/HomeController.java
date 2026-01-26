@@ -20,20 +20,5 @@ public class HomeController {
         return "home/index";
     }
 
-    /**
-     * Test search submit
-     * GET /search
-     */
-    @GetMapping("/search")
-    public String search(
-            @RequestParam("checkinDate") String checkinDate,
-            @RequestParam("checkoutDate") String checkoutDate,
-            Model model
-    ) {
-        // Tạm thời chỉ show lại dữ liệu để test
-        model.addAttribute("checkinDate", checkinDate);
-        model.addAttribute("checkoutDate", checkoutDate);
 
-        return "home/search_result";
-    }
 }
