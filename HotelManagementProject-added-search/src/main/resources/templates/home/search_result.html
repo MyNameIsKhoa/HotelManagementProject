@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kết quả tìm kiếm</title>
+</head>
+<body>
+
+<h1>✅ Nhận dữ liệu thành công</h1>
+
+<p>
+    Check-in:
+    <strong th:text="${checkinDate}"></strong>
+</p>
+
+<p>
+    Check-out:
+    <strong th:text="${checkoutDate}"></strong>
+</p>
+
+<a th:href="@{/}">⬅ Quay lại trang chủ</a>
+
+</body>
+</html>
