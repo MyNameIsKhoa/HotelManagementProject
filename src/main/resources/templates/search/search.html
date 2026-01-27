@@ -1,10 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Hotel Search</title>
 </head>
 <body>
+
+<h2>Search hotels</h2>
+
+<!-- SEARCH FORM -->
+<form th:action="@{/searchroom}" method="get">
+
+    <label>Check-in:</label>
+    <input type="datetime-local"
+           name="checkinDate"
+           th:value="${checkinDate}"
+           required>
+
+    <br><br>
+
+    <label>Check-out:</label>
+    <input type="datetime-local"
+           name="checkoutDate"
+           th:value="${checkoutDate}"
+           required>
+
+    <br><br>
+
+    <button type="submit">Search</button>
+</form>
+
+<hr>
+
+<!-- SEARCH RESULT -->
+<div th:if="${results != null}">
+
+    <h3>Available hotels</h3>
+
+    <div th:each="entry : ${results}">
+        <hr>
+
+        <!-- HOTEL -->
+        <h4 th:text="${entry.key.name}"></h4>
+        <p th:text="${entry.key.address}"></p>
+
+        <!-- ROOM TYPES -->
+        <div th:each="row : ${entry.value}">
+            <div style="margin-left:20px; border:1px solid #ccc; padding:10px">
+
+                <h5 th:text="${row[0].name}"></h5>
+
+                <p>
+                    Price:
+                    <span th:text="${row[0].basePrice}"></span>
+                </p>
+
+                <p>
+                    Capacity:
+                    <span th:text="${row[0].capacity}"></span>
+                </p>
+
+                <p>
+                    Available rooms:
+                    <span th:text="${row[1]}"></span>
+                </p>
+
+                <!-- LINK TO ROOM DETAIL -->
+                <a th:href="@{/room/{id}(
+                        id=${row[0].roomTypeId},
+                        checkinDate=${checkinDate},
+                        checkoutDate=${checkoutDate}
+                )}">
+                    View details
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+</div>
 
 </body>
 </html>

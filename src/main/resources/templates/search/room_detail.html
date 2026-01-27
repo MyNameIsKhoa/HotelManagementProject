@@ -1,10 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Room Detail</title>
 </head>
 <body>
+
+<h2 th:text="${roomType.name}"></h2>
+
+<!-- THUMBNAIL -->
+<div th:if="${thumbnail != null}">
+    <img th:src="@{${thumbnail.imageUrl}}"
+         alt="Room thumbnail"
+         width="400">
+</div>
+
+<hr>
+
+<p>
+    <b>Hotel:</b>
+    <span th:text="${roomType.hotel.name}"></span>
+</p>
+
+<p th:text="${roomType.description}"></p>
+
+<p>
+    Price per night:
+    <span th:text="${roomType.basePrice}"></span>
+</p>
+
+<p>
+    Capacity:
+    <span th:text="${roomType.capacity}"></span> persons
+</p>
+
+<p>
+    Available rooms:
+    <span th:text="${availableRooms}"></span>
+</p>
+
+<hr>
+
+<!-- IMAGE GALLERY -->
+<h3>Room Images</h3>
+
+<div style="display:flex; gap:10px">
+    <div th:each="img : ${images}">
+        <img th:src="@{${img.imageUrl}}"
+             alt="Room image"
+             width="180">
+    </div>
+</div>
+
+<hr>
+
+<a href="#">Book now</a>
 
 </body>
 </html>
