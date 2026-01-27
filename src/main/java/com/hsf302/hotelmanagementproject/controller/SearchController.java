@@ -1,9 +1,6 @@
 package com.hsf302.hotelmanagementproject.controller;
 
-import com.hsf302.hotelmanagementproject.entity.RoomImage;
 import com.hsf302.hotelmanagementproject.entity.RoomType;
-import com.hsf302.hotelmanagementproject.repository.RoomImageRepository;
-import com.hsf302.hotelmanagementproject.repository.RoomTypeRepository;
 import com.hsf302.hotelmanagementproject.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,18 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Controller
-
 public class SearchController {
-    @Autowired
-    private RoomImageRepository roomImageRepository;
+
     @Autowired
     private SearchService searchService;
-    @Autowired
-    private RoomTypeRepository roomTypeRepository;
 
+    // ===== SEARCH PAGE =====
     @GetMapping("/search")
     public String search(
             @RequestParam("checkinDate")
@@ -38,13 +31,17 @@ public class SearchController {
 
             Model model
     ) {
-        model.addAttribute("results",
-                searchService.searchAvailableRooms(checkin, checkout));
+        model.addAttribute(
+                "results",
+                searchService.searchAvailableRooms(checkin, checkout)
+        );
         model.addAttribute("checkinDate", checkin);
         model.addAttribute("checkoutDate", checkout);
+
         return "search/search";
     }
 
+    // ===== ROOM DETAIL =====
     @GetMapping("/room/{id}")
     public String roomDetail(
             @PathVariable("id") Long id,
@@ -59,27 +56,23 @@ public class SearchController {
 
             Model model
     ) {
-        RoomType roomType = roomTypeRepository.findById(id).orElseThrow();
-
-        int availableRooms =
-                searchService.countAvailableRooms(id, checkin, checkout);
-
-        // 👉 LẤY ẢNH
-
-        List<RoomImage> images =
-                roomImageRepository.findByRoomTypeAndIsThumbnailFalse(roomType);
-
-        RoomImage thumbnail =
-                roomImageRepository.findFirstByRoomTypeAndIsThumbnailTrue(roomType);
+        RoomType roomType = searchService.getRoomType(id);
 
         model.addAttribute("roomType", roomType);
-        model.addAttribute("availableRooms", availableRooms);
+        model.addAttribute(
+                "availableRooms",
+                searchService.countAvailableRooms(id, checkin, checkout)
+        );
+        model.addAttribute(
+                "thumbnail",
+                searchService.getThumbnail(roomType)
+        );
+        model.addAttribute(
+                "images",
+                searchService.getRoomImages(roomType)
+        );
         model.addAttribute("checkinDate", checkin);
         model.addAttribute("checkoutDate", checkout);
-
-        // 👉 GỬI SANG VIEW
-        model.addAttribute("images", images);
-        model.addAttribute("thumbnail", thumbnail);
 
         return "search/room_detail";
     }

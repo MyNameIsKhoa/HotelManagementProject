@@ -12,7 +12,8 @@ import java.util.List;
 public interface RoomTypeRepository extends JpaRepository<RoomType, Long> {
 
     @Query("""
-        SELECT rt, COUNT(r.roomId) - COUNT(b.bookingId)
+        SELECT rt, COUNT(r.roomId) - COUNT(b.bookingId), 
+               (SELECT ri FROM RoomImage ri WHERE ri.roomType = rt AND ri.isThumbnail = true)
         FROM RoomType rt
         JOIN rt.hotel h
         JOIN Room r ON r.roomType = rt

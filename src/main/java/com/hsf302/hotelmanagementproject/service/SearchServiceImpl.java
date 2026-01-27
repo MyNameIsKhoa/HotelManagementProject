@@ -1,8 +1,10 @@
 package com.hsf302.hotelmanagementproject.service;
 
 import com.hsf302.hotelmanagementproject.entity.Hotel;
+import com.hsf302.hotelmanagementproject.entity.RoomImage;
 import com.hsf302.hotelmanagementproject.entity.RoomType;
 import com.hsf302.hotelmanagementproject.repository.HotelRepository;
+import com.hsf302.hotelmanagementproject.repository.RoomImageRepository;
 import com.hsf302.hotelmanagementproject.repository.RoomTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +23,12 @@ public class SearchServiceImpl implements SearchService {
     @Autowired
     private RoomTypeRepository roomTypeRepository;
 
+    @Autowired
+    private RoomImageRepository roomImageRepository;
+
+    // ===== SEARCH =====
     @Override
-    public Map<Hotel, List<Object[]>>  searchAvailableRooms(
+    public Map<Hotel, List<Object[]>> searchAvailableRooms(
             LocalDateTime checkin,
             LocalDateTime checkout
     ) {
@@ -33,7 +39,8 @@ public class SearchServiceImpl implements SearchService {
         for (Hotel hotel : hotels) {
             List<Object[]> roomTypes =
                     roomTypeRepository.findAvailableRoomTypesByHotel(
-                            hotel.getHotelId(), checkin, checkout);
+                            hotel.getHotelId(), checkin, checkout
+                    );
 
             if (!roomTypes.isEmpty()) {
                 result.put(hotel, roomTypes);
@@ -41,6 +48,13 @@ public class SearchServiceImpl implements SearchService {
         }
         return result;
     }
+
+    // ===== ROOM DETAIL =====
+    @Override
+    public RoomType getRoomType(Long roomTypeId) {
+        return roomTypeRepository.findById(roomTypeId).orElseThrow();
+    }
+
     @Override
     public int countAvailableRooms(
             Long roomTypeId,
@@ -53,7 +67,19 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public RoomType getRoomType(Long id) {
-        return roomTypeRepository.findById(id).orElse(null);
+    public RoomImage addedRoomImage(RoomImage roomImage) {
+        return roomImageRepository.save(roomImage);
+    }
+
+    @Override
+    public RoomImage getThumbnail(RoomType roomType) {
+        return roomImageRepository
+                .findFirstByRoomTypeAndIsThumbnailTrue(roomType);
+    }
+
+    @Override
+    public List<RoomImage> getRoomImages(RoomType roomType) {
+        return roomImageRepository
+                .findByRoomTypeAndIsThumbnailFalse(roomType);
     }
 }

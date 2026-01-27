@@ -6,6 +6,8 @@
     --muted: #6b7280;
     --bg: #ffffff;
     --light-bg: #f8fafc;
+    /* ✅ THÊM DÒNG NÀY */
+    --accent-gold: #d4af37;
 }
 
 /* ===== RESET ===== */
@@ -15,9 +17,10 @@
 
 html, body {
     margin: 0;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     background: var(--bg);
     color: #0f172a;
+    line-height: 1.6;
 }
 
 /* ===== LAYOUT ===== */
@@ -27,29 +30,14 @@ html, body {
     padding: 2rem 1rem;
 }
 
-/* ===== FORM STYLING ===== */
-button[type="submit"] {
-    background: var(--primary);
-    color: white;
-    padding: 0.6rem 1.5rem;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    font-family: inherit;
+/* ===== UTILITY CLASSES ===== */
+.text-center {
+    text-align: center;
 }
 
-button[type="submit"]:hover {
-    background: var(--primary-dark);
-}
-
-.form-error {
-    background: #fee2e2;
-    color: #991b1b;
-    padding: 0.75rem;
-    border-radius: 6px;
-    margin-bottom: 1rem;
-    border: 1px solid #fecaca;
-}
-
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }

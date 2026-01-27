@@ -2,63 +2,225 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Room Detail</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${roomType.name} + ' | Hotel Management'">Room Detail</title>
+
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <link rel="stylesheet" th:href="@{/css/header.css}">
     <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/room_detail.css}">
 </head>
 <body>
+
 <div th:replace="fragments/header :: header"></div>
 
-<h2 th:text="${roomType.name}"></h2>
+<!-- HERO SECTION -->
+<section class="room-detail-hero">
+    <img th:if="${thumbnail != null}"
+         th:src="@{${thumbnail.imageUrl}}"
+         alt="Room hero image"
+         class="room-hero-image"
+         onerror="this.style.display='none'">
 
-<!-- THUMBNAIL -->
-<div th:if="${thumbnail != null}">
-    <img th:src="@{${thumbnail.imageUrl}}"
-         alt="Room thumbnail"
-         width="400">
-</div>
+    <div class="room-hero-overlay">
+        <div class="room-hero-content">
+            <h1 th:text="${roomType.name}">Deluxe Suite</h1>
+            <span class="hotel-name-tag"
+                  th:text="${roomType.hotel.name}">Grand Hotel</span>
+        </div>
+    </div>
+</section>
 
-<hr>
+<!-- MAIN CONTENT -->
+<div class="room-detail-container">
+    <div class="room-content-grid">
 
-<p>
-    <b>Hotel:</b>
-    <span th:text="${roomType.hotel.name}"></span>
-</p>
+        <!-- LEFT COLUMN -->
+        <div class="room-main-content">
 
-<p th:text="${roomType.description}"></p>
+            <!-- IMAGE GALLERY -->
+            <div class="gallery-card">
+                <div class="featured-image">
+                    <img th:if="${thumbnail != null}"
+                         th:src="@{${thumbnail.imageUrl}}"
+                         alt="Room main image"
+                         onerror="this.src='/images/room.jpg'">
+                    <img th:if="${thumbnail == null}"
+                         th:src="@{/images/room.jpg}"
+                         alt="Room placeholder">
+                </div>
 
-<p>
-    Price per night:
-    <span th:text="${roomType.basePrice}"></span>
-</p>
+                <div class="gallery-thumbnails"
+                     th:if="${images != null and !images.isEmpty()}">
+                    <div class="gallery-thumbnail" th:each="img : ${images}">
+                        <img th:src="@{${img.imageUrl}}"
+                             alt="Room image"
+                             onerror="this.src='/images/room.jpg'">
+                    </div>
+                </div>
+            </div>
 
-<p>
-    Capacity:
-    <span th:text="${roomType.capacity}"></span> persons
-</p>
+            <!-- ROOM INFO -->
+            <div class="room-info-card">
+                <h2>Room Details</h2>
 
-<p>
-    Available rooms:
-    <span th:text="${availableRooms}"></span>
-</p>
+                <p class="room-description"
+                   th:text="${roomType.description}">
+                    Room description
+                </p>
 
-<hr>
+                <div class="room-features">
+                    <div class="feature-item">
+                        <span class="feature-icon">👥</span>
+                        <div class="feature-content">
+                            <h4>Capacity</h4>
+                            <p><span th:text="${roomType.capacity}">2</span> Guests</p>
+                        </div>
+                    </div>
 
-<!-- IMAGE GALLERY -->
-<h3>Room Images</h3>
+                    <div class="feature-item">
+                        <span class="feature-icon">🛏️</span>
+                        <div class="feature-content">
+                            <h4>Availability</h4>
+                            <p>
+                                <span th:text="${availableRooms != null ? availableRooms : 0}">0</span>
+                                Rooms
+                            </p>
+                        </div>
+                    </div>
 
-<div style="display:flex; gap:10px">
-    <div th:each="img : ${images}">
-        <img th:src="@{${img.imageUrl}}"
-             alt="Room image"
-             width="180">
+                    <div class="feature-item">
+                        <span class="feature-icon">📍</span>
+                        <div class="feature-content">
+                            <h4>Location</h4>
+                            <p th:text="${roomType.hotel.address}">City Center</p>
+                        </div>
+                    </div>
+
+                    <div class="feature-item">
+                        <span class="feature-icon">⭐</span>
+                        <div class="feature-content">
+                            <h4>Rating</h4>
+                            <p>5.0 / 5.0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="booking-sidebar">
+            <div class="booking-card">
+
+                <!-- PRICE -->
+                <div class="price-section">
+                    <p class="price-label">From</p>
+                    <div class="price-amount">
+                        <span th:text="${#numbers.formatDecimal(roomType.basePrice,1,'COMMA',0,'POINT')}">
+                            1,500,000
+                        </span>
+                    </div>
+                    <p class="price-currency">VND / night</p>
+                </div>
+
+                <!-- AVAILABILITY -->
+                <div class="availability-section">
+                    <div class="availability-status">
+                        <span class="status-indicator"
+                              th:classappend="${availableRooms != null and availableRooms <= 3} ? 'limited' : ''"></span>
+
+                        <span th:if="${availableRooms != null and availableRooms > 0}">
+                            Available Now
+                        </span>
+                        <span th:if="${availableRooms != null and availableRooms == 0}"
+                              style="color:#ef4444">
+                            Sold Out
+                        </span>
+                    </div>
+
+                    <p class="availability-count"
+                       th:if="${availableRooms != null and availableRooms > 0}">
+                        <span th:text="${availableRooms}">5</span> rooms available
+                    </p>
+                </div>
+
+                <!-- BOOKING DETAILS -->
+                <div class="booking-details">
+                    <div class="booking-detail-item">
+                        <span class="detail-label">Check-in</span>
+                        <span class="detail-value"
+                              th:text="${checkinDate != null ? #temporals.format(checkinDate,'dd/MM/yyyy HH:mm') : 'Select date'}">
+                        </span>
+                    </div>
+
+                    <div class="booking-detail-item">
+                        <span class="detail-label">Check-out</span>
+                        <span class="detail-value"
+                              th:text="${checkoutDate != null ? #temporals.format(checkoutDate,'dd/MM/yyyy HH:mm') : 'Select date'}">
+                        </span>
+                    </div>
+
+                    <div class="booking-detail-item">
+                        <span class="detail-label">Guests</span>
+                        <span class="detail-value">
+                            Up to <span th:text="${roomType.capacity}">2</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- ACTIONS -->
+                <div class="booking-actions">
+
+                    <a class="btn-book-now"
+                       th:if="${availableRooms != null and availableRooms > 0 and session.currentUser != null}"
+                       th:href="@{/booking/checkout(
+                            roomTypeId=${roomType.roomTypeId},
+                            checkinDate=${checkinDate},
+                            checkoutDate=${checkoutDate}
+                       )}">
+                        Book Now
+                    </a>
+
+                    <a class="btn-book-now btn-login"
+                       th:if="${availableRooms != null and availableRooms > 0 and session.currentUser == null}"
+                       th:href="@{/auth/login}">
+                        Login to Book
+                    </a>
+
+                    <button class="btn-book-now"
+                            th:if="${availableRooms != null and availableRooms == 0}"
+                            disabled>
+                        Sold Out
+                    </button>
+
+                    <a th:href="@{/search}" class="btn-secondary">
+                        ← Back to Search
+                    </a>
+                </div>
+
+                <!-- TRUST -->
+                <div class="trust-badges">
+                    <div class="trust-badge">
+                        <div class="trust-badge-icon">✓</div>
+                        <div>Free Cancellation</div>
+                    </div>
+                    <div class="trust-badge">
+                        <div class="trust-badge-icon">🔒</div>
+                        <div>Secure Payment</div>
+                    </div>
+                    <div class="trust-badge">
+                        <div class="trust-badge-icon">⚡</div>
+                        <div>Instant Confirm</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 </div>
 
-<hr>
-
-<a href="#">Book now</a>
 <div th:replace="fragments/footer :: footer"></div>
 
 </body>

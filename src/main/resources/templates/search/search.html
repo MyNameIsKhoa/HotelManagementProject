@@ -6,43 +6,53 @@
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <link rel="stylesheet" th:href="@{/css/header.css}">
     <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/search.css}">
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
-<h2>Search hotels</h2>
 
 <!-- SEARCH FORM -->
-<form th:action="@{/searchroom}" method="get">
+<div class="search-container">
+    <h2>Search hotels</h2>
 
-    <label>Check-in:</label>
-    <input type="datetime-local"
-           name="checkinDate"
-           th:value="${checkinDate}"
-           id=""
-           required>
+    <form th:action="@{/search}" method="get" class="search-form">
+        <div class="form-group">
+            <label for="checkinDate">Check-in:</label>
+            <input type="datetime-local"
+                   name="checkinDate"
+                   th:value="${checkinDate != null ? #temporals.format(checkinDate, 'yyyy-MM-dd''T''HH:mm') : ''}"
+                   id="checkinDate"
+                   required>
+        </div>
 
+        <div class="form-group">
+            <label for="checkoutDate">Check-out:</label>
+            <input type="datetime-local"
+                   name="checkoutDate"
+                   th:value="${checkoutDate != null ? #temporals.format(checkoutDate, 'yyyy-MM-dd''T''HH:mm') : ''}"
+                   id="checkoutDate"
+                   required>
+        </div>
 
-    <br><br>
+        <button type="submit" class="btn-search">Search</button>
+    </form>
+</div>
 
-    <label>Check-out:</label>
-    <input type="datetime-local"
-           name="checkoutDate"
-           th:value="${checkoutDate}"
-           required>
-
-    <br><br>
-
-    <button type="submit">Search</button>
-</form>
 
 <hr>
 
 <!-- SEARCH RESULT -->
-<div th:if="${results != null}">
+<div class="container" th:if="${results != null}">
 
     <h3>Available hotels</h3>
 
-    <div th:each="entry : ${results}">
+    <!-- No results message -->
+    <div th:if="${results.isEmpty()}" class="no-results">
+        <p>No hotels found for your search criteria. Please try different dates.</p>
+    </div>
+
+    <!-- Results -->
+    <div th:if="${!results.isEmpty()}" th:each="entry : ${results}">
         <hr>
 
         <!-- HOTEL -->
@@ -51,7 +61,7 @@
 
         <!-- ROOM TYPES -->
         <div th:each="row : ${entry.value}">
-            <div style="margin-left:20px; border:1px solid #ccc; padding:10px">
+            <div class="room-type-card">
 
                 <h5 th:text="${row[0].name}"></h5>
 
@@ -71,12 +81,12 @@
                 </p>
 
                 <!-- LINK TO ROOM DETAIL -->
-                <a th:href="@{/room/{id}(
+                <a class="btn-view-detail" th:href="@{/room/{id}(
                         id=${row[0].roomTypeId},
                         checkinDate=${checkinDate},
                         checkoutDate=${checkoutDate}
                 )}">
-                    View details
+                    Xem Chi tiết
                 </a>
 
             </div>
