@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Hotel Search</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
 </head>
 <body>
-
+<div th:replace="fragments/header :: header"></div>
 <h2>Search hotels</h2>
 
 <!-- SEARCH FORM -->
@@ -15,7 +18,9 @@
     <input type="datetime-local"
            name="checkinDate"
            th:value="${checkinDate}"
+           id=""
            required>
+
 
     <br><br>
 
@@ -79,6 +84,7 @@
     </div>
 
 </div>
+<div th:replace="fragments/footer :: footer"></div>
 
 </body>
 </html>

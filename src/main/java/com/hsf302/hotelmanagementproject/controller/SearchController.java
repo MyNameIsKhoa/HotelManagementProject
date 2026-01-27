@@ -26,11 +26,6 @@ public class SearchController {
     @Autowired
     private RoomTypeRepository roomTypeRepository;
 
-    @GetMapping("/timkim")
-    public String home() {
-        return "search/search";
-    }
-
     @GetMapping("/search")
     public String search(
             @RequestParam("checkinDate")
