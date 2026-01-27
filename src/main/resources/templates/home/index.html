@@ -32,12 +32,12 @@
         <form class="search-box" th:action="@{/search}" method="get">
             <div class="search-field">
                 <label>Nhận phòng</label>
-                <input type="date" name="checkinDate" required>
+                <input type="datetime-local" name="checkinDate" required>
             </div>
 
             <div class="search-field">
                 <label>Trả phòng</label>
-                <input type="date" name="checkoutDate" required>
+                <input type="datetime-local" name="checkoutDate" required>
             </div>
 
             <div class="search-field search-btn">
