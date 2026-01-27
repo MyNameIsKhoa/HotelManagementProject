@@ -5,6 +5,17 @@
     <title>Title</title>
 </head>
 <body>
+<h2>Thanh toán thành công!</h2>
+
+<p>Booking: <span th:text="${payment.booking.bookingId}"></span></p>
+<p>Số tiền: <span th:text="${payment.amount}"></span></p>
+<p>Method: <span th:text="${payment.method}"></span></p>
+<p>Status: <span th:text="${payment.status}"></span></p>
+
+<a class="btn btn-primary"
+   th:href="@{/staff/{id}(id=${bookingId})}">
+    ⬅ Back to Staff Detail
+</a>
 
 </body>
 </html>

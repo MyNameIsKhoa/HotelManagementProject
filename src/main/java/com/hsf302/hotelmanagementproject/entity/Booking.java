@@ -1,5 +1,7 @@
 package com.hsf302.hotelmanagementproject.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.hsf302.hotelmanagementproject.entity.enums.BookingStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
@@ -44,10 +46,16 @@ public class Booking {
     @Column(name = "total_price")
     private BigDecimal totalPrice;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private BookingStatus status;
     // PENDING / CONFIRMED / CANCELLED / CHECKED_IN / COMPLETED
 
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @JsonManagedReference
+    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
+    private Payment payment;
+
 }
 

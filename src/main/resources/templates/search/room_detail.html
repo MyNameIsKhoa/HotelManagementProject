@@ -174,11 +174,7 @@
 
                     <a class="btn-book-now"
                        th:if="${availableRooms != null and availableRooms > 0 and session.currentUser != null}"
-                       th:href="@{/booking/checkout(
-                            roomTypeId=${roomType.roomTypeId},
-                            checkinDate=${checkinDate},
-                            checkoutDate=${checkoutDate}
-                       )}">
+                       th:href="@{/booking/form(roomTypeId=${roomType.roomTypeId}, checkinDate=${checkinDate}, checkoutDate=${checkoutDate})}">
                         Book Now
                     </a>
 

@@ -45,4 +45,5 @@ public interface RoomTypeRepository extends JpaRepository<RoomType, Long> {
             @Param("checkout") LocalDateTime checkout
     );
 
+
 }
