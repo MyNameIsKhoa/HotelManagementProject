@@ -63,7 +63,7 @@ public class SearchController {
 
         int availableRooms =
                 searchService.countAvailableRooms(id, checkin, checkout);
-
+        int a= 0;
         // 👉 LẤY ẢNH
 
         List<RoomImage> images =
