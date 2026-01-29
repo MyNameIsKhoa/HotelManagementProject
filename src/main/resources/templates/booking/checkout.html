@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout</title>
+</head>
+<body>
+
+<h2>🧾 Xác nhận đặt phòng</h2>
+
+<hr>
+
+<h3>Thông tin phòng</h3>
+<p>
+    <strong>Tên phòng:</strong>
+    <span th:text="${roomType.name}"></span>
+</p>
+
+<p>
+    <strong>Giá / đêm:</strong>
+    <span th:text="${roomType.basePrice}"></span>
+</p>
+
+<p>
+    <strong>Check-in:</strong>
+    <span th:text="${checkinDate}"></span>
+</p>
+
+<p>
+    <strong>Check-out:</strong>
+    <span th:text="${checkoutDate}"></span>
+</p>
+
+<hr>
+
+<h3>Phương thức thanh toán</h3>
+
+<form th:action="@{/booking/confirm}" method="post">
+
+    <input type="hidden" name="roomTypeId" th:value="${roomType.roomTypeId}">
+    <input type="hidden" name="checkinDate" th:value="${checkinDate}">
+    <input type="hidden" name="checkoutDate" th:value="${checkoutDate}">
+
+    <label>
+        <input type="radio" name="paymentMethod" value="CASH" checked>
+        Thanh toán tại quầy (CASH)
+    </label>
+
+    <br><br>
+
+    <button type="submit">
+        ✅ Hoàn tất đặt phòng
+    </button>
+</form>
+
+</body>
+</html>

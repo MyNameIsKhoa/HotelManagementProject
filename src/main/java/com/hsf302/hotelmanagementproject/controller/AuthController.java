@@ -1,6 +1,7 @@
 package com.hsf302.hotelmanagementproject.controller;
 
 import com.hsf302.hotelmanagementproject.entity.User;
+import com.hsf302.hotelmanagementproject.entity.enums.Role;
 import com.hsf302.hotelmanagementproject.service.AuthService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -34,14 +35,23 @@ public class AuthController {
             Model model
     ) {
         Optional<User> u = authService.authenticate(email, password);
-        if (u.isPresent()) {
-            session.setAttribute("currentUser", u.get());
-            return "redirect:/";
-        } else {
+
+        if (u.isEmpty()) {
             model.addAttribute("error", "Invalid email or password");
             return "auth/login";
         }
+
+        User user = u.get();
+        session.setAttribute("currentUser", user);
+
+        // ===== REDIRECT THEO ROLE =====
+        if (user.getRole() == Role.STAFF || user.getRole() == Role.ADMIN) {
+            return "redirect:/staff";
+        }
+
+        return "redirect:/";
     }
+
 
     @GetMapping("/register")
     public String registerForm() {

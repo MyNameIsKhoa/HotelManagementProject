@@ -5,6 +5,7 @@ import com.hsf302.hotelmanagementproject.entity.User;
 import com.hsf302.hotelmanagementproject.entity.enums.BookingStatus;
 import com.hsf302.hotelmanagementproject.entity.enums.Role;
 import com.hsf302.hotelmanagementproject.repository.RoomRepository;
+import com.hsf302.hotelmanagementproject.service.BookingService;
 import com.hsf302.hotelmanagementproject.service.StaffService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -13,16 +14,36 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/staff")
 @RequiredArgsConstructor
+@RequestMapping("/staff")
 public class StaffController {
 
+    private final BookingService bookingService;
+
+
     private final StaffService staffService;
-    private final RoomRepository roomRepository;
-    // ==============================
+
     // VIEW ALL BOOKINGS
     // ==============================
     @GetMapping
+    public String staffHome(HttpSession session, Model model) {
+
+        User user = (User) session.getAttribute("currentUser");
+
+        if (user == null || user.getRole() != Role.STAFF) {
+            return "redirect:/auth/login";
+        }
+
+        // Có thể show nhanh booking cần xử lý
+        model.addAttribute(
+                "bookings",
+                bookingService.getPendingBookings()
+        );
+
+        return "staff/staff";
+    }
+
+    @GetMapping("/bookings")
     public String getAllBookings(HttpSession session, Model model) {
 
         User user = (User) session.getAttribute("currentUser");
@@ -126,4 +147,31 @@ public class StaffController {
 
         return "staff/checkout-today";
     }
-}
+
+
+
+
+
+        // ==============================
+        // CONFIRM BOOKING
+        // ==============================
+        @PostMapping("/booking/confirm")
+        public String confirmBooking(
+                @RequestParam Long bookingId,
+                HttpSession session
+        ) {
+            User user = (User) session.getAttribute("currentUser");
+            if (user == null || user.getRole() != Role.STAFF) {
+                return "redirect:/login";
+            }
+
+            bookingService.confirmBooking(bookingId);
+
+            return "redirect:/staff/bookings";
+        }
+    }
+
+
+
+
+

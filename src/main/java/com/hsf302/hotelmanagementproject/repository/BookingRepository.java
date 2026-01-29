@@ -16,14 +16,14 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query("""
 SELECT COUNT(b)
 FROM Booking b
-WHERE b.roomType.id = :roomTypeId
-  AND b.status IN ('CONFIRMED','CHECKED_IN')
+WHERE b.roomType.roomTypeId = :roomTypeId
+  AND b.status IN ('BOOKING','CONFIRMED','CHECKED_IN')
   AND b.checkinDate < :checkout
   AND b.checkoutDate > :checkin
 """)
-    long countActiveBookings(Long roomTypeId,
-                             LocalDateTime checkin,
-                             LocalDateTime checkout);
+    long countActiveBookings(@Param("roomTypeId") Long roomTypeId,
+                             @Param("checkin") LocalDateTime checkin,
+                             @Param("checkout") LocalDateTime checkout);
 
 
     List<Booking> findByStatus(BookingStatus status);
@@ -42,5 +42,7 @@ WHERE b.roomType.id = :roomTypeId
             @Param("status") BookingStatus status,
             @Param("date") LocalDate date
     );
+
+
 }
 

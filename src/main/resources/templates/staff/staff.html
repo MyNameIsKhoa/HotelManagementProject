@@ -1,165 +1,43 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Staff Dashboard</title>
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 </head>
 <body>
 
-<div class="container mt-4">
+<h2>📋 Booking cần xác nhận</h2>
 
-    <h2 class="mb-4">🛎 Staff Booking Management</h2>
-
-    <!-- ================= LIST BOOKINGS ================= -->
-    <div th:if="${booking == null}">
-
-        <table class="table table-bordered table-hover">
-            <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Customer</th>
-                <th>Room Type</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr th:each="b : ${bookings}">
-                <td th:text="${b.bookingId}"></td>
-                <td th:text="${b.user.fullName}"></td>
-                <td th:text="${b.roomType.name}"></td>
-                <td>
-                    <span class="badge bg-info"
-                          th:text="${b.status}"></span>
-                </td>
-                <td>
-                    <a class="btn btn-sm btn-primary"
-                       th:href="@{/staff/{id}(id=${b.bookingId})}">
-                        Detail
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-
-    </div>
-
-    <!-- ================= DETAIL ================= -->
-    <div th:if="${booking != null}">
-
-        <a th:href="@{/staff}" class="btn btn-secondary mb-3">⬅ Back</a>
-
-        <h4>📄 Booking Detail</h4>
-
-        <div class="card mb-3">
-            <div class="card-body">
-
-                <p><b>ID:</b> <span th:text="${booking.bookingId}"></span></p>
-
-                <p><b>Customer:</b>
-                    <span th:text="${booking.user.fullName}"></span>
-                </p>
-
-                <p><b>Room Type:</b>
-                    <span th:text="${booking.roomType.name}"></span>
-                </p>
-
-                <p><b>Room:</b>
-                    <span th:if="${booking.room != null}"
-                          class="fw-bold text-success"
-                          th:text="${booking.room.roomNumber}">
-                    </span>
-
-                    <span th:if="${booking.room == null}"
-                          class="text-danger">
-                        Not assigned
-                    </span>
-                </p>
-
-                <p><b>Status:</b>
-                    <span class="badge bg-warning"
-                          th:text="${booking.status}">
-                    </span>
-                </p>
-
-            </div>
-        </div>
-
-        <!-- ================= ASSIGN ROOM ================= -->
-        <div th:if="${booking.status.name() == 'BOOKING'}"
-             class="card border-warning mb-3">
-
-            <div class="card-header bg-warning">
-                Assign Room
-            </div>
-
-            <div class="card-body">
-
-                <form th:action="@{/staff/{id}/assign-room(id=${booking.bookingId})}"
-                      method="post">
-
-                    <select name="roomId"
-                            class="form-select mb-3" required>
-
-                        <option value="">-- Select Room --</option>
-
-                        <option th:each="r : ${availableRooms}"
-                                th:value="${r.roomId}"
-                                th:text="${r.roomNumber}">
-                        </option>
-                    </select>
-
-                    <button class="btn btn-warning">
-                        Confirm & Assign
-                    </button>
-                </form>
-
-            </div>
-        </div>
-
-        <!-- ================= CHECK IN ================= -->
-        <div th:if="${booking.status.name() == 'CONFIRMED'}">
-
-            <form th:action="@{/staff/{id}/check-in(id=${booking.bookingId})}"
-                  method="post">
-
-                <button class="btn btn-success">
-                    Check-in Guest
+<table border="1" cellpadding="8">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>User</th>
+        <th>Room Type</th>
+        <th>Check-in</th>
+        <th>Check-out</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="booking : ${bookings}">
+        <td th:text="${booking.bookingId}"></td>
+        <td th:text="${booking.user.email}"></td>
+        <td th:text="${booking.roomType.name}"></td>
+        <td th:text="${booking.checkinDate}"></td>
+        <td th:text="${booking.checkoutDate}"></td>
+        <td>
+            <form th:action="@{/staff/booking/confirm}" method="post">
+                <input type="hidden" name="bookingId"
+                       th:value="${booking.bookingId}">
+                <button type="submit">
+                    ✅ Confirm
                 </button>
-
             </form>
-        </div>
-
-        <!-- ================= PAY ================= -->
-        <div th:if="${booking.status.name() == 'CHECKED_IN'}">
-
-            <a th:href="@{/payment/{id}(id=${booking.bookingId})}"
-               class="btn btn-primary">
-
-                Confirm Payment
-            </a>
-
-        </div>
-
-
-        <!-- ================= CHECK OUT ================= -->
-        <div th:if="${booking.status.name() == 'PAID'}">
-
-            <form th:action="@{/staff/{id}/check-out(id=${booking.bookingId})}"
-                  method="post">
-
-                <button class="btn btn-danger">
-                    Check-out
-                </button>
-
-            </form>
-        </div>
-
-    </div>
-
-</div>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
 </body>
 </html>

@@ -1,10 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Lịch sử đặt phòng</title>
 </head>
 <body>
+
+<h2>📄 Lịch sử đặt phòng của bạn</h2>
+
+<table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Loại phòng</th>
+        <th>Check-in</th>
+        <th>Check-out</th>
+        <th>Tổng tiền</th>
+        <th>Trạng thái</th>
+        <th>Hành động</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="booking : ${bookings}">
+        <td th:text="${booking.bookingId}"></td>
+        <td th:text="${booking.roomType.name}"></td>
+        <td th:text="${booking.checkinDate}"></td>
+        <td th:text="${booking.checkoutDate}"></td>
+        <td th:text="${booking.totalPrice}"></td>
+        <td th:text="${booking.status}"></td>
+
+        <td>
+            <!-- CHỈ HIỆN NÚT HỦY KHI BOOKING ĐANG CONFIRMED -->
+            <form th:if="${booking.status.name() == 'CONFIRMED'}"
+                  th:action="@{/booking/cancel}"
+                  method="post"
+                  style="margin:0;">
+
+                <input type="hidden"
+                       name="bookingId"
+                       th:value="${booking.bookingId}"/>
+
+                <button type="submit"
+                        onclick="return confirm('Bạn có chắc chắn muốn hủy booking này không?')">
+                    ❌ Hủy
+                </button>
+            </form>
+
+            <!-- BOOKING ĐÃ HỦY -->
+            <span th:if="${booking.status.name() == 'CANCELLED'}">
+                Đã hủy
+            </span>
+
+            <!-- BOOKING KHÁC -->
+            <span th:if="${booking.status.name() != 'CONFIRMED'
+                          and booking.status.name() != 'CANCELLED'}">
+                —
+            </span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+
+<a th:href="@{/}">⬅ Quay về trang chủ</a>
 
 </body>
 </html>

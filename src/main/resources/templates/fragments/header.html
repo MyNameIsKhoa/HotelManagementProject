@@ -13,7 +13,7 @@
         <!-- NAV LINKS -->
         <nav class="nav-links">
             <a th:href="@{/}">Trang chủ</a>
-            <a th:href="@{/my-bookings}" th:if="${session.currentUser != null}">
+            <a th:href="@{/booking/my-bookings}" th:if="${session.currentUser != null}">
                 Đơn đặt phòng
             </a>
         </nav>
