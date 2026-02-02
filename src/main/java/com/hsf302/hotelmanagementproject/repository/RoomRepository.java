@@ -20,5 +20,18 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     long countByRoomType_RoomTypeId(Long roomTypeId);
     List<Room> findByRoomType_RoomTypeIdAndStatus(Long roomTypeId, RoomStatus status);
+    @Query("""
+SELECT r.roomId
+FROM Room r
+JOIN Booking b ON b.room.roomId = r.roomId
+WHERE b.status IN ('CONFIRMED','CHECKED_IN')
+  AND b.checkinDate < :checkout
+  AND b.checkoutDate > :checkin
+""")
+    List<Long> findOccupiedRoomIds(
+            @Param("checkin") LocalDateTime checkin,
+            @Param("checkout") LocalDateTime checkout
+    );
+    List<Room> findByRoomType_RoomTypeId(Long roomTypeId);
 
 }

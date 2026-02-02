@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
+@Builder
 @Table(name = "room_types")
 @Data
 @NoArgsConstructor

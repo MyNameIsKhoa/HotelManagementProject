@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Wallet</title>
+
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/wallet.css">
+</head>
+<body>
+
+<main class="page-content">
+    <div class="wallet-container">
+
+        <h2 class="wallet-title">Ví của bạn</h2>
+
+        <p class="wallet-balance">
+            Số dư hiện tại:
+            <strong th:text="${#numbers.formatDecimal(balance, 0, 'COMMA', 0, 'POINT')} + ' VND'">
+                0 VND
+            </strong>
+        </p>
+
+        <div class="wallet-actions">
+            <div class="action-box">
+                <h3>Rút tiền</h3>
+                <input type="number" placeholder="Nhập số tiền">
+                <button class="btn-withdraw">Rút</button>
+            </div>
+        </div>
+
+        <h3 class="history-title">Lịch sử giao dịch</h3>
+        <p class="empty-text">Chưa có giao dịch</p>
+
+    </div>
+</main>
+
+</body>
+</html>

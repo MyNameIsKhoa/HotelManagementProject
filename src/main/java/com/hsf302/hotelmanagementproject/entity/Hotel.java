@@ -6,6 +6,7 @@ import lombok.*;
 @Entity
 @Table(name = "hotels")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Hotel {

@@ -1,0 +1,103 @@
+
+.page-content {
+    padding-top: 40px;
+}
+
+.booking-history-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== TITLE ===== */
+.booking-history-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1e3a8a;
+    margin-bottom: 24px;
+}
+
+/* ===== TABLE ===== */
+.booking-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.booking-table thead {
+    background: #f1f5f9;
+}
+
+.booking-table th {
+    padding: 14px 10px;
+    font-weight: 600;
+    color: #0f172a;
+    border-bottom: 2px solid #e5e7eb;
+    text-align: center;
+}
+
+.booking-table td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: center;
+    color: #334155;
+}
+
+.booking-table tr:hover {
+    background: #f8fafc;
+}
+
+/* ===== STATUS COLORS ===== */
+.status-CONFIRMED {
+    color: #15803d;
+    font-weight: 600;
+}
+
+.status-PENDING_DEPOSIT {
+    color: #b45309;
+    font-weight: 600;
+}
+
+.status-CANCELLED {
+    color: #b91c1c;
+    font-weight: 600;
+}
+
+/* ===== ACTION BUTTON ===== */
+.btn-cancel {
+    background: #dc2626;
+    color: #ffffff;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.btn-cancel:hover {
+    background: #b91c1c;
+}
+
+/* ===== EMPTY STATE ===== */
+.empty-booking {
+    text-align: center;
+    color: #6b7280;
+    padding: 30px 0;
+}
+
+/* ===== BACK LINK ===== */
+.back-home {
+    display: inline-block;
+    margin-top: 24px;
+    color: #1e3a8a;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.back-home:hover {
+    text-decoration: underline;
+}

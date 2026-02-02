@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán Thành công | Staff Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f0f2f5; }
+        .success-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .success-header {
+            background-color: #198754;
+            padding: 40px 0;
+            color: white;
+        }
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: #198754;
+            font-size: 40px;
+            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container d-flex align-items-center justify-content-center min-vh-100">
+    <div class="col-md-6 col-lg-5">
+        <div class="card success-card text-center">
+
+            <div class="success-header">
+                <div class="icon-circle">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h3 class="fw-bold mb-0">Thanh toán Thành công!</h3>
+                <p class="mb-0 opacity-75">Giao dịch đã hoàn tất</p>
+            </div>
+
+            <div class="card-body p-4">
+                <div class="alert alert-light border mb-4">
+                    <small class="text-muted d-block text-uppercase fw-bold mb-1">Mã đơn hàng (Order Code)</small>
+                    <span class="fs-4 fw-bold text-dark" th:text="${orderCode}">20260129001</span>
+                </div>
+
+                <p class="text-muted mb-4">
+                    Booking đã được cập nhật trạng thái <strong>CHECKED_OUT</strong>.<br>
+                    Phòng đã được chuyển sang trạng thái <strong>DIRTY</strong>.
+                </p>
+
+                <div class="d-grid gap-2">
+                    <a href="/staff" class="btn btn-primary btn-lg">
+                        <i class="fas fa-home me-2"></i> Quay về Dashboard
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-footer bg-light py-3 text-muted small">
+                <i class="fas fa-info-circle me-1"></i> Vui lòng kiểm tra lại trạng thái phòng trước khi xếp khách mới.
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

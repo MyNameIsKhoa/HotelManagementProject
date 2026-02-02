@@ -1,22 +1,25 @@
 package com.hsf302.hotelmanagementproject.service;
 
+import com.hsf302.hotelmanagementproject.DTO.CreateBookingRequest;
 import com.hsf302.hotelmanagementproject.entity.Booking;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public interface BookingService {
-    Booking createBooking(
-            Long userId,
-            Long roomTypeId,
-            LocalDateTime checkinDate,
-            LocalDateTime checkoutDate
-    );
-    Booking getById(Long id);
-    public List<Booking> getPendingBookings();
 
-    public void confirmBooking(Long bookingId);
+
+    Map<String, Object> createBooking (Long userId, CreateBookingRequest request);
+    public Booking confirmDepositByOrderCode(Long orderCode);
+
+
+    Booking assignRoom(Long bookingId, Long roomId);
+    void handlePayOSWebhook(Long orderCode);
     public List<Booking> getBookingsByUser(Long userId);
 
+    Booking getById(Long id);
+
+    void confirmBooking(Long bookingId);
+
+    void cancelBooking(Long bookingId);
 }

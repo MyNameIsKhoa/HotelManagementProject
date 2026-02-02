@@ -13,10 +13,12 @@
         <!-- NAV LINKS -->
         <nav class="nav-links">
             <a th:href="@{/}">Trang chủ</a>
-            <a th:href="@{/booking/my-bookings}" th:if="${session.currentUser != null}">
+            <a th:href="@{/booking/my-bookings}" th:if="${session.currentUser != null && session.currentUser.role.toString() == 'GUEST'}">
                 Đơn đặt phòng
             </a>
+
         </nav>
+
 
         <!-- AUTH AREA -->
         <div class="auth-area">
@@ -29,6 +31,14 @@
 
             <!-- Đã login -->
             <div th:if="${session.currentUser != null}" class="user-info">
+                <a class="wallet-box" th:href="@{/wallet}">
+                    Ví:
+                    <span th:text="${#numbers.formatDecimal(walletBalance, 0, 'COMMA', 0, 'POINT')}">
+        0
+    </span>
+                    VND
+                </a>
+
                 <span class="welcome-text">
                     Xin chào,
                     <strong th:text="${session.currentUser.fullName != null

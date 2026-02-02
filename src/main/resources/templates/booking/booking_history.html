@@ -1,70 +1,89 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Lịch sử đặt phòng</title>
+
+
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+
+
+    <link rel="stylesheet" th:href="@{/css/booking-history.css}">
 </head>
+
 <body>
 
-<h2>📄 Lịch sử đặt phòng của bạn</h2>
 
-<table border="1" cellpadding="8" cellspacing="0">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Loại phòng</th>
-        <th>Check-in</th>
-        <th>Check-out</th>
-        <th>Tổng tiền</th>
-        <th>Trạng thái</th>
-        <th>Hành động</th>
-    </tr>
-    </thead>
+<div th:replace="fragments/header :: header"></div>
 
-    <tbody>
-    <tr th:each="booking : ${bookings}">
-        <td th:text="${booking.bookingId}"></td>
-        <td th:text="${booking.roomType.name}"></td>
-        <td th:text="${booking.checkinDate}"></td>
-        <td th:text="${booking.checkoutDate}"></td>
-        <td th:text="${booking.totalPrice}"></td>
-        <td th:text="${booking.status}"></td>
+<!-- ===== CONTENT ===== -->
+<main class="page-content">
+    <div class="booking-history-container">
 
-        <td>
-            <!-- CHỈ HIỆN NÚT HỦY KHI BOOKING ĐANG CONFIRMED -->
-            <form th:if="${booking.status.name() == 'CONFIRMED'}"
-                  th:action="@{/booking/cancel}"
-                  method="post"
-                  style="margin:0;">
+        <h2 class="booking-history-title">📄 Lịch sử đặt phòng của bạn</h2>
 
-                <input type="hidden"
-                       name="bookingId"
-                       th:value="${booking.bookingId}"/>
+        <table class="booking-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Loại phòng</th>
+                <th>Check-in</th>
+                <th>Check-out</th>
+                <th>Tổng tiền</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+            </tr>
+            </thead>
 
-                <button type="submit"
-                        onclick="return confirm('Bạn có chắc chắn muốn hủy booking này không?')">
-                    ❌ Hủy
-                </button>
-            </form>
+            <tbody>
+            <tr th:each="booking : ${bookings}">
+                <td th:text="${booking.bookingId}">1</td>
+                <td th:text="${booking.roomType.name}">Deluxe Room</td>
+                <td th:text="${booking.checkinDate}">2026-01-30</td>
+                <td th:text="${booking.checkoutDate}">2026-02-02</td>
+                <td th:text="${booking.totalPrice}">1200000</td>
 
-            <!-- BOOKING ĐÃ HỦY -->
-            <span th:if="${booking.status.name() == 'CANCELLED'}">
-                Đã hủy
-            </span>
+                <td th:text="${booking.status}"
+                    th:class="'status-' + ${booking.status}">
+                    CONFIRMED
+                </td>
 
-            <!-- BOOKING KHÁC -->
-            <span th:if="${booking.status.name() != 'CONFIRMED'
-                          and booking.status.name() != 'CANCELLED'}">
-                —
-            </span>
-        </td>
-    </tr>
-    </tbody>
-</table>
+                <td>
+                    <form th:if="${booking.status.name() == 'PENDING_DEPOSIT'
+       or booking.status.name() == 'CONFIRMED'
+       or booking.status.name() == 'ASSIGNED'}"
 
-<br>
+                          th:action="@{/booking/cancel}"
+                          method="post"
+                          style="margin:0;">
+                        <input type="hidden"
+                               name="bookingId"
+                               th:value="${booking.bookingId}"/>
 
-<a th:href="@{/}">⬅ Quay về trang chủ</a>
+                        <button class="btn-cancel"
+                                type="submit"
+                                onclick="return confirm('Bạn có chắc chắn muốn hủy booking này không?')">
+                            ❌ Hủy
+                        </button>
+                    </form>
+                </td>
+            </tr>
+
+            <!-- EMPTY -->
+            <tr th:if="${#lists.isEmpty(bookings)}">
+                <td colspan="7" class="empty-booking">
+                    Bạn chưa có đơn đặt phòng nào
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+
+        <a class="back-home" th:href="@{/}">⬅ Quay về trang chủ</a>
+
+    </div>
+</main>
 
 </body>
 </html>

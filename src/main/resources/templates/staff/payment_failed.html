@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán Thất bại | Staff Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f0f2f5; }
+        .fail-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .fail-header {
+            background-color: #dc3545;
+            color: white;
+            padding: 30px;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+        }
+        .fail-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+            animation: shake 0.5s ease-in-out;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container d-flex align-items-center justify-content-center min-vh-100">
+    <div class="col-md-6 col-lg-5">
+        <div class="card fail-card text-center">
+
+            <div class="fail-header">
+                <div class="fail-icon">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <h3 class="fw-bold mb-0">Thanh toán Thất bại</h3>
+                <p class="mb-0 opacity-75">Giao dịch đã bị hủy hoặc lỗi</p>
+            </div>
+
+            <div class="card-body p-4">
+                <div class="mb-4 text-muted">
+                    <p>Hệ thống chưa nhận được thanh toán cho đơn hàng này.</p>
+                    <p class="small">
+                        Nếu đây là lỗi kỹ thuật, vui lòng thử lại hoặc chọn phương thức
+                        <strong>Tiền mặt</strong> để hoàn tất thủ tục Check-out cho khách.
+                    </p>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <a href="/staff" class="btn btn-outline-danger btn-lg">
+                        <i class="fas fa-undo me-2"></i> Quay về và Thử lại
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-footer bg-light py-3 small text-muted">
+                Mã lỗi: PAYMENT_CANCELLED
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

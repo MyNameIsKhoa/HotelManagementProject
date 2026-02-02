@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "bookings")
@@ -16,7 +17,6 @@ public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "booking_id")
     private Long bookingId;
 
     @ManyToOne
@@ -29,33 +29,32 @@ public class Booking {
 
     @ManyToOne
     @JoinColumn(name = "room_id")
-    private Room room; // NULL khi đặt, gán khi check-in
+    private Room room;
 
-    @Column(name = "checkin_date")
     private LocalDateTime checkinDate;
-
-    @Column(name = "checkout_date")
     private LocalDateTime checkoutDate;
-
-    @Column(name = "actual_checkin_time")
     private LocalDateTime actualCheckinTime;
-
-    @Column(name = "actual_checkout_time")
     private LocalDateTime actualCheckoutTime;
 
-    @Column(name = "total_price")
     private BigDecimal totalPrice;
 
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
-    // PENDING / CONFIRMED / CANCELLED / CHECKED_IN / COMPLETED
 
-    @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @JsonManagedReference
-    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
-    private Payment payment;
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    private List<Payment> payments;
+
+    private BigDecimal depositAmount;
+
+    private Boolean depositPaid = false;
+
+    private LocalDateTime depositPaidAt;
+    private Long payosOrderCode;
+
+
 
 }
 

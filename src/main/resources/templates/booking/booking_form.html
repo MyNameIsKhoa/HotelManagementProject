@@ -2,28 +2,30 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Confirm Booking</title>
+    <title>Confirm booking</title>
 </head>
 <body>
 
-<h2>Xác nhận đặt phòng</h2>
-<div th:if="${errorMessage}" style="color:red;">
+<h2>Confirm your booking</h2>
+
+<div th:if="${errorMessage}" style="color:red">
     <p th:text="${errorMessage}"></p>
 </div>
 
 <form th:action="@{/booking/create}" method="post">
 
-    <input type="hidden" name="roomTypeId" th:value="${roomTypeId}"/>
-    <input type="hidden" name="checkinDate" th:value="${checkinDate}"/>
-    <input type="hidden" name="checkoutDate" th:value="${checkoutDate}"/>
+    <input type="hidden" name="roomTypeId" th:value="${roomTypeId}">
+    <input type="hidden" name="checkinDate" th:value="${checkinDate}">
+    <input type="hidden" name="checkoutDate" th:value="${checkoutDate}">
 
-    <p>Check-in: <span th:text="${checkinDate}"></span></p>
-    <p>Check-out: <span th:text="${checkoutDate}"></span></p>
+    <p>Check-in: <b th:text="${checkinDate}"></b></p>
+    <p>Check-out: <b th:text="${checkoutDate}"></b></p>
 
-    <button type="submit">Xác nhận đặt phòng</button>
+    <button type="submit">
+        Pay deposit & confirm
+    </button>
+
 </form>
 
 </body>
 </html>
-
-

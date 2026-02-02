@@ -1,8 +1,9 @@
-package com.hsf302.hotelmanagementproject.service;
+package com.hsf302.hotelmanagementproject.service.impl;
 
 import com.hsf302.hotelmanagementproject.entity.User;
 import com.hsf302.hotelmanagementproject.entity.enums.Role;
 import com.hsf302.hotelmanagementproject.repository.UserRepository;
+import com.hsf302.hotelmanagementproject.service.AuthService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
-public class AuthServiceImpl implements AuthService{
+public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
 

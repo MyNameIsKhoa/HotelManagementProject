@@ -106,3 +106,19 @@
 .logout-link:hover {
     text-decoration: underline;
 }
+.wallet-box {
+    background: #d4af37;
+    color: #1e3a8a;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s ease;
+}
+
+.wallet-box:hover {
+    background: #facc15;
+}

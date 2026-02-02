@@ -3,6 +3,7 @@ package com.hsf302.hotelmanagementproject.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.hsf302.hotelmanagementproject.entity.enums.PaymentMethod;
 import com.hsf302.hotelmanagementproject.entity.enums.PaymentStatus;
+import com.hsf302.hotelmanagementproject.entity.enums.PaymentType;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Payment {
 
     @Id
@@ -22,7 +24,7 @@ public class Payment {
     private Long paymentId;
 
     @JsonBackReference
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "booking_id")
     private Booking booking;
 
@@ -36,13 +38,16 @@ public class Payment {
 
     @Column(name = "transaction_ref")
     private String transactionRef;
-
+    @Column(unique = true)
+    private String payosOrderCode;
     @Column(name = "paid_at")
     private LocalDateTime paidAt;
     @PrePersist
     protected void onCreate() {
-        this.paidAt = LocalDateTime.now();
         this.transactionRef = UUID.randomUUID().toString();
     }
+    @Enumerated(EnumType.STRING)
+    private PaymentType type;
+
 }
 

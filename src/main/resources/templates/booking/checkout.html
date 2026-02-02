@@ -1,57 +1,68 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Checkout</title>
+    <title>Checkout - Booking Confirmation</title>
+
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/checkout.css}">
 </head>
 <body>
 
-<h2>🧾 Xác nhận đặt phòng</h2>
+<!-- HEADER -->
+<div th:replace="fragments/header :: header"></div>
 
-<hr>
+<div class="container checkout-container">
 
-<h3>Thông tin phòng</h3>
-<p>
-    <strong>Tên phòng:</strong>
-    <span th:text="${roomType.name}"></span>
-</p>
+    <h2>🧾 Xác nhận đặt phòng</h2>
 
-<p>
-    <strong>Giá / đêm:</strong>
-    <span th:text="${roomType.basePrice}"></span>
-</p>
+    <!-- BOOKING INFO -->
+    <div class="checkout-box">
 
-<p>
-    <strong>Check-in:</strong>
-    <span th:text="${checkinDate}"></span>
-</p>
+        <div class="checkout-row">
+            <span>Loại phòng:</span>
+            <strong th:text="${roomTypeName != null ? roomTypeName : 'Room Type'}"></strong>
+        </div>
 
-<p>
-    <strong>Check-out:</strong>
-    <span th:text="${checkoutDate}"></span>
-</p>
+        <div class="checkout-row">
+            <span>Nhận phòng:</span>
+            <strong th:text="${checkinDate}"></strong>
+        </div>
 
-<hr>
+        <div class="checkout-row">
+            <span>Trả phòng:</span>
+            <strong th:text="${checkoutDate}"></strong>
+        </div>
 
-<h3>Phương thức thanh toán</h3>
+        <div class="checkout-row total">
+            <span>Tổng tiền:</span>
+            <strong th:text="${totalPrice != null ? totalPrice + ' VND' : '---'}"></strong>
+        </div>
 
-<form th:action="@{/booking/confirm}" method="post">
+    </div>
 
-    <input type="hidden" name="roomTypeId" th:value="${roomType.roomTypeId}">
-    <input type="hidden" name="checkinDate" th:value="${checkinDate}">
-    <input type="hidden" name="checkoutDate" th:value="${checkoutDate}">
+    <!-- CONFIRM FORM -->
+    <form th:action="@{/booking/create}" method="post" class="checkout-form">
 
-    <label>
-        <input type="radio" name="paymentMethod" value="CASH" checked>
-        Thanh toán tại quầy (CASH)
-    </label>
+        <input type="hidden" name="roomTypeId" th:value="${roomTypeId}">
+        <input type="hidden" name="checkinDate" th:value="${checkinDate}">
+        <input type="hidden" name="checkoutDate" th:value="${checkoutDate}">
 
-    <br><br>
+        <button type="submit" class="btn-confirm">
+            ✅ Xác nhận & Thanh toán
+        </button>
 
-    <button type="submit">
-        ✅ Hoàn tất đặt phòng
-    </button>
-</form>
+    </form>
+
+    <!-- BACK -->
+    <a th:href="@{/}" class="btn-back">⬅ Quay lại</a>
+
+</div>
+
+<!-- FOOTER -->
+<div th:replace="fragments/footer :: footer"></div>
 
 </body>
 </html>

@@ -1,177 +1,106 @@
 package com.hsf302.hotelmanagementproject.controller;
 
-import com.hsf302.hotelmanagementproject.entity.Booking;
-import com.hsf302.hotelmanagementproject.entity.User;
-import com.hsf302.hotelmanagementproject.entity.enums.BookingStatus;
-import com.hsf302.hotelmanagementproject.entity.enums.Role;
+import com.hsf302.hotelmanagementproject.entity.enums.PaymentMethod;
 import com.hsf302.hotelmanagementproject.repository.RoomRepository;
-import com.hsf302.hotelmanagementproject.service.BookingService;
 import com.hsf302.hotelmanagementproject.service.StaffService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
+
+import java.time.LocalDate;
+import java.util.Map;
 
 @Controller
-@RequiredArgsConstructor
 @RequestMapping("/staff")
+@RequiredArgsConstructor
 public class StaffController {
 
-    private final BookingService bookingService;
-
-
     private final StaffService staffService;
-
+    private final RoomRepository roomRepository;
+    // ==============================
     // VIEW ALL BOOKINGS
     // ==============================
     @GetMapping
-    public String staffHome(HttpSession session, Model model) {
+    public String dashboard(
+            @RequestParam(required = false) String date,
+            @RequestParam(required = false, defaultValue = "false") boolean todayCheckin,
+            Model model
+    ) {
 
-        User user = (User) session.getAttribute("currentUser");
-
-        if (user == null || user.getRole() != Role.STAFF) {
-            return "redirect:/auth/login";
-        }
-
-        // Có thể show nhanh booking cần xử lý
-        model.addAttribute(
-                "bookings",
-                bookingService.getPendingBookings()
-        );
-
-        return "staff/staff";
-    }
-
-    @GetMapping("/bookings")
-    public String getAllBookings(HttpSession session, Model model) {
-
-        User user = (User) session.getAttribute("currentUser");
-
-        if (user == null || user.getRole() != Role.STAFF) {
-            return "redirect:/auth/login";
-        }
-
-        model.addAttribute("bookings", staffService.getAllBookings());
-
-        return "staff/staff";
-    }
-
-    // ==============================
-    // BOOKING DETAIL
-    // ==============================
-    @GetMapping("/{id}")
-    public String detail(@PathVariable Long id, Model model) {
-
-        Booking booking = staffService.getById(id);
-
-        model.addAttribute("booking", booking);
-
-        if (booking.getStatus() == BookingStatus.BOOKING) {
+        if (todayCheckin) {
+            model.addAttribute(
+                    "bookings",
+                    staffService.getCheckinToday()
+            );
+        } else if (date != null && !date.isBlank()) {
 
             model.addAttribute(
-                    "availableRooms",
-                    staffService.getAvailableRoomsByRoomType(
-                            booking.getRoomType().getRoomTypeId())
+                    "bookings",
+                    staffService.searchByCheckinDate(LocalDate.parse(date))
+            );
+
+        } else {
+
+            model.addAttribute(
+                    "bookings",
+                    staffService.getAllBookings()
             );
         }
 
-        return "staff/staff";
+        model.addAttribute("todayCheckin", todayCheckin);
+        model.addAttribute("date", date);
+
+        return "staff/dashboard";
     }
 
-    // ==============================
-    // CONFIRM + ASSIGN ROOM
-    // ==============================
-    @PostMapping("/{id}/assign-room")
-    public String confirmBooking(
-            @PathVariable Long id,
+    // Gán phòng
+    @PostMapping("/assign-room")
+    public String assignRoom(
+            @RequestParam Long bookingId,
             @RequestParam Long roomId
     ) {
 
-        staffService.assignRoom(id, roomId);
+        staffService.assignRoom(bookingId, roomId);
 
-        return "redirect:/staff/" + id;
+        return "redirect:/staff";
     }
 
-    // ==============================
-    // CHECK-IN
-    // ==============================
-    @PostMapping("/{id}/check-in")
-    public String checkIn(@PathVariable Long id) {
+    // Checkin
+    @PostMapping("/checkin")
+    public String checkin(@RequestParam Long bookingId) {
 
-        staffService.checkIn(id);
+        staffService.checkIn(bookingId);
 
-        return "redirect:/staff/" + id;
+        return "redirect:/staff";
     }
 
-    // ==============================
-    // PAY
-    // ==============================
-    @PostMapping("/{id}/pay")
-    public String pay(@PathVariable Long id) {
+    @PostMapping("/checkout/process")
+    @ResponseBody
+    public ResponseEntity<?> processCheckout(
+            @RequestParam Long bookingId,
+            @RequestParam String paymentMethod
+    ) {
+        try {
+            // Chuyển String sang Enum
+            PaymentMethod method = PaymentMethod.valueOf(paymentMethod);
 
-        staffService.pay(id);
+            // Gọi Service (Hàm checkoutWithPayment bạn đã cung cấp)
+            // Lưu ý: staffService cần gọi sang bookingService hoặc tự implement hàm này
+            Map<String, Object> result = staffService.checkoutWithPayment(bookingId, method);
 
-        return "redirect:/staff/" + id;
-    }
-
-    // ==============================
-    // CHECK-OUT
-    // ==============================
-    @PostMapping("/{id}/check-out")
-    public String checkOut(@PathVariable Long id) {
-
-        staffService.checkOut(id);
-
-        return "redirect:/staff/" + id;
-    }
-
-    // ==============================
-    // TODAY CHECK-IN
-    // ==============================
-    @GetMapping("/checkin-today")
-    public String todayCheckins(Model model) {
-
-        model.addAttribute("bookings", staffService.getTodayCheckins());
-
-        return "staff/checkin-today";
-    }
-
-    // ==============================
-    // TODAY CHECK-OUT
-    // ==============================
-    @GetMapping("/checkout-today")
-    public String todayCheckouts(Model model) {
-
-        model.addAttribute("bookings", staffService.getTodayCheckouts());
-
-        return "staff/checkout-today";
-    }
-
-
-
-
-
-        // ==============================
-        // CONFIRM BOOKING
-        // ==============================
-        @PostMapping("/booking/confirm")
-        public String confirmBooking(
-                @RequestParam Long bookingId,
-                HttpSession session
-        ) {
-            User user = (User) session.getAttribute("currentUser");
-            if (user == null || user.getRole() != Role.STAFF) {
-                return "redirect:/login";
-            }
-
-            bookingService.confirmBooking(bookingId);
-
-            return "redirect:/staff/bookings";
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
-
-
-
-
-
+    @GetMapping("/checkout-success")
+    public String successPage() {
+        return "staff/payment_success";
+    }
+    @GetMapping("/checkout-failed")
+    public String checkoutFailed() {
+        return "staff/payment_failed";
+    }
+}

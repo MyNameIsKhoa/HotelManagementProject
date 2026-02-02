@@ -1,6 +1,8 @@
 package com.hsf302.hotelmanagementproject.repository;
 
+import com.hsf302.hotelmanagementproject.entity.Room;
 import com.hsf302.hotelmanagementproject.entity.RoomType;
+import com.hsf302.hotelmanagementproject.entity.enums.RoomStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,8 +14,7 @@ import java.util.List;
 public interface RoomTypeRepository extends JpaRepository<RoomType, Long> {
 
     @Query("""
-        SELECT rt, COUNT(r.roomId) - COUNT(b.bookingId), 
-               (SELECT ri FROM RoomImage ri WHERE ri.roomType = rt AND ri.isThumbnail = true)
+        SELECT rt, COUNT(r.roomId) - COUNT(b.bookingId)
         FROM RoomType rt
         JOIN rt.hotel h
         JOIN Room r ON r.roomType = rt
@@ -44,6 +45,5 @@ public interface RoomTypeRepository extends JpaRepository<RoomType, Long> {
             @Param("checkin") LocalDateTime checkin,
             @Param("checkout") LocalDateTime checkout
     );
-
 
 }

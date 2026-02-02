@@ -10,6 +10,7 @@
     <link rel="stylesheet" th:href="@{/css/footer.css}">
     <link rel="stylesheet" th:href="@{/css/index.css}">
 
+
 </head>
 <body>
 
@@ -47,11 +48,36 @@
 
 <!-- INTRO SECTION -->
 <section class="container intro">
-    <h2>Tại sao chọn HSF302 Hotel?</h2>
+    <h2>Tại sao chọn Green Diamond Hotel?</h2>
     <p class="intro-desc">
         Hệ thống được xây dựng mô phỏng nghiệp vụ khách sạn thực tế,
         hỗ trợ đặt phòng, thanh toán, hủy phòng và đánh giá sau lưu trú.
     </p>
+    <!-- MINI CAROUSEL -->
+    <div class="home-carousel-wrapper">
+
+        <div class="home-carousel">
+
+            <div class="home-carousel-slide active">
+                <img src="/images/140127103345-peninsula-shanghai-deluxe-mock-up.jpg" alt="Hotel view">
+            </div>
+
+            <div class="home-carousel-slide">
+                <img src="/images/Sofitel-Dubai-Wafi-Luxury-Room-Bedroom-Skyline-View-Image1_WEB.jpg" alt="Room luxury">
+            </div>
+
+            <div class="home-carousel-slide">
+                <img src="/images/heroOVS-Premier-Family_Hotel-Nikko-Bali-2.jpg" alt="Hotel service">
+            </div>
+
+            <!-- Buttons -->
+            <button class="carousel-btn prev" onclick="prevHomeSlide()">❮</button>
+            <button class="carousel-btn next" onclick="nextHomeSlide()">❯</button>
+
+        </div>
+
+    </div>
+
 
     <div class="features">
         <div class="feature-card">
@@ -76,6 +102,6 @@
 
 <!-- FOOTER -->
 <div th:replace="fragments/footer :: footer"></div>
-
+<script th:src="@{/js/home-carousel.js}"></script>
 </body>
 </html>
