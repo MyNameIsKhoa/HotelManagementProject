@@ -1,100 +1,197 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Hotel Search</title>
-    <link rel="stylesheet" th:href="@{/css/main.css}">
-    <link rel="stylesheet" th:href="@{/css/header.css}">
-    <link rel="stylesheet" th:href="@{/css/footer.css}">
-    <link rel="stylesheet" th:href="@{/css/search.css}">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Search Results - LuxStay</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "primary-hover": "#1d4ed8",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <link rel="stylesheet" th:href="@{/css/search.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
 </head>
-<body>
-<div th:replace="fragments/header :: header"></div>
+<body class="bg-background-light text-slate-900 font-display antialiased">
+<!-- Header Section -->
+<div th:replace="~{fragments/header :: header}"></div>
 
-<!-- SEARCH FORM -->
-<div class="search-container">
-    <h2>Search hotels</h2>
+<!-- Search Bar & Filters Sticky Header -->
+<div class="sticky top-0 z-30 bg-white shadow-sm border-b border-slate-200">
+    <div class="px-6 md:px-10 lg:px-40 py-4 flex justify-center">
+        <div class="w-full max-w-7xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <!-- Search Inputs -->
+            <form th:action="@{/search}" method="get" class="flex-1 w-full md:w-auto bg-slate-50 rounded-full border border-slate-200 p-1 flex items-center shadow-sm">
+                <div class="flex items-center px-4 py-2 border-r border-slate-200 flex-1">
+                    <span class="material-symbols-outlined text-slate-400 mr-2">hotel</span>
+                    <input type="text"
+                           value="All hotels"
+                           disabled
+                           class="bg-transparent border-none text-sm font-medium text-slate-400 focus:ring-0 w-full cursor-not-allowed"/>
+                </div>
 
-    <form th:action="@{/search}" method="get" class="search-form">
-        <div class="form-group">
-            <label for="checkinDate">Check-in:</label>
-            <input type="datetime-local"
-                   name="checkinDate"
-                   th:value="${checkinDate != null ? #temporals.format(checkinDate, 'yyyy-MM-dd''T''HH:mm') : ''}"
-                   id="checkinDate"
-                   required>
-        </div>
-
-        <div class="form-group">
-            <label for="checkoutDate">Check-out:</label>
-            <input type="datetime-local"
-                   name="checkoutDate"
-                   th:value="${checkoutDate != null ? #temporals.format(checkoutDate, 'yyyy-MM-dd''T''HH:mm') : ''}"
-                   id="checkoutDate"
-                   required>
-        </div>
-
-        <button type="submit" class="btn-search">Search</button>
-    </form>
-</div>
-
-
-<hr>
-
-<!-- SEARCH RESULT -->
-<div class="container" th:if="${results != null}">
-
-    <h3>Available hotels</h3>
-
-    <!-- No results message -->
-    <div th:if="${results.isEmpty()}" class="no-results">
-        <p>No hotels found for your search criteria. Please try different dates.</p>
-    </div>
-
-    <!-- Results -->
-    <div th:if="${!results.isEmpty()}" th:each="entry : ${results}">
-        <hr>
-
-        <!-- HOTEL -->
-        <h4 th:text="${entry.key.name}"></h4>
-        <p th:text="${entry.key.address}"></p>
-
-        <!-- ROOM TYPES -->
-        <div th:each="row : ${entry.value}">
-            <div class="room-type-card">
-
-                <h5 th:text="${row[0].name}"></h5>
-
-                <p>
-                    Price:
-                    <span th:text="${row[0].basePrice}"></span>
-                </p>
-
-                <p>
-                    Capacity:
-                    <span th:text="${row[0].capacity}"></span>
-                </p>
-
-                <p>
-                    Available rooms:
-                    <span th:text="${row[1]}"></span>
-                </p>
-
-                <!-- LINK TO ROOM DETAIL -->
-                <a class="btn-view-detail" th:href="@{/room/{id}(
-                        id=${row[0].roomTypeId},
-                        checkinDate=${checkinDate},
-                        checkoutDate=${checkoutDate}
-                )}">
-                    Xem Chi tiết
-                </a>
-
+                <div class="flex items-center px-4 py-2 border-r border-slate-200 flex-1 hidden sm:flex">
+                    <span class="material-symbols-outlined text-slate-400 mr-2">calendar_month</span>
+                    <input class="bg-transparent border-none text-sm font-medium text-slate-900 placeholder-slate-400 focus:ring-0 w-full" name="checkinDate" required type="datetime-local" th:value="${checkinDate != null ? #temporals.format(checkinDate, 'yyyy-MM-dd''T''HH:mm') : ''}"/>
+                </div>
+                <div class="flex items-center px-4 py-2 flex-1 hidden sm:flex">
+                    <span class="material-symbols-outlined text-slate-400 mr-2">calendar_month</span>
+                    <input class="bg-transparent border-none text-sm font-medium text-slate-900 placeholder-slate-400 focus:ring-0 w-full" name="checkoutDate" required type="datetime-local" th:value="${checkoutDate != null ? #temporals.format(checkoutDate, 'yyyy-MM-dd''T''HH:mm') : ''}"/>
+                </div>
+                <button type="submit" class="bg-primary hover:bg-primary-hover text-white rounded-full p-2.5 shadow-md transition-all flex items-center justify-center">
+                    <span class="material-symbols-outlined">search</span>
+                </button>
+            </form>
+            <!-- Quick Filters -->
+            <div class="flex gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto no-scrollbar">
+                <button class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-200 bg-white text-xs font-medium text-slate-700 hover:border-primary hover:text-primary transition-colors whitespace-nowrap">
+                    <span class="material-symbols-outlined text-[18px]">filter_list</span> Filters
+                </button>
+                <button class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-200 bg-white text-xs font-medium text-slate-700 hover:border-primary hover:text-primary transition-colors whitespace-nowrap">
+                    Price Range
+                </button>
+                <button class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-200 bg-white text-xs font-medium text-slate-700 hover:border-primary hover:text-primary transition-colors whitespace-nowrap">
+                    Star Rating
+                </button>
+                <button class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-200 bg-white text-xs font-medium text-slate-700 hover:border-primary hover:text-primary transition-colors whitespace-nowrap">
+                    Amenities
+                </button>
             </div>
         </div>
     </div>
-
 </div>
-<div th:replace="fragments/footer :: footer"></div>
+<!-- Main Content Area -->
+<main class="px-6 md:px-10 lg:px-40 py-8 flex justify-center min-h-screen">
+    <div class="w-full max-w-7xl flex flex-col gap-10">
+        <!-- Page Header -->
+        <div class="flex flex-col gap-2">
+            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Search Results</h1>
+            <p class="text-slate-500 text-sm">
+                <span th:text="${results != null ? results.size() : 0}">0</span> properties found
+            </p>
+        </div>
 
+        <!-- Hotel Group -->
+        <section class="flex flex-col gap-6" th:each="entry : ${results}">
+            <!-- Hotel Info Header -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-200 pb-4">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <h2 class="text-2xl font-bold text-slate-900" th:text="${entry.key.name}">Grand Luxury Hotel</h2>
+                        <div class="flex text-yellow-400">
+                            <span class="material-symbols-outlined text-[20px] fill-current">star</span>
+                            <span class="material-symbols-outlined text-[20px] fill-current">star</span>
+                            <span class="material-symbols-outlined text-[20px] fill-current">star</span>
+                            <span class="material-symbols-outlined text-[20px] fill-current">star</span>
+                            <span class="material-symbols-outlined text-[20px] fill-current">star</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1 text-slate-500 text-sm">
+                        <span class="material-symbols-outlined text-[18px]">location_on</span>
+                        <span th:text="${entry.key.address}">123 Ocean Drive, New York, NY 10001</span>
+                        <a class="text-primary hover:underline ml-2 font-medium" href="#">Show on map</a>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="bg-emerald-100 text-emerald-700 text-xs px-2 py-1 rounded font-bold">9.2</span>
+                    <span class="text-sm font-medium text-slate-700">Exceptional</span>
+                    <span class="text-xs text-slate-500">(1,240 reviews)</span>
+                </div>
+            </div>
+
+            <!-- Rooms Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Room Card -->
+                <div class="group bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden flex flex-col hover:shadow-md transition-shadow" th:each="row : ${entry.value}">
+                    <div class="relative h-48 w-full overflow-hidden">
+                        <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                             th:src="@{${row[0].thumbnailUrl}}"
+                             alt="Room Image"
+                             onerror="this.src='/images/room.jpg'" />
+
+                    </div>
+                    <div class="p-4 flex flex-col flex-1 gap-3">
+                        <div class="flex justify-between items-start">
+                            <h3 class="font-bold text-slate-900 line-clamp-2" th:text="${row[0].name}">Deluxe King Room</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-2 text-xs text-slate-500">
+                            <div class="flex items-center gap-1 bg-slate-50 px-2 py-1 rounded">
+                                <span class="material-symbols-outlined text-[16px]">person</span>
+                                <span th:text="${row[0].capacity} + ' Adults'">2 Adults</span>
+                            </div>
+                        </div>
+                        <div class="mt-auto pt-3 border-t border-slate-50 flex flex-col gap-3">
+                            <div class="flex justify-between items-end">
+                                <div class="flex flex-col">
+                                    <div class="flex items-baseline gap-1">
+                                        <span class="text-lg font-bold text-slate-900"
+                                              th:text="${#numbers.formatDecimal(row[0].basePrice,1,'COMMA',0,'POINT')} + ' VND'">
+                                        </span>
+                                        <span class="text-xs text-slate-500">/ night</span>
+                                    </div>
+
+                                </div>
+                                <span class="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-1 rounded-full" th:text="${row[1]} + ' available'">5+ available</span>
+                            </div>
+                            <a th:href="@{/room/{id}(id=${row[0].roomTypeId},checkinDate=${checkinDate},checkoutDate=${checkoutDate})}" class="w-full py-2.5 bg-primary hover:bg-primary-hover text-white text-sm font-semibold rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2 group-hover:bg-primary-hover text-center">
+                                View Detail
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Empty State -->
+        <div th:if="${results != null and results.isEmpty()}" class="text-center py-12">
+            <p class="text-slate-500">No properties found for the selected dates.</p>
+        </div>
+
+
+
+    </div>
+</main>
+<!-- Footer -->
+<footer class="bg-white border-t border-slate-200 mt-12 py-10">
+    <div class="px-6 md:px-10 lg:px-40 flex justify-center">
+        <div class="w-full max-w-7xl flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3 text-slate-900">
+                <div class="size-6 text-primary">
+                    <svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z"></path>
+                    </svg>
+                </div>
+                <span class="text-lg font-bold tracking-tight">LuxStay</span>
+            </div>
+            <div class="text-sm text-slate-500">
+                © 2023 LuxStay Inc. All rights reserved.
+            </div>
+        </div>
+    </div>
+</footer>
 </body>
 </html>

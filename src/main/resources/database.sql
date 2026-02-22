@@ -221,3 +221,54 @@ CREATE TABLE recommendations (
                                      FOREIGN KEY (room_type_id) REFERENCES room_types(room_type_id)
 );
 GO
+
+-- HOTELS
+SET IDENTITY_INSERT hotels ON
+INSERT INTO hotels (hotel_id, address, name, phone) VALUES
+                                                        (1, 'Da Nang', 'Sunrise Hotel', '090000001'),
+                                                        (2, 'Nha Trang', 'Moonlight Resort', '090000002');
+SET IDENTITY_INSERT hotels OFF
+
+
+-- ROOM TYPES
+SET IDENTITY_INSERT room_types ON
+INSERT INTO room_types (room_type_id, hotel_id, name, description, capacity, base_price, total_rooms) VALUES
+                                                                                                          (1, 1, 'Deluxe Room', 'Nice view', 2, 1200000, 3),
+                                                                                                          (2, 1, 'Family Room', 'For family', 4, 2000000, 2),
+                                                                                                          (3, 2, 'Standard Room', 'Basic', 2, 800000, 4);
+SET IDENTITY_INSERT room_types OFF
+
+
+-- ROOMS
+SET IDENTITY_INSERT rooms ON
+INSERT INTO rooms (room_id, room_type_id, room_number, status) VALUES
+                                                                   (1,1,'D101','AVAILABLE'),
+                                                                   (2,1,'D102','BOOKED'),
+                                                                   (3,1,'D103','BOOKED'),
+                                                                   (4,2,'F201','BOOKED'),
+                                                                   (5,2,'F202','AVAILABLE'),
+                                                                   (6,3,'S301','AVAILABLE'),
+                                                                   (7,3,'S302','AVAILABLE'),
+                                                                   (8,3,'S303','AVAILABLE'),
+                                                                   (9,3,'S304','AVAILABLE');
+SET IDENTITY_INSERT rooms OFF
+
+
+-- ROOM IMAGES
+SET IDENTITY_INSERT room_images ON
+INSERT INTO room_images (image_id, room_type_id, image_url, is_thumbnail) VALUES
+                                                                              (1,1,'/images/140127103345-peninsula-shanghai-deluxe-mock-up.jpg',1),
+                                                                              (2,1,'/images/Sofitel-Dubai-Wafi-Luxury-Room-Bedroom-Skyline-View-Image1_WEB.jpg',0),
+                                                                              (3,1,'/images/1.jpg',0),
+                                                                              (4,1,'/images/istockphoto-1452529483-612x612.jpg',0),
+
+                                                                              (5,2,'/images/fullsize-82524236.webp',1),
+                                                                              (6,2,'/images/heroOVS-Premier-Family_Hotel-Nikko-Bali-2.jpg',0),
+                                                                              (7,2,'/images/executive-family-room-main.png',0),
+                                                                              (8,2,'/images/family-room-1-700x430.jpg',0),
+
+                                                                              (9,3,'/images/2.jpg',1),
+                                                                              (10,3,'/images/3.webp',0),
+                                                                              (11,3,'/images/12.jpg',0),
+                                                                              (12,3,'/images/4.webp',0);
+SET IDENTITY_INSERT room_images OFF

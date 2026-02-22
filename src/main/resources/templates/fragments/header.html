@@ -1,59 +1,54 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<body>
+<nav class="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-[#f0f2f4]"
+     th:fragment="header">
 
-<div th:fragment="header" class="site-header">
-    <div class="nav-container">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-20">
 
         <!-- LOGO -->
-        <div class="logo">
-            <a th:href="@{/}">Green Diamond Hotel</a>
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-primary text-3xl">diamond</span>
+            <a th:href="@{/}" class="text-xl font-bold text-text-main">
+                Green Diamond Hotel
+            </a>
         </div>
 
         <!-- NAV LINKS -->
-        <nav class="nav-links">
-            <a th:href="@{/}">Trang chủ</a>
-            <a th:href="@{/booking/my-bookings}" th:if="${session.currentUser != null && session.currentUser.role.toString() == 'GUEST'}">
+        <div class="hidden md:flex items-center gap-8">
+            <a th:href="@{/}" class="text-sm font-medium hover:text-primary">Home</a>
+
+            <a th:if="${session.currentUser != null && session.currentUser.role.toString() == 'GUEST'}"
+               th:href="@{/booking/my-bookings}"
+               class="text-sm font-medium hover:text-primary">
                 Đơn đặt phòng
             </a>
+        </div>
 
-        </nav>
+        <!-- AUTH -->
+        <div class="flex items-center gap-4">
 
-
-        <!-- AUTH AREA -->
-        <div class="auth-area">
-
-            <!-- Chưa login -->
-            <div th:if="${session.currentUser == null}">
-                <a class="btn-outline" th:href="@{/auth/login}">Đăng nhập</a>
-                <a class="btn-primary" th:href="@{/auth/register}">Đăng ký</a>
+            <div th:if="${session.currentUser == null}" class="flex gap-2">
+                <a th:href="@{/auth/login}" class="px-4 py-2 border rounded-lg text-sm font-medium">Login</a>
+                <a th:href="@{/auth/register}" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium">Register</a>
             </div>
 
-            <!-- Đã login -->
-            <div th:if="${session.currentUser != null}" class="user-info">
-                <a class="wallet-box" th:href="@{/wallet}">
+            <div th:if="${session.currentUser != null}" class="flex items-center gap-4">
+                <a th:href="@{/wallet}" class="text-sm font-medium text-primary">
                     Ví:
-                    <span th:text="${#numbers.formatDecimal(walletBalance, 0, 'COMMA', 0, 'POINT')}">
-        0
-    </span>
+                    <span th:text="${#numbers.formatDecimal(walletBalance, 0, 'COMMA', 0, 'POINT')}">0</span>
                     VND
                 </a>
 
-                <span class="welcome-text">
-                    Xin chào,
+                <span class="text-sm">
+                    Welcome,
                     <strong th:text="${session.currentUser.fullName != null
                         ? session.currentUser.fullName
                         : session.currentUser.email}">
-                        User
                     </strong>
                 </span>
-                <a class="logout-link" th:href="@{/auth/logout}">Đăng xuất</a>
+
+                <a th:href="@{/auth/logout}" class="text-sm text-red-500 font-medium">Logout</a>
             </div>
 
         </div>
 
     </div>
-</div>
-
-</body>
-</html>
+</nav>

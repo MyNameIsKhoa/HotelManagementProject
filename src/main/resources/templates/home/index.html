@@ -1,107 +1,446 @@
 <!DOCTYPE html>
-<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>HSF302 Hotel Booking</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" th:href="@{/css/main.css}">
-    <link rel="stylesheet" th:href="@{/css/header.css}">
-    <link rel="stylesheet" th:href="@{/css/footer.css}">
-    <link rel="stylesheet" th:href="@{/css/index.css}">
-
-
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>LuxHotel - Experience Unparalleled Luxury</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "primary-dark": "#0e45b5",
+                        "background-light": "#ffffff",
+                        "background-off": "#f6f6f8",
+                        "background-dark": "#101622",
+                        "text-main": "#111318",
+                        "text-muted": "#616f89",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+    <link rel="stylesheet" th:href="@{/css/index.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
 </head>
-<body>
+<body class="bg-background-light dark:bg-background-dark text-text-main font-display antialiased overflow-x-hidden">
+<div th:replace="~{fragments/header :: header}"></div>
 
-<!-- HEADER -->
-<div th:replace="fragments/header :: header"></div>
 
-<!-- HERO SECTION -->
-<section class="hero"  th:style="|background-image: url('/images/hotel-hero.jpg');|">
-    <div class="hero-overlay"></div>
-
-    <div class="hero-content">
-        <h1>HSF302 Hotel Booking System</h1>
-        <p class="hero-sub">
-            Trải nghiệm đặt phòng khách sạn nhanh chóng – tiện lợi – chuyên nghiệp
+<!-- Hero Section -->
+<header class="relative w-full h-[85vh] min-h-[600px] flex flex-col justify-center items-center text-center px-4 overflow-hidden">
+    <!-- Background Image with Overlay -->
+    <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60 z-10"></div>
+        <div class="w-full h-full bg-cover bg-center transition-transform duration-[20s] hover:scale-105" data-alt="Luxury hotel exterior at dusk with warm lighting" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDFpVX4gr0pcmfHw7BVHc2_mYLn7svJ4bjzcHEsFpBGkltPerN5dsJGp8_EzhPNU7EJwtRUz-EKB6AOo-7JpNDO55nXy-kTms5B6INGjmPCXJLuiD5Tub1SDlKvNID3A3-1VbNPSYPGaYvRj1di6xMeM4CLKd4mcpnSfYivr31QayBq9asnOT5_3iJBrRyLJOICwjLdcgkRBUUm6RxmfuiygxhQkGs7dy0bYtktbFaHFJ3Yz2KrJuYTLLsjkPY135shLU-GkDg3Q56f');">
+        </div>
+    </div>
+    <!-- Hero Content -->
+    <div class="relative z-20 max-w-4xl mx-auto space-y-6 animate-fade-in-up">
+        <span class="inline-block py-1 px-3 rounded-full bg-white/20 backdrop-blur-sm text-white text-xs font-bold tracking-wider uppercase border border-white/30">
+            The Ultimate Getaway
+        </span>
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight tracking-tight drop-shadow-sm">
+            Experience Unparalleled <br class="hidden md:block"/> Luxury &amp; Comfort
+        </h1>
+        <p class="text-lg md:text-xl text-white/90 font-light max-w-2xl mx-auto drop-shadow-sm">
+            Discover the perfect blend of elegance and modern convenience in the heart of the city.
         </p>
+    </div>
+    <!-- Search Bar Widget (Floating) -->
+    <div class="relative z-30 mt-12 w-full max-w-6xl mx-auto px-4">
+        <div id="searchBox" class="bg-white rounded-xl shadow-2xl p-4 md:p-6 lg:p-8 transform translate-y-1/2 md:translate-y-0">
+            <form th:action="@{/search}" method="get" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+                <!-- Destination -->
+                <div class="lg:col-span-1">
+                    <label class="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Location</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span class="material-symbols-outlined text-primary group-focus-within:text-primary-dark">location_on</span>
+                        </div>
+                        <input type="text"
+                               placeholder="All hotels"
+                               disabled
+                               class="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg text-gray-400 bg-gray-100 text-sm font-medium cursor-not-allowed"/>
 
-        <!-- SEARCH FORM -->
-        <form class="search-box" th:action="@{/search}" method="get">
-            <div class="search-field">
-                <label>Nhận phòng</label>
-                <input type="datetime-local" name="checkinDate" required>
+                    </div>
+                </div>
+                <!-- Check In -->
+                <div class="lg:col-span-1">
+                    <label class="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Check-in</label>
+                    <div class="relative group">
+                        <input class="block w-full px-3 py-3 border border-gray-200 rounded-lg text-text-main placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium bg-background-off cursor-pointer" name="checkinDate" required type="datetime-local" th:value="${checkinDate != null ? #temporals.format(checkinDate, 'yyyy-MM-dd''T''HH:mm') : ''}"/>
+                    </div>
+                </div>
+                <!-- Check Out -->
+                <div class="lg:col-span-1">
+                    <label class="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Check-out</label>
+                    <div class="relative group">
+                        <input class="block w-full px-3 py-3 border border-gray-200 rounded-lg text-text-main placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium bg-background-off cursor-pointer" name="checkoutDate" required type="datetime-local" th:value="${checkoutDate != null ? #temporals.format(checkoutDate, 'yyyy-MM-dd''T''HH:mm') : ''}"/>
+                    </div>
+                </div>
+                <!-- Guests -->
+                <div class="lg:col-span-1">
+                    <label class="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Guests</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span class="material-symbols-outlined text-primary">group</span>
+                        </div>
+                        <select disabled
+                                class="block w-full pl-10 pr-8 py-3 border border-gray-200 rounded-lg text-gray-400 bg-gray-100 text-sm font-medium cursor-not-allowed">
+                        <option>1 Adult</option>
+                            <option selected="selected">2 Adults</option>
+                            <option>2 Adults, 1 Child</option>
+                            <option>Family (4+)</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
+                            <span class="material-symbols-outlined text-sm">expand_more</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Submit Button -->
+                <div class="lg:col-span-1">
+                    <button class="w-full h-[46px] bg-primary hover:bg-primary-dark text-white font-bold rounded-lg shadow-lg shadow-primary/30 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2" type="submit">
+                        <span class="material-symbols-outlined text-[20px]">search</span>
+                        <span>Check Availability</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</header>
+<!-- Featured Rooms Section -->
+<section class="py-24 bg-background-off" id="rooms">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+            <div>
+                <h2 class="text-3xl md:text-4xl font-bold text-text-main mb-3">Featured Rooms &amp; Suites</h2>
+                <p class="text-text-muted max-w-xl">Immerse yourself in comfort with our carefully curated selection of premium rooms, each designed for relaxation and style.</p>
+            </div>
+            <a th:if="${session.currentUser == null}"
+               th:href="@{/auth/login}"
+               class="flex items-center gap-1 text-primary font-bold hover:text-primary-dark transition-colors group">
+                View All Rooms
+            </a>
+
+            <a th:if="${session.currentUser != null}"
+               href="#searchBox"
+               class="flex items-center gap-1 text-primary font-bold hover:text-primary-dark transition-colors group">
+                View All Rooms
+            </a>
+
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+             th:if="${featuredRooms != null}">
+
+            <div class="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full border border-gray-100"
+                th:each="room : ${featuredRooms}">
+                <!-- IMAGE -->
+                <div class="relative h-64 overflow-hidden">
+                    <div class="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-700"
+                         th:style="|background-image: url('${room.thumbnailUrl != null ? room.thumbnailUrl : '/images/room.jpg'}')|">
+                    </div>
+                </div>
+
+                <!-- CONTENT -->
+                <div class="p-6 flex flex-col flex-grow">
+
+                    <!-- NAME -->
+                    <h3 class="text-xl font-bold text-text-main group-hover:text-primary transition-colors"
+                        th:text="${room.name}">
+                    </h3>
+
+                    <!-- CAPACITY -->
+                    <div class="flex items-center gap-4 text-xs text-text-muted mb-6 mt-3">
+                <span class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-lg">person</span>
+                    <span th:text="${room.capacity} + ' Guests'"></span>
+                </span>
+                    </div>
+
+                    <!-- PRICE -->
+                    <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
+                        <div>
+                            <span class="block text-xs text-text-muted">Start from</span>
+                            <span class="text-lg font-bold text-primary"
+                                  th:text="${#numbers.formatDecimal(room.basePrice,1,'COMMA',0,'POINT')} + ' VND'">
+                    </span>
+                        </div>
+
+                        <a th:if="${session.currentUser == null}"
+                           th:href="@{/auth/login}"
+                           class="px-4 py-2 rounded-lg bg-gray-50 text-text-main hover:bg-primary hover:text-white font-medium text-sm transition-colors text-center">
+                            View Rooms
+                        </a>
+
+                        <a th:if="${session.currentUser != null}"
+                           href="#searchBox"
+                           class="px-4 py-2 rounded-lg bg-gray-50 text-text-main hover:bg-primary hover:text-white font-medium text-sm transition-colors text-center">
+                            View Rooms
+                        </a>
+
+                    </div>
+
+                </div>
             </div>
 
-            <div class="search-field">
-                <label>Trả phòng</label>
-                <input type="datetime-local" name="checkoutDate" required>
-            </div>
+        </div>
 
-            <div class="search-field search-btn">
-                <button type="submit">🔍 Tìm phòng</button>
-            </div>
-        </form>
     </div>
 </section>
-
-<!-- INTRO SECTION -->
-<section class="container intro">
-    <h2>Tại sao chọn Green Diamond Hotel?</h2>
-    <p class="intro-desc">
-        Hệ thống được xây dựng mô phỏng nghiệp vụ khách sạn thực tế,
-        hỗ trợ đặt phòng, thanh toán, hủy phòng và đánh giá sau lưu trú.
-    </p>
-    <!-- MINI CAROUSEL -->
-    <div class="home-carousel-wrapper">
-
-        <div class="home-carousel">
-
-            <div class="home-carousel-slide active">
-                <img src="/images/140127103345-peninsula-shanghai-deluxe-mock-up.jpg" alt="Hotel view">
-            </div>
-
-            <div class="home-carousel-slide">
-                <img src="/images/Sofitel-Dubai-Wafi-Luxury-Room-Bedroom-Skyline-View-Image1_WEB.jpg" alt="Room luxury">
-            </div>
-
-            <div class="home-carousel-slide">
-                <img src="/images/heroOVS-Premier-Family_Hotel-Nikko-Bali-2.jpg" alt="Hotel service">
-            </div>
-
-            <!-- Buttons -->
-            <button class="carousel-btn prev" onclick="prevHomeSlide()">❮</button>
-            <button class="carousel-btn next" onclick="nextHomeSlide()">❯</button>
-
+<!-- Amenities / Services Section -->
+<section class="py-24 bg-white relative overflow-hidden" id="amenities">
+    <!-- Decorative abstract shape -->
+    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <span class="text-primary font-bold tracking-widest text-sm uppercase mb-2 block">Our Services</span>
+            <h2 class="text-3xl md:text-5xl font-bold text-text-main mb-4">Crafting Unforgettable Moments</h2>
+            <p class="text-text-muted text-lg">Beyond just a stay, we offer a collection of experiences designed to rejuvenate your body and soul.</p>
         </div>
-
-    </div>
-
-
-    <div class="features">
-        <div class="feature-card">
-            <img src="/images/room.jpg" alt="Room">
-            <h3>Phòng tiện nghi</h3>
-            <p>Nhiều loại phòng phù hợp cho cá nhân, gia đình và doanh nhân.</p>
-        </div>
-
-        <div class="feature-card">
-            <img src="/images/service.jpg" alt="Service">
-            <h3>Dịch vụ chất lượng</h3>
-            <p>Quản lý lưu trú, phụ thu dịch vụ rõ ràng, minh bạch.</p>
-        </div>
-
-        <div class="feature-card">
-            <img src="/images/payment.jpg" alt="Payment">
-            <h3>Thanh toán linh hoạt</h3>
-            <p>Hỗ trợ thanh toán tại quầy, dễ dàng hoàn tiền khi hủy.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Service 1 -->
+            <div class="p-6 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-xl transition-all duration-300 group border border-transparent hover:border-gray-100">
+                <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-3xl">spa</span>
+                </div>
+                <h3 class="text-xl font-bold text-text-main mb-3">Wellness Spa</h3>
+                <p class="text-text-muted text-sm leading-relaxed">
+                    Rejuvenate with world-class treatments, massages, and hydrotherapy sessions.
+                </p>
+            </div>
+            <!-- Service 2 -->
+            <div class="p-6 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-xl transition-all duration-300 group border border-transparent hover:border-gray-100">
+                <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-3xl">restaurant</span>
+                </div>
+                <h3 class="text-xl font-bold text-text-main mb-3">Fine Dining</h3>
+                <p class="text-text-muted text-sm leading-relaxed">
+                    Savor exquisite culinary masterpieces prepared by Michelin-starred chefs.
+                </p>
+            </div>
+            <!-- Service 3 -->
+            <div class="p-6 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-xl transition-all duration-300 group border border-transparent hover:border-gray-100">
+                <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-3xl">pool</span>
+                </div>
+                <h3 class="text-xl font-bold text-text-main mb-3">Infinity Pool</h3>
+                <p class="text-text-muted text-sm leading-relaxed">
+                    Relax in our climate-controlled infinity pool with breathtaking city skyline views.
+                </p>
+            </div>
+            <!-- Service 4 -->
+            <div class="p-6 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-xl transition-all duration-300 group border border-transparent hover:border-gray-100">
+                <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-3xl">concierge</span>
+                </div>
+                <h3 class="text-xl font-bold text-text-main mb-3">24/7 Concierge</h3>
+                <p class="text-text-muted text-sm leading-relaxed">
+                    Our dedicated team is available around the clock to fulfill your every request.
+                </p>
+            </div>
         </div>
     </div>
 </section>
-
-<!-- FOOTER -->
-<div th:replace="fragments/footer :: footer"></div>
-<script th:src="@{/js/home-carousel.js}"></script>
+<!-- Gallery Grid (Masonry Style feel) -->
+<section class="py-24 bg-background-off" id="gallery">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="flex flex-col items-center mb-12 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-text-main mb-3">A Glimpse of Paradise</h2>
+            <p class="text-text-muted max-w-2xl">Explore the visual story of our hotel, from the grand lobby to the intimate corners of luxury.</p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 grid-rows-2 gap-4 h-[600px] md:h-[500px]">
+            <!-- Large item -->
+            <div class="col-span-2 row-span-2 relative rounded-xl overflow-hidden group">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors z-10"></div>
+                <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Luxury hotel resort exterior with pool and palm trees" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA_8IE_pCd8NI4sKFwvV2XBktDEwG6WrFFksEJvwhV-xTgVbxM_x-QDuytoDx8T5IyD782c6Mj1DAw7Uq4Is9S4O3oGhMho4Wc903ZcD-BV9EQR_SONv1Ezw-OFMJnzDj1I__ZFZrkIMH1i2x760lz5snEvq8UrZG3e6KiJPdcYBEyl3e07pXuk5rf5hQQnQJxvoHPVV-VpgaRPq9t-eXqf_0TZiOIrftIaa6LCux6_eLHYlFFcdq08FmThHQ5rCffIL9-t0rF5izKj');">
+                </div>
+                <div class="absolute bottom-6 left-6 z-20 text-white">
+                    <p class="text-sm font-bold uppercase tracking-widest mb-1">Resort</p>
+                    <h4 class="text-2xl font-bold">The Main Pool</h4>
+                </div>
+            </div>
+            <!-- Tall item -->
+            <div class="col-span-1 row-span-2 relative rounded-xl overflow-hidden group">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors z-10"></div>
+                <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Hotel lobby with luxury lighting and seating" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCb20CLTJXnRhUahlu6cgl48A_3TR_WZcXjkpkwoKg_X-aIiVZopc7VzXjsbxsvcpR5ErM4UJNJKMuIaQkGHb-Ezmfr-kUdqUo9CibhAYgeRqjrsOA_gR4JBcgwo9DTTYloZbXGRNbep0txxOJaexkQJ-ndepgdj7QASYNxlvKlhsGZYF-GK2BSzDV-6N8CjNclljlCnvSdvKLd6RDYrDKIRttZUypFsaKIXpMg9dV7IX556GQ4yRcZncmgxaXCi9hc18_I7fE3BiZQ');">
+                </div>
+                <div class="absolute bottom-4 left-4 z-20 text-white">
+                    <h4 class="text-lg font-bold">Lobby Lounge</h4>
+                </div>
+            </div>
+            <!-- Small Item 1 -->
+            <div class="col-span-1 row-span-1 relative rounded-xl overflow-hidden group">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors z-10"></div>
+                <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Gourmet food plated elegantly" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCuevHEGHbZxoZnigBd98jnNcHV6AwPykTaOp0z4qh7SVUZGHPXn5hKQmqIjF6xe_QcIhMzpUmSEslwMCBvV8IBW8YT0kRv1qEyhprfuOf1V-3KD7EgL08RcggJSr9nfcf0I4Xl-jnb-OeBu9s61EEEJ_8gshSjpYTnqRCDf9AMd7_rcEztiHaDVjpNFsAZOSAH1xKk29s5Q3bBAxGMSuqsx5huA2bWcRKRT5VSHHJpMtac97m4ToMey9mKWjBIZYhj6uFGzVaZdmd4');">
+                </div>
+                <div class="absolute bottom-4 left-4 z-20 text-white">
+                    <h4 class="text-lg font-bold">Gastronomy</h4>
+                </div>
+            </div>
+            <!-- Small Item 2 -->
+            <div class="col-span-1 row-span-1 relative rounded-xl overflow-hidden group">
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors z-10"></div>
+                <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Spa massage room with candles" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAg7z7s6zpPM4p2lgp1rUZhWfconA98xdNlHDAHCO-zLY8irVSnpHrqT9VvbxONS_o7wa-7c8qEFdxs-iS4F6UWLMFc6UsBDyOpTXwe7_vs5N5-AnMTIjG3Mp3LbZ763vZ1JTHnwyWKMdN6mBtAtOUtKYyOWCnlNEh_Xp0AsYRWg74V7FNMpRfFYbQUpJjvrX9Bc8EOStuiovPDoXf1TLW7dJmKXpFKWcXQmI2wFSSODtKK-ZTlOtScJENhZ7W18C06qXGejE3aDN78');">
+                </div>
+                <div class="absolute bottom-4 left-4 z-20 text-white">
+                    <h4 class="text-lg font-bold">Serenity Spa</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Testimonials Section -->
+<section class="py-24 bg-white">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+        <div class="inline-flex items-center justify-center p-3 mb-8 bg-blue-50 rounded-full">
+            <span class="material-symbols-outlined text-primary text-3xl">format_quote</span>
+        </div>
+        <h2 class="text-3xl md:text-5xl font-bold text-text-main leading-tight mb-8">
+            "An absolute masterpiece of hospitality. From the moment we arrived, we were treated like royalty. The attention to detail is unmatched."
+        </h2>
+        <div class="flex flex-col items-center gap-4">
+            <div class="size-16 rounded-full bg-gray-200 overflow-hidden">
+                <img alt="Portrait of Sarah Jenkins" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0DwxM-oGg8JzN-azhZareXydVTyOUmbnj8V3itrwSqe5hCsu8vPXD2t1W4eHc5cBC5H_I9KMmtOkQh5Y3ZtlOY8Or4m2fPZzKivLWubZEssOvCRnPIhiFCkH52n42IuOG4K78DKo13iQxYT5i7o1xeRs1EB3p7eCUqEMnL47EIMpCbQ2Mh4EMNOeyvs7F2S1SYv9Uf9CR7mvVr05RtYYNBqKjUZPDVJqC228KRFeA1hB1raCignlObeXuls4MQqDqgp4nYkNH9XV7"/>
+            </div>
+            <div>
+                <p class="text-lg font-bold text-text-main">Sarah Jenkins</p>
+                <p class="text-sm text-text-muted">Stayed in Presidential Suite, October 2023</p>
+            </div>
+            <div class="flex gap-1 text-yellow-400 mt-2">
+                <span class="material-symbols-outlined fill-current text-sm">star</span>
+                <span class="material-symbols-outlined fill-current text-sm">star</span>
+                <span class="material-symbols-outlined fill-current text-sm">star</span>
+                <span class="material-symbols-outlined fill-current text-sm">star</span>
+                <span class="material-symbols-outlined fill-current text-sm">star</span>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Newsletter & Footer -->
+<footer class="bg-background-dark text-white pt-20 pb-10" id="contact">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <!-- Newsletter Signup -->
+        <div class="bg-primary rounded-2xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 mb-16 shadow-2xl shadow-primary/20">
+            <div class="flex-1">
+                <h3 class="text-2xl font-bold mb-2">Subscribe to Exclusive Offers</h3>
+                <p class="text-blue-100">Join our newsletter to receive the latest updates and special promotions directly to your inbox.</p>
+            </div>
+            <div class="w-full md:w-auto flex-1 max-w-md">
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input class="flex-1 px-4 py-3 rounded-lg text-text-main focus:outline-none focus:ring-2 focus:ring-white/50 border-none" placeholder="Your email address" type="email"/>
+                    <button class="bg-background-dark hover:bg-gray-900 text-white font-bold py-3 px-6 rounded-lg transition-colors whitespace-nowrap">
+                        Subscribe
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 border-b border-gray-800 pb-12 mb-12">
+            <!-- Brand Info -->
+            <div class="space-y-4">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="material-symbols-outlined text-3xl text-primary">diamond</span>
+                    <span class="text-xl font-bold">LuxHotel</span>
+                </div>
+                <p class="text-gray-400 text-sm leading-relaxed">
+                    Redefining luxury hospitality for the modern world. Experience comfort, style, and service like never before.
+                </p>
+                <div class="flex gap-4 pt-2">
+                    <a class="text-gray-400 hover:text-white transition-colors" href="#">
+                        <span class="sr-only">Facebook</span>
+                        <svg class="h-6 w-6" fill="currentColor" viewbox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"></path></svg>
+                    </a>
+                    <a class="text-gray-400 hover:text-white transition-colors" href="#">
+                        <span class="sr-only">Instagram</span>
+                        <svg class="h-6 w-6" fill="currentColor" viewbox="0 0 24 24"><path clip-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.468 2.373c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" fill-rule="evenodd"></path></svg>
+                    </a>
+                    <a class="text-gray-400 hover:text-white transition-colors" href="#">
+                        <span class="sr-only">Twitter</span>
+                        <svg class="h-6 w-6" fill="currentColor" viewbox="0 0 24 24"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path></svg>
+                    </a>
+                </div>
+            </div>
+            <!-- Quick Links -->
+            <div>
+                <h4 class="text-lg font-bold mb-4">Explore</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><a class="hover:text-primary transition-colors" href="#">Rooms &amp; Suites</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Dining</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Wellness &amp; Spa</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Events</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Gallery</a></li>
+                </ul>
+            </div>
+            <!-- Contact -->
+            <div>
+                <h4 class="text-lg font-bold mb-4">Contact Us</h4>
+                <ul class="space-y-4 text-sm text-gray-400">
+                    <li class="flex items-start gap-3">
+                        <span class="material-symbols-outlined text-primary mt-0.5">location_on</span>
+                        <span>123 Luxury Boulevard,<br/>Beverly Hills, CA 90210</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary">call</span>
+                        <span>+1 (555) 123-4567</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary">mail</span>
+                        <span>reservations@luxhotel.com</span>
+                    </li>
+                </ul>
+            </div>
+            <!-- Map (Image Placeholder) -->
+            <div class="rounded-lg overflow-hidden h-40 bg-gray-800 relative">
+                <div class="w-full h-full bg-cover bg-center opacity-80 hover:opacity-100 transition-opacity cursor-pointer" data-alt="Map view of the hotel location in Beverly Hills" data-location="Beverly Hills" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDI3BY8eZbAJ4vGlFSuiMsQDHyrWmLZbfG-PYlme044GtSVD5bVZkFYUJGf94UdV2GH3lZ2oZ0yO5BDDmnSmZ8aX44z9p8xiMIAYOFqwMD_lT5vfXhoPuBJfJnKK15I_ae3O6pz1aHYmx-EjyVucp_6DubFKAgvJmF2B_B5T3keH25fggQq1W2fS_na1da9eXdMTB1XbDRKo9teM2MQu3xI2QaUbJkSMx28MRReDe3C8jJ68h-SpfoD-utfpf0_VDyYhEWUSB4ZDYRw');">
+                </div>
+                <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <span class="bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold border border-white/20">View on Map</span>
+                </div>
+            </div>
+        </div>
+        <!-- Copyright -->
+        <div class="flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
+            <p>© 2024 LuxHotel. All rights reserved.</p>
+            <div class="flex gap-6 mt-4 md:mt-0">
+                <a class="hover:text-white transition-colors" href="#">Privacy Policy</a>
+                <a class="hover:text-white transition-colors" href="#">Terms of Service</a>
+                <a class="hover:text-white transition-colors" href="#">Cookie Policy</a>
+            </div>
+        </div>
+    </div>
+</footer>
 </body>
 </html>
+
+
+<script>
+    document.querySelectorAll('a[href="#searchBox"]').forEach(el => {
+        el.addEventListener('click', function(e){
+            e.preventDefault();
+
+            const target = document.getElementById("searchBox");
+            const offset = 120; // chiều cao header + margin đẹp
+
+            const elementPosition = target.getBoundingClientRect().top + window.pageYOffset;
+            const offsetPosition = elementPosition - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+            });
+        });
+    });
+</script>
+
+

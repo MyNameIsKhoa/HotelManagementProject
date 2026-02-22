@@ -40,4 +40,16 @@ public class RoomType {
     @EqualsAndHashCode.Exclude
     private List<RoomImage> images;
 
+    //thêm helper method để lấy ảnh thumbnail
+    @Transient
+    public String getThumbnailUrl() {
+        if (images == null) return null;
+
+        return images.stream()
+                .filter(img -> Boolean.TRUE.equals(img.getIsThumbnail()))
+                .map(RoomImage::getImageUrl)
+                .findFirst()
+                .orElse(null);
+    }
+
 }

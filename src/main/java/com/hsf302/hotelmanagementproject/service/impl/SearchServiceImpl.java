@@ -32,14 +32,25 @@ public class SearchServiceImpl implements SearchService {
         List<Hotel> hotels = hotelRepository.findAll();
 
         for (Hotel hotel : hotels) {
-            List<Object[]> roomTypes =
+
+            List<Object[]> raw =
                     roomTypeRepository.findAvailableRoomTypesByHotel(
                             hotel.getHotelId(), checkin, checkout);
 
-            if (!roomTypes.isEmpty()) {
-                result.put(hotel, roomTypes);
+            if (!raw.isEmpty()) {
+
+                // lấy list RoomType từ Object[]
+                List<RoomType> roomTypes = raw.stream()
+                        .map(r -> (RoomType) r[0])
+                        .toList();
+
+                // fetch images
+                roomTypeRepository.fetchImages(roomTypes);
+
+                result.put(hotel, raw);
             }
         }
+
         return result;
     }
     @Override
