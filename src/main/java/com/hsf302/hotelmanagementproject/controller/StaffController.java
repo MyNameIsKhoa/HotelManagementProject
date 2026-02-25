@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Controller
@@ -51,6 +52,7 @@ public class StaffController {
 
         model.addAttribute("todayCheckin", todayCheckin);
         model.addAttribute("date", date);
+        model.addAttribute("now", LocalDateTime.now());
 
         return "staff/dashboard";
     }

@@ -110,6 +110,11 @@ public class StaffServiceImpl implements StaffService {
             throw new IllegalStateException("Booking chưa được gán phòng");
         }
 
+        // Kiểm tra ngày: không cho check-in trước ngày checkinDate
+        if (LocalDate.now().isBefore(booking.getCheckinDate().toLocalDate())) {
+            throw new IllegalStateException("Chưa đến ngày check-in. Ngày check-in: " + booking.getCheckinDate().toLocalDate());
+        }
+
         booking.setActualCheckinTime(LocalDateTime.now());
         booking.setStatus(BookingStatus.CHECKED_IN);
 
@@ -120,6 +125,11 @@ public class StaffServiceImpl implements StaffService {
     public void checkOut(Long bookingId) {
 
         Booking booking = getBooking(bookingId);
+
+        // Kiểm tra ngày: không cho check-out trước ngày checkoutDate
+        if (LocalDate.now().isBefore(booking.getCheckoutDate().toLocalDate())) {
+            throw new IllegalStateException("Chưa đến ngày check-out. Ngày check-out: " + booking.getCheckoutDate().toLocalDate());
+        }
 
         Room room = booking.getRoom();
 
@@ -149,6 +159,11 @@ public class StaffServiceImpl implements StaffService {
 
         if (booking.getStatus() != BookingStatus.CHECKED_IN) {
             throw new IllegalStateException("Booking chưa check-in, không thể check-out.");
+        }
+
+        // Kiểm tra ngày: không cho check-out trước ngày checkoutDate
+        if (LocalDate.now().isBefore(booking.getCheckoutDate().toLocalDate())) {
+            throw new IllegalStateException("Chưa đến ngày check-out. Ngày check-out: " + booking.getCheckoutDate().toLocalDate());
         }
 
         Room room = booking.getRoom();

@@ -188,15 +188,24 @@
 
                                     <input type="hidden" name="bookingId" th:value="${booking.bookingId}">
 
+                                    <!-- Cho phép check-in khi ngày hiện tại >= ngày check-in (so sánh ngày, bỏ qua giờ) -->
                                     <button type="submit" class="btn btn-sm btn-success"
+                                            th:disabled="${now.toLocalDate().isBefore(booking.checkinDate.toLocalDate())}"
+                                            th:title="${now.toLocalDate().isBefore(booking.checkinDate.toLocalDate()) ? 'Chưa đến ngày check-in (' + #temporals.format(booking.checkinDate, 'dd/MM/yyyy') + ')' : 'Xác nhận Check-in'}"
                                             onclick="return confirm('Xác nhận Check-in cho khách này?')">
                                         <i class="fas fa-check-circle"></i> Check-in
                                     </button>
+                                    <small th:if="${now.toLocalDate().isBefore(booking.checkinDate.toLocalDate())}"
+                                           class="text-danger d-block mt-1">
+                                        <i class="fas fa-clock"></i> Chưa đến ngày
+                                    </small>
                                 </form>
 
                                 <button th:if="${booking.status.name() == 'CHECKED_IN'}"
                                         type="button"
                                         class="btn btn-sm btn-warning text-dark"
+                                        th:disabled="${now.toLocalDate().isBefore(booking.checkoutDate.toLocalDate())}"
+                                        th:title="${now.toLocalDate().isBefore(booking.checkoutDate.toLocalDate()) ? 'Chưa đến ngày check-out (' + #temporals.format(booking.checkoutDate, 'dd/MM/yyyy') + ')' : 'Xác nhận Check-out'}"
                                         data-bs-toggle="modal"
                                         data-bs-target="#checkoutModal"
                                         th:data-booking-id="${booking.bookingId}"
@@ -207,6 +216,10 @@
                                         th:data-remain="${booking.totalPrice.subtract(booking.depositAmount)}">
                                     <i class="fas fa-money-bill-wave"></i> Check-out
                                 </button>
+                                <small th:if="${booking.status.name() == 'CHECKED_IN' && now.toLocalDate().isBefore(booking.checkoutDate.toLocalDate())}"
+                                       class="text-danger d-block mt-1">
+                                    <i class="fas fa-clock"></i> Chưa đến ngày
+                                </small>
 
                                 <span th:if="${booking.status.name() == 'CHECKED_OUT'}" class="text-success">
                                     <i class="fas fa-flag-checkered"></i> Hoàn tất
