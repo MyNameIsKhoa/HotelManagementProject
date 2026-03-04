@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Chatbot Widget Fragment - include vào mọi trang -->
+<div th:fragment="chatbot">
+
+    <!-- Font Icons (nếu trang chưa có) -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/chatbot.css}" />
+
+    <!-- Toggle Button -->
+    <button id="chatbot-toggle" class="chatbot-toggle" title="Chat với AI">
+        <span class="material-symbols-outlined icon-chat">chat</span>
+        <span class="material-symbols-outlined icon-close">close</span>
+    </button>
+
+    <!-- Chat Panel -->
+    <div id="chatbot-panel" class="chatbot-panel">
+
+        <!-- Header -->
+        <div class="chatbot-header">
+            <div class="chatbot-header-avatar">
+                <span class="material-symbols-outlined" style="font-size:22px">smart_toy</span>
+            </div>
+            <div class="chatbot-header-info">
+                <h4>AI Trợ lý</h4>
+                <p>Green Diamond Hotel</p>
+            </div>
+            <div class="chatbot-header-actions">
+                <button id="chatbot-clear" title="Xóa lịch sử chat">
+                    <span class="material-symbols-outlined" style="font-size:18px">delete_sweep</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Messages -->
+        <div id="chatbot-messages" class="chatbot-messages">
+            <!-- Messages sẽ được thêm bởi JS -->
+        </div>
+
+        <!-- Suggestions -->
+        <div id="chatbot-suggestions" class="chatbot-suggestions">
+            <!-- Suggestions sẽ được load bởi JS -->
+        </div>
+
+        <!-- Input -->
+        <div class="chatbot-input">
+            <input id="chatbot-input" type="text" placeholder="Nhập tin nhắn..." autocomplete="off" />
+            <button id="chatbot-send" title="Gửi">
+                <span class="material-symbols-outlined" style="font-size:20px">send</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script th:src="@{/js/chatbot.js}"></script>
+</div>
+
+</body>
+</html>
+
+
