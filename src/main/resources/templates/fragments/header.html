@@ -13,7 +13,7 @@
 
         <!-- NAV LINKS -->
         <div class="hidden md:flex items-center gap-8">
-            <a th:href="@{/}" class="text-sm font-medium hover:text-primary">Home</a>
+            <a th:href="@{/}" class="text-sm font-medium hover:text-primary">Trang chủ</a>
 
             <a th:if="${session.currentUser != null && session.currentUser.role.toString() == 'GUEST'}"
                th:href="@{/booking/my-bookings}"
@@ -26,8 +26,8 @@
         <div class="flex items-center gap-4">
 
             <div th:if="${session.currentUser == null}" class="flex gap-2">
-                <a th:href="@{/auth/login}" class="px-4 py-2 border rounded-lg text-sm font-medium">Login</a>
-                <a th:href="@{/auth/register}" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium">Register</a>
+                <a th:href="@{/auth/login}" class="px-4 py-2 border rounded-lg text-sm font-medium">Đăng nhập</a>
+                <a th:href="@{/auth/register}" class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium">Đăng ký</a>
             </div>
 
             <div th:if="${session.currentUser != null}" class="flex items-center gap-4">
@@ -38,14 +38,14 @@
                 </a>
 
                 <span class="text-sm">
-                    Welcome,
+                    Xin chào,
                     <strong th:text="${session.currentUser.fullName != null
                         ? session.currentUser.fullName
                         : session.currentUser.email}">
                     </strong>
                 </span>
 
-                <a th:href="@{/auth/logout}" class="text-sm text-red-500 font-medium">Logout</a>
+                <a th:href="@{/auth/logout}" class="text-sm text-red-500 font-medium">Đăng xuất</a>
             </div>
 
         </div>

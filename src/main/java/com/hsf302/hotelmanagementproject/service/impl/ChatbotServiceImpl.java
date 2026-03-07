@@ -148,7 +148,6 @@ public class ChatbotServiceImpl implements ChatbotService {
         if (currentUser == null) {
             return "";
         }
-
         StringBuilder sb = new StringBuilder();
         sb.append(String.format("\n=== THÔNG TIN KHÁCH HÀNG ===\nTên: %s\n", currentUser.getFullName()));
 

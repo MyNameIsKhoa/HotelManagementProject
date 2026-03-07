@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>LuxHotel - Experience Unparalleled Luxury</title>
+    <title>LuxHotel - Trải Nghiệm Sang Trọng Đẳng Cấp</title>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -49,13 +49,13 @@
     <!-- Hero Content -->
     <div class="relative z-20 max-w-4xl mx-auto space-y-6 animate-fade-in-up">
         <span class="inline-block py-1 px-3 rounded-full bg-white/20 backdrop-blur-sm text-white text-xs font-bold tracking-wider uppercase border border-white/30">
-            The Ultimate Getaway
+            Kỳ Nghỉ Hoàn Hảo
         </span>
         <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight tracking-tight drop-shadow-sm">
-            Experience Unparalleled <br class="hidden md:block"/> Luxury &amp; Comfort
+            Trải Nghiệm Sự Sang Trọng <br class="hidden md:block"/> &amp; Thoải Mái Vượt Trội
         </h1>
         <p class="text-lg md:text-xl text-white/90 font-light max-w-2xl mx-auto drop-shadow-sm">
-            Discover the perfect blend of elegance and modern convenience in the heart of the city.
+            Khám phá sự kết hợp hoàn hảo giữa thanh lịch và tiện nghi hiện đại ngay trung tâm thành phố.
         </p>
     </div>
     <!-- Search Bar Widget (Floating) -->
@@ -64,13 +64,13 @@
             <form th:action="@{/search}" method="get" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
                 <!-- Destination -->
                 <div class="lg:col-span-1">
-                    <label class="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Location</label>
+                    <label class="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Địa điểm</label>
                     <div class="relative group">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <span class="material-symbols-outlined text-primary group-focus-within:text-primary-dark">location_on</span>
                         </div>
                         <input type="text"
-                               placeholder="All hotels"
+                               placeholder="Tất cả khách sạn"
                                disabled
                                class="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg text-gray-400 bg-gray-100 text-sm font-medium cursor-not-allowed"/>
 
@@ -78,31 +78,31 @@
                 </div>
                 <!-- Check In -->
                 <div class="lg:col-span-1">
-                    <label class="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Check-in</label>
+                    <label class="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Nhận phòng</label>
                     <div class="relative group">
                         <input class="block w-full px-3 py-3 border border-gray-200 rounded-lg text-text-main placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium bg-background-off cursor-pointer" name="checkinDate" required type="datetime-local" th:value="${checkinDate != null ? #temporals.format(checkinDate, 'yyyy-MM-dd''T''HH:mm') : ''}"/>
                     </div>
                 </div>
                 <!-- Check Out -->
                 <div class="lg:col-span-1">
-                    <label class="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Check-out</label>
+                    <label class="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Trả phòng</label>
                     <div class="relative group">
                         <input class="block w-full px-3 py-3 border border-gray-200 rounded-lg text-text-main placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all text-sm font-medium bg-background-off cursor-pointer" name="checkoutDate" required type="datetime-local" th:value="${checkoutDate != null ? #temporals.format(checkoutDate, 'yyyy-MM-dd''T''HH:mm') : ''}"/>
                     </div>
                 </div>
                 <!-- Guests -->
                 <div class="lg:col-span-1">
-                    <label class="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Guests</label>
+                    <label class="block text-xs font-bold text-text-muted uppercase tracking-wider mb-2">Số khách</label>
                     <div class="relative group">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <span class="material-symbols-outlined text-primary">group</span>
                         </div>
                         <select disabled
                                 class="block w-full pl-10 pr-8 py-3 border border-gray-200 rounded-lg text-gray-400 bg-gray-100 text-sm font-medium cursor-not-allowed">
-                        <option>1 Adult</option>
-                            <option selected="selected">2 Adults</option>
-                            <option>2 Adults, 1 Child</option>
-                            <option>Family (4+)</option>
+                        <option>1 Người lớn</option>
+                            <option selected="selected">2 Người lớn</option>
+                            <option>2 Người lớn, 1 Trẻ em</option>
+                            <option>Gia đình (4+)</option>
                         </select>
                         <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none text-gray-500">
                             <span class="material-symbols-outlined text-sm">expand_more</span>
@@ -113,7 +113,7 @@
                 <div class="lg:col-span-1">
                     <button class="w-full h-[46px] bg-primary hover:bg-primary-dark text-white font-bold rounded-lg shadow-lg shadow-primary/30 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2" type="submit">
                         <span class="material-symbols-outlined text-[20px]">search</span>
-                        <span>Check Availability</span>
+                        <span>Tìm phòng trống</span>
                     </button>
                 </div>
             </form>
@@ -125,19 +125,19 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
             <div>
-                <h2 class="text-3xl md:text-4xl font-bold text-text-main mb-3">Featured Rooms &amp; Suites</h2>
-                <p class="text-text-muted max-w-xl">Immerse yourself in comfort with our carefully curated selection of premium rooms, each designed for relaxation and style.</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-text-main mb-3">Phòng &amp; Suite Nổi Bật</h2>
+                <p class="text-text-muted max-w-xl">Đắm chìm trong sự thoải mái với bộ sưu tập phòng cao cấp được chọn lọc kỹ lưỡng, mỗi phòng đều được thiết kế cho sự thư giãn và phong cách.</p>
             </div>
             <a th:if="${session.currentUser == null}"
                th:href="@{/auth/login}"
                class="flex items-center gap-1 text-primary font-bold hover:text-primary-dark transition-colors group">
-                View All Rooms
+                Xem tất cả phòng
             </a>
 
             <a th:if="${session.currentUser != null}"
                href="#searchBox"
                class="flex items-center gap-1 text-primary font-bold hover:text-primary-dark transition-colors group">
-                View All Rooms
+                Xem tất cả phòng
             </a>
 
         </div>
@@ -165,14 +165,14 @@
                     <div class="flex items-center gap-4 text-xs text-text-muted mb-6 mt-3">
                 <span class="flex items-center gap-1">
                     <span class="material-symbols-outlined text-lg">person</span>
-                    <span th:text="${room.capacity} + ' Guests'"></span>
+                    <span th:text="${room.capacity} + ' Khách'"></span>
                 </span>
                     </div>
 
                     <!-- PRICE -->
                     <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
                         <div>
-                            <span class="block text-xs text-text-muted">Start from</span>
+                            <span class="block text-xs text-text-muted">Giá từ</span>
                             <span class="text-lg font-bold text-primary"
                                   th:text="${#numbers.formatDecimal(room.basePrice,1,'COMMA',0,'POINT')} + ' VND'">
                     </span>
@@ -181,13 +181,13 @@
                         <a th:if="${session.currentUser == null}"
                            th:href="@{/auth/login}"
                            class="px-4 py-2 rounded-lg bg-gray-50 text-text-main hover:bg-primary hover:text-white font-medium text-sm transition-colors text-center">
-                            View Rooms
+                            Xem phòng
                         </a>
 
                         <a th:if="${session.currentUser != null}"
                            href="#searchBox"
                            class="px-4 py-2 rounded-lg bg-gray-50 text-text-main hover:bg-primary hover:text-white font-medium text-sm transition-colors text-center">
-                            View Rooms
+                            Xem phòng
                         </a>
 
                     </div>
@@ -205,9 +205,9 @@
     <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
         <div class="text-center max-w-3xl mx-auto mb-16">
-            <span class="text-primary font-bold tracking-widest text-sm uppercase mb-2 block">Our Services</span>
-            <h2 class="text-3xl md:text-5xl font-bold text-text-main mb-4">Crafting Unforgettable Moments</h2>
-            <p class="text-text-muted text-lg">Beyond just a stay, we offer a collection of experiences designed to rejuvenate your body and soul.</p>
+            <span class="text-primary font-bold tracking-widest text-sm uppercase mb-2 block">Dịch Vụ Của Chúng Tôi</span>
+            <h2 class="text-3xl md:text-5xl font-bold text-text-main mb-4">Tạo Nên Những Khoảnh Khắc Khó Quên</h2>
+            <p class="text-text-muted text-lg">Không chỉ là một kỳ lưu trú, chúng tôi mang đến bộ sưu tập trải nghiệm được thiết kế để tái tạo năng lượng cho cơ thể và tâm hồn bạn.</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Service 1 -->
@@ -215,9 +215,9 @@
                 <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
                     <span class="material-symbols-outlined text-3xl">spa</span>
                 </div>
-                <h3 class="text-xl font-bold text-text-main mb-3">Wellness Spa</h3>
+                <h3 class="text-xl font-bold text-text-main mb-3">Spa &amp; Sức Khỏe</h3>
                 <p class="text-text-muted text-sm leading-relaxed">
-                    Rejuvenate with world-class treatments, massages, and hydrotherapy sessions.
+                    Tận hưởng liệu trình chăm sóc đẳng cấp thế giới, massage và thủy liệu pháp.
                 </p>
             </div>
             <!-- Service 2 -->
@@ -225,9 +225,9 @@
                 <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
                     <span class="material-symbols-outlined text-3xl">restaurant</span>
                 </div>
-                <h3 class="text-xl font-bold text-text-main mb-3">Fine Dining</h3>
+                <h3 class="text-xl font-bold text-text-main mb-3">Ẩm Thực Cao Cấp</h3>
                 <p class="text-text-muted text-sm leading-relaxed">
-                    Savor exquisite culinary masterpieces prepared by Michelin-starred chefs.
+                    Thưởng thức những kiệt tác ẩm thực tinh tế do các đầu bếp hàng đầu chế biến.
                 </p>
             </div>
             <!-- Service 3 -->
@@ -235,9 +235,9 @@
                 <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
                     <span class="material-symbols-outlined text-3xl">pool</span>
                 </div>
-                <h3 class="text-xl font-bold text-text-main mb-3">Infinity Pool</h3>
+                <h3 class="text-xl font-bold text-text-main mb-3">Hồ Bơi Vô Cực</h3>
                 <p class="text-text-muted text-sm leading-relaxed">
-                    Relax in our climate-controlled infinity pool with breathtaking city skyline views.
+                    Thư giãn tại hồ bơi vô cực với tầm nhìn toàn cảnh đường chân trời thành phố tuyệt đẹp.
                 </p>
             </div>
             <!-- Service 4 -->
@@ -245,9 +245,9 @@
                 <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
                     <span class="material-symbols-outlined text-3xl">concierge</span>
                 </div>
-                <h3 class="text-xl font-bold text-text-main mb-3">24/7 Concierge</h3>
+                <h3 class="text-xl font-bold text-text-main mb-3">Lễ Tân 24/7</h3>
                 <p class="text-text-muted text-sm leading-relaxed">
-                    Our dedicated team is available around the clock to fulfill your every request.
+                    Đội ngũ tận tâm của chúng tôi luôn sẵn sàng phục vụ mọi yêu cầu của bạn.
                 </p>
             </div>
         </div>
@@ -257,8 +257,8 @@
 <section class="py-24 bg-background-off" id="gallery">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
         <div class="flex flex-col items-center mb-12 text-center">
-            <h2 class="text-3xl md:text-4xl font-bold text-text-main mb-3">A Glimpse of Paradise</h2>
-            <p class="text-text-muted max-w-2xl">Explore the visual story of our hotel, from the grand lobby to the intimate corners of luxury.</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-text-main mb-3">Một Góc Nhìn Thiên Đường</h2>
+            <p class="text-text-muted max-w-2xl">Khám phá câu chuyện hình ảnh của khách sạn, từ sảnh lớn đến những góc sang trọng riêng tư.</p>
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 grid-rows-2 gap-4 h-[600px] md:h-[500px]">
             <!-- Large item -->
@@ -267,8 +267,8 @@
                 <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Luxury hotel resort exterior with pool and palm trees" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA_8IE_pCd8NI4sKFwvV2XBktDEwG6WrFFksEJvwhV-xTgVbxM_x-QDuytoDx8T5IyD782c6Mj1DAw7Uq4Is9S4O3oGhMho4Wc903ZcD-BV9EQR_SONv1Ezw-OFMJnzDj1I__ZFZrkIMH1i2x760lz5snEvq8UrZG3e6KiJPdcYBEyl3e07pXuk5rf5hQQnQJxvoHPVV-VpgaRPq9t-eXqf_0TZiOIrftIaa6LCux6_eLHYlFFcdq08FmThHQ5rCffIL9-t0rF5izKj');">
                 </div>
                 <div class="absolute bottom-6 left-6 z-20 text-white">
-                    <p class="text-sm font-bold uppercase tracking-widest mb-1">Resort</p>
-                    <h4 class="text-2xl font-bold">The Main Pool</h4>
+                    <p class="text-sm font-bold uppercase tracking-widest mb-1">Khu Nghỉ Dưỡng</p>
+                    <h4 class="text-2xl font-bold">Hồ Bơi Chính</h4>
                 </div>
             </div>
             <!-- Tall item -->
@@ -277,7 +277,7 @@
                 <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Hotel lobby with luxury lighting and seating" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCb20CLTJXnRhUahlu6cgl48A_3TR_WZcXjkpkwoKg_X-aIiVZopc7VzXjsbxsvcpR5ErM4UJNJKMuIaQkGHb-Ezmfr-kUdqUo9CibhAYgeRqjrsOA_gR4JBcgwo9DTTYloZbXGRNbep0txxOJaexkQJ-ndepgdj7QASYNxlvKlhsGZYF-GK2BSzDV-6N8CjNclljlCnvSdvKLd6RDYrDKIRttZUypFsaKIXpMg9dV7IX556GQ4yRcZncmgxaXCi9hc18_I7fE3BiZQ');">
                 </div>
                 <div class="absolute bottom-4 left-4 z-20 text-white">
-                    <h4 class="text-lg font-bold">Lobby Lounge</h4>
+                    <h4 class="text-lg font-bold">Sảnh Chờ</h4>
                 </div>
             </div>
             <!-- Small Item 1 -->
@@ -286,7 +286,7 @@
                 <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Gourmet food plated elegantly" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCuevHEGHbZxoZnigBd98jnNcHV6AwPykTaOp0z4qh7SVUZGHPXn5hKQmqIjF6xe_QcIhMzpUmSEslwMCBvV8IBW8YT0kRv1qEyhprfuOf1V-3KD7EgL08RcggJSr9nfcf0I4Xl-jnb-OeBu9s61EEEJ_8gshSjpYTnqRCDf9AMd7_rcEztiHaDVjpNFsAZOSAH1xKk29s5Q3bBAxGMSuqsx5huA2bWcRKRT5VSHHJpMtac97m4ToMey9mKWjBIZYhj6uFGzVaZdmd4');">
                 </div>
                 <div class="absolute bottom-4 left-4 z-20 text-white">
-                    <h4 class="text-lg font-bold">Gastronomy</h4>
+                    <h4 class="text-lg font-bold">Ẩm Thực</h4>
                 </div>
             </div>
             <!-- Small Item 2 -->
@@ -295,7 +295,7 @@
                 <div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Spa massage room with candles" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAg7z7s6zpPM4p2lgp1rUZhWfconA98xdNlHDAHCO-zLY8irVSnpHrqT9VvbxONS_o7wa-7c8qEFdxs-iS4F6UWLMFc6UsBDyOpTXwe7_vs5N5-AnMTIjG3Mp3LbZ763vZ1JTHnwyWKMdN6mBtAtOUtKYyOWCnlNEh_Xp0AsYRWg74V7FNMpRfFYbQUpJjvrX9Bc8EOStuiovPDoXf1TLW7dJmKXpFKWcXQmI2wFSSODtKK-ZTlOtScJENhZ7W18C06qXGejE3aDN78');">
                 </div>
                 <div class="absolute bottom-4 left-4 z-20 text-white">
-                    <h4 class="text-lg font-bold">Serenity Spa</h4>
+                    <h4 class="text-lg font-bold">Spa Thư Giãn</h4>
                 </div>
             </div>
         </div>
@@ -308,7 +308,7 @@
             <span class="material-symbols-outlined text-primary text-3xl">format_quote</span>
         </div>
         <h2 class="text-3xl md:text-5xl font-bold text-text-main leading-tight mb-8">
-            "An absolute masterpiece of hospitality. From the moment we arrived, we were treated like royalty. The attention to detail is unmatched."
+            "Một kiệt tác tuyệt đối về lòng hiếu khách. Ngay từ khoảnh khắc chúng tôi đến, chúng tôi được đón tiếp như hoàng gia. Sự chú ý đến từng chi tiết là không gì sánh được."
         </h2>
         <div class="flex flex-col items-center gap-4">
             <div class="size-16 rounded-full bg-gray-200 overflow-hidden">
@@ -316,7 +316,7 @@
             </div>
             <div>
                 <p class="text-lg font-bold text-text-main">Sarah Jenkins</p>
-                <p class="text-sm text-text-muted">Stayed in Presidential Suite, October 2023</p>
+                <p class="text-sm text-text-muted">Đã lưu trú tại Presidential Suite, Tháng 10/2023</p>
             </div>
             <div class="flex gap-1 text-yellow-400 mt-2">
                 <span class="material-symbols-outlined fill-current text-sm">star</span>
@@ -334,14 +334,14 @@
         <!-- Newsletter Signup -->
         <div class="bg-primary rounded-2xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 mb-16 shadow-2xl shadow-primary/20">
             <div class="flex-1">
-                <h3 class="text-2xl font-bold mb-2">Subscribe to Exclusive Offers</h3>
-                <p class="text-blue-100">Join our newsletter to receive the latest updates and special promotions directly to your inbox.</p>
+                <h3 class="text-2xl font-bold mb-2">Đăng Ký Nhận Ưu Đãi Đặc Biệt</h3>
+                <p class="text-blue-100">Đăng ký nhận bản tin để cập nhật thông tin mới nhất và các chương trình khuyến mãi đặc biệt.</p>
             </div>
             <div class="w-full md:w-auto flex-1 max-w-md">
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <input class="flex-1 px-4 py-3 rounded-lg text-text-main focus:outline-none focus:ring-2 focus:ring-white/50 border-none" placeholder="Your email address" type="email"/>
+                    <input class="flex-1 px-4 py-3 rounded-lg text-text-main focus:outline-none focus:ring-2 focus:ring-white/50 border-none" placeholder="Địa chỉ email của bạn" type="email"/>
                     <button class="bg-background-dark hover:bg-gray-900 text-white font-bold py-3 px-6 rounded-lg transition-colors whitespace-nowrap">
-                        Subscribe
+                        Đăng ký
                     </button>
                 </div>
             </div>
@@ -354,7 +354,7 @@
                     <span class="text-xl font-bold">LuxHotel</span>
                 </div>
                 <p class="text-gray-400 text-sm leading-relaxed">
-                    Redefining luxury hospitality for the modern world. Experience comfort, style, and service like never before.
+                    Tái định nghĩa lòng hiếu khách sang trọng cho thế giới hiện đại. Trải nghiệm sự thoải mái, phong cách và dịch vụ chưa từng có.
                 </p>
                 <div class="flex gap-4 pt-2">
                     <a class="text-gray-400 hover:text-white transition-colors" href="#">
@@ -373,18 +373,18 @@
             </div>
             <!-- Quick Links -->
             <div>
-                <h4 class="text-lg font-bold mb-4">Explore</h4>
+                <h4 class="text-lg font-bold mb-4">Khám Phá</h4>
                 <ul class="space-y-2 text-sm text-gray-400">
-                    <li><a class="hover:text-primary transition-colors" href="#">Rooms &amp; Suites</a></li>
-                    <li><a class="hover:text-primary transition-colors" href="#">Dining</a></li>
-                    <li><a class="hover:text-primary transition-colors" href="#">Wellness &amp; Spa</a></li>
-                    <li><a class="hover:text-primary transition-colors" href="#">Events</a></li>
-                    <li><a class="hover:text-primary transition-colors" href="#">Gallery</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Phòng &amp; Suite</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Ẩm thực</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Sức khỏe &amp; Spa</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Sự kiện</a></li>
+                    <li><a class="hover:text-primary transition-colors" href="#">Thư viện ảnh</a></li>
                 </ul>
             </div>
             <!-- Contact -->
             <div>
-                <h4 class="text-lg font-bold mb-4">Contact Us</h4>
+                <h4 class="text-lg font-bold mb-4">Liên Hệ</h4>
                 <ul class="space-y-4 text-sm text-gray-400">
                     <li class="flex items-start gap-3">
                         <span class="material-symbols-outlined text-primary mt-0.5">location_on</span>
@@ -405,17 +405,17 @@
                 <div class="w-full h-full bg-cover bg-center opacity-80 hover:opacity-100 transition-opacity cursor-pointer" data-alt="Map view of the hotel location in Beverly Hills" data-location="Beverly Hills" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDI3BY8eZbAJ4vGlFSuiMsQDHyrWmLZbfG-PYlme044GtSVD5bVZkFYUJGf94UdV2GH3lZ2oZ0yO5BDDmnSmZ8aX44z9p8xiMIAYOFqwMD_lT5vfXhoPuBJfJnKK15I_ae3O6pz1aHYmx-EjyVucp_6DubFKAgvJmF2B_B5T3keH25fggQq1W2fS_na1da9eXdMTB1XbDRKo9teM2MQu3xI2QaUbJkSMx28MRReDe3C8jJ68h-SpfoD-utfpf0_VDyYhEWUSB4ZDYRw');">
                 </div>
                 <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <span class="bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold border border-white/20">View on Map</span>
+                    <span class="bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold border border-white/20">Xem trên bản đồ</span>
                 </div>
             </div>
         </div>
         <!-- Copyright -->
         <div class="flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
-            <p>© 2024 LuxHotel. All rights reserved.</p>
+            <p>© 2024 LuxHotel. Mọi quyền được bảo lưu.</p>
             <div class="flex gap-6 mt-4 md:mt-0">
-                <a class="hover:text-white transition-colors" href="#">Privacy Policy</a>
-                <a class="hover:text-white transition-colors" href="#">Terms of Service</a>
-                <a class="hover:text-white transition-colors" href="#">Cookie Policy</a>
+                <a class="hover:text-white transition-colors" href="#">Chính sách bảo mật</a>
+                <a class="hover:text-white transition-colors" href="#">Điều khoản dịch vụ</a>
+                <a class="hover:text-white transition-colors" href="#">Chính sách Cookie</a>
             </div>
         </div>
     </div>

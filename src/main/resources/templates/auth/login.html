@@ -1,9 +1,9 @@
 <!-- file: src/main/resources/templates/auth/login.html -->
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Đăng nhập</title>
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <link rel="stylesheet" th:href="@{/css/header.css}">
     <link rel="stylesheet" th:href="@{/css/footer.css}">
@@ -13,7 +13,7 @@
 <div th:replace="fragments/header :: header"></div>
 
 <div class="container">
-    <h2>Login</h2>
+    <h2>Đăng nhập</h2>
 
     <div th:if="${error}" class="form-error" th:text="${error}"></div>
 
@@ -25,15 +25,15 @@
         </label>
         <br/><br/>
         <label>
-            Password:
+            Mật khẩu:
             <input type="password" name="password" required />
         </label>
         <br/><br/>
-        <button type="submit">Login</button>
+        <button type="submit">Đăng nhập</button>
     </form>
 
     <p>
-        Don't have an account? <a th:href="@{/auth/register}">Register</a>
+        Chưa có tài khoản? <a th:href="@{/auth/register}">Đăng ký</a>
     </p>
 </div>
 <div th:replace="fragments/footer :: footer"></div>

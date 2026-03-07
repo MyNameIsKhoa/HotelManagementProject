@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Search Results - LuxStay</title>
+    <title>Kết quả tìm kiếm - LuxStay</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -49,7 +49,7 @@
                 <div class="flex items-center px-4 py-2 border-r border-slate-200 flex-1">
                     <span class="material-symbols-outlined text-slate-400 mr-2">hotel</span>
                     <input type="text"
-                           value="All hotels"
+                           value="Tất cả khách sạn"
                            disabled
                            class="bg-transparent border-none text-sm font-medium text-slate-400 focus:ring-0 w-full cursor-not-allowed"/>
                 </div>
@@ -69,16 +69,16 @@
             <!-- Quick Filters -->
             <div class="flex gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto no-scrollbar">
                 <button class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-200 bg-white text-xs font-medium text-slate-700 hover:border-primary hover:text-primary transition-colors whitespace-nowrap">
-                    <span class="material-symbols-outlined text-[18px]">filter_list</span> Filters
+                    <span class="material-symbols-outlined text-[18px]">filter_list</span> Bộ lọc
                 </button>
                 <button class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-200 bg-white text-xs font-medium text-slate-700 hover:border-primary hover:text-primary transition-colors whitespace-nowrap">
-                    Price Range
+                    Khoảng giá
                 </button>
                 <button class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-200 bg-white text-xs font-medium text-slate-700 hover:border-primary hover:text-primary transition-colors whitespace-nowrap">
-                    Star Rating
+                    Xếp hạng sao
                 </button>
                 <button class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-slate-200 bg-white text-xs font-medium text-slate-700 hover:border-primary hover:text-primary transition-colors whitespace-nowrap">
-                    Amenities
+                    Tiện nghi
                 </button>
             </div>
         </div>
@@ -89,9 +89,9 @@
     <div class="w-full max-w-7xl flex flex-col gap-10">
         <!-- Page Header -->
         <div class="flex flex-col gap-2">
-            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Search Results</h1>
+            <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Kết Quả Tìm Kiếm</h1>
             <p class="text-slate-500 text-sm">
-                <span th:text="${results != null ? results.size() : 0}">0</span> properties found
+                <span th:text="${results != null ? results.size() : 0}">0</span> kết quả được tìm thấy
             </p>
         </div>
 
@@ -113,13 +113,13 @@
                     <div class="flex items-center gap-1 text-slate-500 text-sm">
                         <span class="material-symbols-outlined text-[18px]">location_on</span>
                         <span th:text="${entry.key.address}">123 Ocean Drive, New York, NY 10001</span>
-                        <a class="text-primary hover:underline ml-2 font-medium" href="#">Show on map</a>
+                        <a class="text-primary hover:underline ml-2 font-medium" href="#">Xem trên bản đồ</a>
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
                     <span class="bg-emerald-100 text-emerald-700 text-xs px-2 py-1 rounded font-bold">9.2</span>
-                    <span class="text-sm font-medium text-slate-700">Exceptional</span>
-                    <span class="text-xs text-slate-500">(1,240 reviews)</span>
+                    <span class="text-sm font-medium text-slate-700">Xuất sắc</span>
+                    <span class="text-xs text-slate-500">(1.240 đánh giá)</span>
                 </div>
             </div>
 
@@ -141,7 +141,7 @@
                         <div class="flex flex-wrap gap-2 text-xs text-slate-500">
                             <div class="flex items-center gap-1 bg-slate-50 px-2 py-1 rounded">
                                 <span class="material-symbols-outlined text-[16px]">person</span>
-                                <span th:text="${row[0].capacity} + ' Adults'">2 Adults</span>
+                                <span th:text="${row[0].capacity} + ' Người lớn'">2 Người lớn</span>
                             </div>
                         </div>
                         <div class="mt-auto pt-3 border-t border-slate-50 flex flex-col gap-3">
@@ -151,14 +151,14 @@
                                         <span class="text-lg font-bold text-slate-900"
                                               th:text="${#numbers.formatDecimal(row[0].basePrice,1,'COMMA',0,'POINT')} + ' VND'">
                                         </span>
-                                        <span class="text-xs text-slate-500">/ night</span>
+                                        <span class="text-xs text-slate-500">/ đêm</span>
                                     </div>
 
                                 </div>
-                                <span class="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-1 rounded-full" th:text="${row[1]} + ' available'">5+ available</span>
+                                <span class="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-1 rounded-full" th:text="${row[1]} + ' phòng trống'">5+ phòng trống</span>
                             </div>
                             <a th:href="@{/room/{id}(id=${row[0].roomTypeId},checkinDate=${checkinDate},checkoutDate=${checkoutDate})}" class="w-full py-2.5 bg-primary hover:bg-primary-hover text-white text-sm font-semibold rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2 group-hover:bg-primary-hover text-center">
-                                View Detail
+                                Xem chi tiết
                             </a>
                         </div>
                     </div>
@@ -168,7 +168,7 @@
 
         <!-- Empty State -->
         <div th:if="${results != null and results.isEmpty()}" class="text-center py-12">
-            <p class="text-slate-500">No properties found for the selected dates.</p>
+            <p class="text-slate-500">Không tìm thấy phòng nào cho ngày đã chọn.</p>
         </div>
 
 
@@ -188,7 +188,7 @@
                 <span class="text-lg font-bold tracking-tight">LuxStay</span>
             </div>
             <div class="text-sm text-slate-500">
-                © 2023 LuxStay Inc. All rights reserved.
+                © 2023 LuxStay Inc. Mọi quyền được bảo lưu.
             </div>
         </div>
     </div>
