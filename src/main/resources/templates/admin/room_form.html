@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${room.roomId != null ? 'Sửa phòng' : 'Thêm phòng mới'} + ' - Admin'">Phòng - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/admin.css}" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="/admin"><i class="fas fa-shield-alt me-2"></i>Quản trị Khách sạn</a>
+        <div class="navbar-nav ms-auto d-flex flex-row gap-2">
+            <a class="nav-link" href="/admin">Tổng quan</a>
+            <a class="nav-link active" href="/admin/rooms">Phòng</a>
+            <a class="nav-link" href="/admin/users">Người dùng</a>
+            <a class="nav-link" href="/admin/bookings">Đặt phòng</a>
+            <a class="btn btn-sm btn-outline-light ms-3" href="/auth/logout">Đăng xuất</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">
+                        <i class="fas fa-bed me-2"></i>
+                        <span th:text="${room.roomId != null ? 'Sửa phòng' : 'Thêm phòng mới'}">Thêm phòng</span>
+                    </h4>
+
+                    <form action="/admin/rooms/save" method="post">
+                        <!-- Hidden ID for edit -->
+                        <input type="hidden" name="roomId" th:value="${room.roomId}">
+
+                        <!-- Số phòng -->
+                        <div class="mb-3">
+                            <label for="roomNumber" class="form-label fw-bold">Số phòng <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="roomNumber" name="roomNumber"
+                                   th:value="${room.roomNumber}" placeholder="VD: D101, F201, S301" required>
+                        </div>
+
+                        <!-- Loại phòng -->
+                        <div class="mb-3">
+                            <label for="roomTypeId" class="form-label fw-bold">Loại phòng <span class="text-danger">*</span></label>
+                            <select class="form-select" id="roomTypeId" name="roomTypeId" required>
+                                <option value="">-- Chọn loại phòng --</option>
+                                <option th:each="rt : ${roomTypes}"
+                                        th:value="${rt.roomTypeId}"
+                                        th:text="${rt.name + ' - ' + rt.hotel.name + ' (' + #numbers.formatDecimal(rt.basePrice, 0, 'COMMA', 0, 'POINT') + ' ₫)'}"
+                                        th:selected="${room.roomType != null && room.roomType.roomTypeId == rt.roomTypeId}">
+                                    Deluxe Room
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Trạng thái -->
+                        <div class="mb-3">
+                            <label for="status" class="form-label fw-bold">Trạng thái <span class="text-danger">*</span></label>
+                            <select class="form-select" id="status" name="status" required>
+                                <option th:each="s : ${statuses}"
+                                        th:value="${s}"
+                                        th:text="${s.name() == 'AVAILABLE' ? 'Trống' : 'Đang sửa chữa'}"
+                                        th:selected="${room.status == s}">
+                                </option>
+                            </select>
+                            <small class="form-text text-muted">
+                                Trạng thái "Đã đặt" và "Chờ dọn" được hệ thống tự cập nhật khi có đặt phòng/checkout.
+                            </small>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> Lưu
+                            </button>
+                            <a href="/admin/rooms" class="btn btn-secondary">
+                                <i class="fas fa-times me-1"></i> Hủy
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý người dùng - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/admin.css}" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="/admin"><i class="fas fa-shield-alt me-2"></i>Quản trị Khách sạn</a>
+        <div class="navbar-nav ms-auto d-flex flex-row gap-2">
+            <a class="nav-link" href="/admin">Tổng quan</a>
+            <a class="nav-link" href="/admin/rooms">Phòng</a>
+            <a class="nav-link active" href="/admin/users">Người dùng</a>
+            <a class="nav-link" href="/admin/bookings">Đặt phòng</a>
+            <a class="btn btn-sm btn-outline-light ms-3" href="/auth/logout">Đăng xuất</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <!-- Alert messages -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
+        <i class="fas fa-check-circle me-1"></i> <span th:text="${success}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+        <i class="fas fa-exclamation-circle me-1"></i> <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <div class="row">
+        <!-- User List -->
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="card-title mb-0"><i class="fas fa-users me-2"></i>Danh sách người dùng</h4>
+                    </div>
+
+                    <!-- Role Filter -->
+                    <form action="/admin/users" method="get" class="mb-3">
+                        <div class="input-group" style="max-width: 300px;">
+                            <select class="form-select" name="role" onchange="this.form.submit()">
+                                <option value="">Tất cả vai trò</option>
+                                <option value="ADMIN" th:selected="${selectedRole == 'ADMIN'}">Quản trị viên</option>
+                                <option value="STAFF" th:selected="${selectedRole == 'STAFF'}">Nhân viên</option>
+                                <option value="GUEST" th:selected="${selectedRole == 'GUEST'}">Khách hàng</option>
+                            </select>
+                        </div>
+                    </form>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Email</th>
+                                <th>Họ tên</th>
+                                <th>Vai trò</th>
+                                <th>Ngày tạo</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="user, iter : ${users}">
+                                <td th:text="${iter.count}">1</td>
+                                <td th:text="${user.email}">email@example.com</td>
+                                <td th:text="${user.fullName}">Nguyễn Văn A</td>
+                                <td>
+                                    <span class="badge"
+                                          th:classappend="${user.role.name() == 'ADMIN' ? 'bg-danger' :
+                                                            (user.role.name() == 'STAFF' ? 'bg-primary' : 'bg-success')}"
+                                          th:text="${user.role.name() == 'ADMIN' ? 'Quản trị viên' :
+                                                    (user.role.name() == 'STAFF' ? 'Nhân viên' : 'Khách hàng')}">
+                                        Role
+                                    </span>
+                                </td>
+                                <td th:text="${#temporals.format(user.createdAt, 'dd/MM/yyyy HH:mm')}">01/01/2026</td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(users)}">
+                                <td colspan="5" class="text-center py-4 text-muted">
+                                    <i class="fas fa-inbox fa-3x mb-3"></i><br>
+                                    Không tìm thấy người dùng nào.
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create User Form -->
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3"><i class="fas fa-user-plus me-2"></i>Tạo tài khoản mới</h5>
+
+                    <form action="/admin/users/create" method="post">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="email" name="email" required
+                                   placeholder="staff@hotel.com">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Họ tên <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="fullName" name="fullName" required
+                                   placeholder="Nguyễn Văn A">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mật khẩu <span class="text-danger">*</span></label>
+                            <input type="password" class="form-control" id="password" name="password" required
+                                   placeholder="Nhập mật khẩu">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Vai trò <span class="text-danger">*</span></label>
+                            <select class="form-select" id="role" name="role" required>
+                                <option value="STAFF">Nhân viên</option>
+                                <option value="GUEST">Khách hàng</option>
+                            </select>
+                            <small class="form-text text-muted">
+                                Tài khoản Quản trị viên phải được tạo trực tiếp trong cơ sở dữ liệu.
+                            </small>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="fas fa-plus me-1"></i> Tạo tài khoản
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
