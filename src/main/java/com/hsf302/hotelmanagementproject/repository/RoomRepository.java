@@ -34,4 +34,17 @@ WHERE b.status IN ('CONFIRMED','CHECKED_IN')
     );
     List<Room> findByRoomType_RoomTypeId(Long roomTypeId);
 
+    // ========== Admin: Soft-delete aware ==========
+    List<Room> findByIsDeletedFalse();
+
+    long countByStatusAndIsDeletedFalse(RoomStatus status);
+
+    @Query("""
+        SELECT r.status, COUNT(r)
+        FROM Room r
+        WHERE r.isDeleted = false
+        GROUP BY r.status
+    """)
+    List<Object[]> countRoomsByStatus();
+
 }

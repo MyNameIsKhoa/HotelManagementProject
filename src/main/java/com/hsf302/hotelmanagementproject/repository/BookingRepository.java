@@ -61,5 +61,21 @@ WHERE b.roomType.id = :roomTypeId
             @Param("date") LocalDate date
     );
 
+    // ========== Statistics ==========
+    @Query("""
+        SELECT b.roomType.name, COALESCE(SUM(b.totalPrice), 0)
+        FROM Booking b
+        WHERE b.status IN ('CONFIRMED','ASSIGNED','CHECKED_IN','CHECKED_OUT')
+        GROUP BY b.roomType.name
+    """)
+    List<Object[]> sumRevenueByRoomType();
+
+    @Query("""
+        SELECT COALESCE(SUM(b.totalPrice), 0)
+        FROM Booking b
+        WHERE b.status IN ('CONFIRMED','ASSIGNED','CHECKED_IN','CHECKED_OUT')
+    """)
+    java.math.BigDecimal sumTotalRevenue();
+
 }
 
