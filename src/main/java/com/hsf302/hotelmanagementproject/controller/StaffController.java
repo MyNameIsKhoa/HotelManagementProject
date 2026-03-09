@@ -1,8 +1,11 @@
 package com.hsf302.hotelmanagementproject.controller;
 
+import com.hsf302.hotelmanagementproject.entity.User;
 import com.hsf302.hotelmanagementproject.entity.enums.PaymentMethod;
+import com.hsf302.hotelmanagementproject.entity.enums.Role;
 import com.hsf302.hotelmanagementproject.repository.RoomRepository;
 import com.hsf302.hotelmanagementproject.service.StaffService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,6 +23,15 @@ public class StaffController {
 
     private final StaffService staffService;
     private final RoomRepository roomRepository;
+
+    // ==============================
+    // ROLE GUARD
+    // ==============================
+    private boolean isStaffOrAdmin(HttpSession session) {
+        User user = (User) session.getAttribute("currentUser");
+        return user != null && (user.getRole() == Role.STAFF || user.getRole() == Role.ADMIN);
+    }
+
     // ==============================
     // VIEW ALL BOOKINGS
     // ==============================
@@ -27,8 +39,10 @@ public class StaffController {
     public String dashboard(
             @RequestParam(required = false) String date,
             @RequestParam(required = false, defaultValue = "false") boolean todayCheckin,
+            HttpSession session,
             Model model
     ) {
+        if (!isStaffOrAdmin(session)) return "redirect:/auth/login";
 
         if (todayCheckin) {
             model.addAttribute(
@@ -61,9 +75,10 @@ public class StaffController {
     @PostMapping("/assign-room")
     public String assignRoom(
             @RequestParam Long bookingId,
-            @RequestParam Long roomId
+            @RequestParam Long roomId,
+            HttpSession session
     ) {
-
+        if (!isStaffOrAdmin(session)) return "redirect:/auth/login";
         staffService.assignRoom(bookingId, roomId);
 
         return "redirect:/staff";
@@ -71,8 +86,8 @@ public class StaffController {
 
     // Checkin
     @PostMapping("/checkin")
-    public String checkin(@RequestParam Long bookingId) {
-
+    public String checkin(@RequestParam Long bookingId, HttpSession session) {
+        if (!isStaffOrAdmin(session)) return "redirect:/auth/login";
         staffService.checkIn(bookingId);
 
         return "redirect:/staff";
