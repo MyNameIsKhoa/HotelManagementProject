@@ -120,25 +120,25 @@ public class DataInitializer implements CommandLineRunner {
             roomRepository.saveAll(List.of(
 
                     // ---- H1 ----
-                    new Room(null, standardH1, "101", RoomStatus.AVAILABLE),
-                    new Room(null, standardH1, "102", RoomStatus.AVAILABLE),
+                    new Room(null, standardH1, "101", RoomStatus.AVAILABLE, false),
+                    new Room(null, standardH1, "102", RoomStatus.AVAILABLE, false),
 
-                    new Room(null, deluxeH1, "201", RoomStatus.AVAILABLE),
-                    new Room(null, deluxeH1, "202", RoomStatus.AVAILABLE),
+                    new Room(null, deluxeH1, "201", RoomStatus.AVAILABLE, false),
+                    new Room(null, deluxeH1, "202", RoomStatus.AVAILABLE, false),
 
-                    new Room(null, suiteH1, "301", RoomStatus.AVAILABLE),
-                    new Room(null, suiteH1, "302", RoomStatus.AVAILABLE),
+                    new Room(null, suiteH1, "301", RoomStatus.AVAILABLE, false),
+                    new Room(null, suiteH1, "302", RoomStatus.AVAILABLE, false),
 
                     // ---- H2 ----
-                    new Room(null, deluxeH2, "201", RoomStatus.AVAILABLE),
-                    new Room(null, deluxeH2, "202", RoomStatus.AVAILABLE),
+                    new Room(null, deluxeH2, "201", RoomStatus.AVAILABLE, false),
+                    new Room(null, deluxeH2, "202", RoomStatus.AVAILABLE, false),
 
                     // ---- H3 ----
-                    new Room(null, standardH3, "101", RoomStatus.AVAILABLE),
-                    new Room(null, standardH3, "102", RoomStatus.AVAILABLE),
+                    new Room(null, standardH3, "101", RoomStatus.AVAILABLE, false),
+                    new Room(null, standardH3, "102", RoomStatus.AVAILABLE, false),
 
-                    new Room(null, suiteH3, "301", RoomStatus.AVAILABLE),
-                    new Room(null, suiteH3, "302", RoomStatus.AVAILABLE)
+                    new Room(null, suiteH3, "301", RoomStatus.AVAILABLE, false),
+                    new Room(null, suiteH3, "302", RoomStatus.AVAILABLE, false)
 
             ));
         }

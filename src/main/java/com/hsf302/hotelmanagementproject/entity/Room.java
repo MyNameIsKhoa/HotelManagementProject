@@ -1,7 +1,5 @@
 package com.hsf302.hotelmanagementproject.entity;
 
-import com.hsf302.hotelmanagementproject.entity.enums.BookingStatus;
-
 import com.hsf302.hotelmanagementproject.entity.enums.RoomStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,7 +22,11 @@ public class Room {
 
     @Column(name = "room_number")
     private String roomNumber;
+
     @Enumerated(EnumType.STRING)
-    private RoomStatus status; // AVAILABLE / DIRTY / MAINTENANCE
+    private RoomStatus status; // AVAILABLE / BOOKED / DIRTY / MAINTENANCE
+
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
 }
 
