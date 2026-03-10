@@ -1,0 +1,35 @@
+/* Admin Module — Minimal styling */
+/* Uses Bootstrap 5 as base, only overrides where needed */
+
+.card {
+    border: none;
+    border-radius: 10px;
+}
+
+.card h2 {
+    font-weight: 700;
+}
+
+.navbar .nav-link {
+    font-size: 0.9rem;
+}
+
+.navbar .nav-link.active {
+    font-weight: bold;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+/* Summary cards */
+.card.bg-primary, .card.bg-success, .card.bg-warning, .card.bg-info {
+    transition: transform 0.2s;
+}
+.card.bg-primary:hover, .card.bg-success:hover, .card.bg-warning:hover, .card.bg-info:hover {
+    transform: translateY(-3px);
+}
+
+/* Chart containers */
+canvas {
+    max-height: 300px;
+}
+

@@ -45,7 +45,10 @@ public class AuthController {
         session.setAttribute("currentUser", user);
 
         // ===== REDIRECT THEO ROLE =====
-        if (user.getRole() == Role.STAFF || user.getRole() == Role.ADMIN) {
+        if (user.getRole() == Role.ADMIN) {
+            return "redirect:/admin";
+        }
+        if (user.getRole() == Role.STAFF) {
             return "redirect:/staff";
         }
 

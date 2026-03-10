@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý phòng - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/admin.css}" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="/admin"><i class="fas fa-shield-alt me-2"></i>Quản trị Khách sạn</a>
+        <div class="navbar-nav ms-auto d-flex flex-row gap-2">
+            <a class="nav-link" href="/admin">Tổng quan</a>
+            <a class="nav-link active" href="/admin/rooms">Phòng</a>
+            <a class="nav-link" href="/admin/users">Người dùng</a>
+            <a class="nav-link" href="/admin/bookings">Đặt phòng</a>
+            <a class="btn btn-sm btn-outline-light ms-3" href="/auth/logout">Đăng xuất</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <!-- Alert messages -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
+        <i class="fas fa-check-circle me-1"></i> <span th:text="${success}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+        <i class="fas fa-exclamation-circle me-1"></i> <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="card-title mb-0"><i class="fas fa-bed me-2"></i>Danh sách phòng</h4>
+                <a href="/admin/rooms/new" class="btn btn-primary">
+                    <i class="fas fa-plus me-1"></i> Thêm phòng mới
+                </a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Số phòng</th>
+                        <th>Loại phòng</th>
+                        <th>Khách sạn</th>
+                        <th>Giá (VND)</th>
+                        <th>Trạng thái</th>
+                        <th class="text-center">Hành động</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="room, iter : ${rooms}">
+                        <td th:text="${iter.count}">1</td>
+                        <td class="fw-bold" th:text="${room.roomNumber}">D101</td>
+                        <td>
+                            <span class="badge bg-secondary" th:text="${room.roomType.name}">Deluxe</span>
+                        </td>
+                        <td th:text="${room.roomType.hotel.name}">Hotel</td>
+                        <td th:text="${#numbers.formatDecimal(room.roomType.basePrice, 0, 'COMMA', 0, 'POINT') + ' ₫'}">1,200,000 ₫</td>
+                        <td>
+                            <span class="badge"
+                                  th:classappend="${room.status.name() == 'AVAILABLE' ? 'bg-success' :
+                                                    (room.status.name() == 'BOOKED' ? 'bg-danger' :
+                                                    (room.status.name() == 'MAINTENANCE' ? 'bg-warning text-dark' : 'bg-secondary'))}"
+                                  th:text="${room.status.name() == 'AVAILABLE' ? 'Trống' :
+                                            (room.status.name() == 'BOOKED' ? 'Đã đặt' :
+                                            (room.status.name() == 'MAINTENANCE' ? 'Đang sửa chữa' : 'Chờ dọn'))}">
+                                Trống
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <a th:href="@{/admin/rooms/edit/{id}(id=${room.roomId})}"
+                               class="btn btn-sm btn-outline-primary me-1">
+                                <i class="fas fa-edit"></i> Sửa
+                            </a>
+                            <form th:action="@{/admin/rooms/delete/{id}(id=${room.roomId})}"
+                                  method="post" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-outline-danger"
+                                        onclick="return confirm('Bạn có chắc muốn xóa phòng này?')">
+                                    <i class="fas fa-trash"></i> Xóa
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(rooms)}">
+                        <td colspan="7" class="text-center py-4 text-muted">
+                            <i class="fas fa-inbox fa-3x mb-3"></i><br>
+                            Chưa có phòng nào.
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
