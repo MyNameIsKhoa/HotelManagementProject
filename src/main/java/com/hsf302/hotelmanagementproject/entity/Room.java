@@ -26,7 +26,7 @@ public class Room {
     @Enumerated(EnumType.STRING)
     private RoomStatus status; // AVAILABLE / BOOKED / DIRTY / MAINTENANCE
 
-    @Column(name = "is_deleted", nullable = false)
+    @Column(name = "is_deleted", nullable = false, columnDefinition = "BIT DEFAULT 0")
     private Boolean isDeleted = false;
 }
 

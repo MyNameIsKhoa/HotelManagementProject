@@ -272,3 +272,8 @@ INSERT INTO room_images (image_id, room_type_id, image_url, is_thumbnail) VALUES
                                                                               (11,3,'/images/12.jpg',0),
                                                                               (12,3,'/images/4.webp',0);
 SET IDENTITY_INSERT room_images OFF
+
+
+
+ALTER TABLE rooms
+    ADD is_deleted BIT NOT NULL DEFAULT 0;
