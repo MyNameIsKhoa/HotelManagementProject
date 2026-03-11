@@ -60,7 +60,18 @@
     </div>
     <!-- Search Bar Widget (Floating) -->
     <div class="relative z-30 mt-12 w-full max-w-6xl mx-auto px-4">
+
         <div id="searchBox" class="bg-white rounded-xl shadow-2xl p-4 md:p-6 lg:p-8 transform translate-y-1/2 md:translate-y-0">
+            <!-- Error message -->
+            <div th:if="${error}"
+                 class="mb-4 flex items-center gap-2 px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm font-medium">
+
+                <span class="material-symbols-outlined text-red-500 text-[20px]">error</span>
+                <span th:text="${error}"></span>
+
+            </div>
+
+
             <form th:action="@{/search}" method="get" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
                 <!-- Destination -->
                 <div class="lg:col-span-1">

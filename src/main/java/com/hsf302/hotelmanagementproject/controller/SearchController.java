@@ -38,10 +38,18 @@ public class SearchController {
 
             Model model
     ) {
-        model.addAttribute("results",
-                searchService.searchAvailableRooms(checkin, checkout));
-        model.addAttribute("checkinDate", checkin);
-        model.addAttribute("checkoutDate", checkout);
+
+
+        try {
+            model.addAttribute("results",
+                    searchService.searchAvailableRooms(checkin, checkout));
+            model.addAttribute("checkinDate", checkin);
+            model.addAttribute("checkoutDate", checkout);
+
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+            return "home/index";
+        }
         return "search/search";
     }
 

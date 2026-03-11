@@ -27,6 +27,12 @@ public class SearchServiceImpl implements SearchService {
             LocalDateTime checkin,
             LocalDateTime checkout
     ) {
+        if (checkin.isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("checkin time can not before today");
+        }
+        if (checkout.isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("checkout time can not before today");
+        }
         Map<Hotel, List<Object[]>> result = new LinkedHashMap<>();
 
         List<Hotel> hotels = hotelRepository.findAll();
