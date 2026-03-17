@@ -3,6 +3,8 @@ package com.hsf302.hotelmanagementproject.service;
 import com.hsf302.hotelmanagementproject.DTO.CreateBookingRequest;
 import com.hsf302.hotelmanagementproject.entity.Booking;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -22,4 +24,7 @@ public interface BookingService {
     void confirmBooking(Long bookingId);
 
     void cancelBooking(Long bookingId);
+    BigDecimal calculateTotalPrice(Long roomTypeId,
+                                   LocalDateTime checkIn,
+                                   LocalDateTime checkOut);
 }

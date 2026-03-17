@@ -5,6 +5,7 @@ import com.hsf302.hotelmanagementproject.entity.RoomType;
 import com.hsf302.hotelmanagementproject.repository.RoomImageRepository;
 import com.hsf302.hotelmanagementproject.repository.RoomTypeRepository;
 import com.hsf302.hotelmanagementproject.service.SearchService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -28,28 +29,20 @@ public class SearchController {
 
     @GetMapping("/search")
     public String search(
-            @RequestParam("checkinDate")
+            @RequestParam(value = "checkinDate", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
             LocalDateTime checkin,
 
-            @RequestParam("checkoutDate")
+            @RequestParam(value = "checkoutDate", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
             LocalDateTime checkout,
 
             Model model
     ) {
-
-
-        try {
-            model.addAttribute("results",
-                    searchService.searchAvailableRooms(checkin, checkout));
-            model.addAttribute("checkinDate", checkin);
-            model.addAttribute("checkoutDate", checkout);
-
-        } catch (RuntimeException e) {
-            model.addAttribute("error", e.getMessage());
-            return "home/index";
-        }
+        model.addAttribute("results",
+                searchService.searchAvailableRooms(checkin, checkout));
+        model.addAttribute("checkinDate", checkin);
+        model.addAttribute("checkoutDate", checkout);
         return "search/search";
     }
 
@@ -57,14 +50,14 @@ public class SearchController {
     public String roomDetail(
             @PathVariable("id") Long id,
 
-            @RequestParam("checkinDate")
+            @RequestParam(value = "checkinDate", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
             LocalDateTime checkin,
 
-            @RequestParam("checkoutDate")
+            @RequestParam(value = "checkoutDate", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
             LocalDateTime checkout,
-
+            HttpSession session,
             Model model
     ) {
         RoomType roomType = roomTypeRepository.findById(id).orElseThrow();
@@ -84,8 +77,8 @@ public class SearchController {
         model.addAttribute("availableRooms", availableRooms);
         model.addAttribute("checkinDate", checkin);
         model.addAttribute("checkoutDate", checkout);
+        model.addAttribute("currentUser", session.getAttribute("currentUser"));
 
-        // 👉 GỬI SANG VIEW
         model.addAttribute("images", images);
         model.addAttribute("thumbnail", thumbnail);
 

@@ -63,7 +63,7 @@
 
             <!-- ROOM INFO -->
             <div class="room-info-card">
-                <h2>Chi Tiết Phòng</h2>
+                <h2>Room Details</h2>
 
                 <p class="room-description"
                    th:text="${roomType.description}">
@@ -74,18 +74,18 @@
                     <div class="feature-item">
                         <span class="feature-icon">👥</span>
                         <div class="feature-content">
-                            <h4>Sức chứa</h4>
-                            <p><span th:text="${roomType.capacity}">2</span> Khách</p>
+                            <h4>Capacity</h4>
+                            <p><span th:text="${roomType.capacity}">2</span> Guests</p>
                         </div>
                     </div>
 
                     <div class="feature-item">
                         <span class="feature-icon">🛏️</span>
                         <div class="feature-content">
-                            <h4>Phòng trống</h4>
+                            <h4>Availability</h4>
                             <p>
                                 <span th:text="${availableRooms != null ? availableRooms : 0}">0</span>
-                                Phòng
+                                Rooms
                             </p>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                     <div class="feature-item">
                         <span class="feature-icon">📍</span>
                         <div class="feature-content">
-                            <h4>Vị trí</h4>
+                            <h4>Location</h4>
                             <p th:text="${roomType.hotel.address}">City Center</p>
                         </div>
                     </div>
@@ -101,7 +101,7 @@
                     <div class="feature-item">
                         <span class="feature-icon">⭐</span>
                         <div class="feature-content">
-                            <h4>Đánh giá</h4>
+                            <h4>Rating</h4>
                             <p>5.0 / 5.0</p>
                         </div>
                     </div>
@@ -116,13 +116,13 @@
 
                 <!-- PRICE -->
                 <div class="price-section">
-                    <p class="price-label">Giá từ</p>
+                    <p class="price-label">From</p>
                     <div class="price-amount">
                         <span th:text="${#numbers.formatDecimal(roomType.basePrice,1,'COMMA',0,'POINT')}">
                             1,500,000
                         </span>
                     </div>
-                    <p class="price-currency">VND / đêm</p>
+                    <p class="price-currency">VND / night</p>
                 </div>
 
                 <!-- AVAILABILITY -->
@@ -132,67 +132,66 @@
                               th:classappend="${availableRooms != null and availableRooms <= 3} ? 'limited' : ''"></span>
 
                         <span th:if="${availableRooms != null and availableRooms > 0}">
-                            Còn phòng
+                            Available Now
                         </span>
                         <span th:if="${availableRooms != null and availableRooms == 0}"
                               style="color:#ef4444">
-                            Hết phòng
+                            Sold Out
                         </span>
                     </div>
 
                     <p class="availability-count"
                        th:if="${availableRooms != null and availableRooms > 0}">
-                        <span th:text="${availableRooms}">5</span> phòng trống
+                        <span th:text="${availableRooms}">5</span> rooms available
                     </p>
                 </div>
 
                 <!-- BOOKING DETAILS -->
                 <div class="booking-details">
                     <div class="booking-detail-item">
-                        <span class="detail-label">Nhận phòng</span>
+                        <span class="detail-label">Check-in</span>
                         <span class="detail-value"
-                              th:text="${checkinDate != null ? #temporals.format(checkinDate,'dd/MM/yyyy HH:mm') : 'Chọn ngày'}">
+                              th:text="${checkinDate != null ? #temporals.format(checkinDate,'dd/MM/yyyy HH:mm') : 'Select date'}">
                         </span>
                     </div>
 
                     <div class="booking-detail-item">
-                        <span class="detail-label">Trả phòng</span>
+                        <span class="detail-label">Check-out</span>
                         <span class="detail-value"
-                              th:text="${checkoutDate != null ? #temporals.format(checkoutDate,'dd/MM/yyyy HH:mm') : 'Chọn ngày'}">
+                              th:text="${checkoutDate != null ? #temporals.format(checkoutDate,'dd/MM/yyyy HH:mm') : 'Select date'}">
                         </span>
                     </div>
 
                     <div class="booking-detail-item">
-                        <span class="detail-label">Số khách</span>
+                        <span class="detail-label">Guests</span>
                         <span class="detail-value">
-                            Tối đa <span th:text="${roomType.capacity}">2</span>
+                            Up to <span th:text="${roomType.capacity}">2</span>
                         </span>
                     </div>
                 </div>
 
                 <!-- ACTIONS -->
                 <div class="booking-actions">
-
-                    <a class="btn-book-now"
-                       th:if="${availableRooms != null and availableRooms > 0 and session.currentUser != null}"
-                       th:href="@{/booking/checkout(roomTypeId=${roomType.roomTypeId}, checkinDate=${checkinDate}, checkoutDate=${checkoutDate})}">
-                        Đặt phòng ngay
-                    </a>
+                    <button type="button" class="btn-book-now"
+                            th:if="${availableRooms != null and availableRooms > 0 and currentUser != null}"
+                            onclick="handleBookNow()">
+                        Book Now
+                    </button>
 
                     <a class="btn-book-now btn-login"
-                       th:if="${availableRooms != null and availableRooms > 0 and session.currentUser == null}"
+                       th:if="${availableRooms != null and availableRooms > 0 and currentUser == null}"
                        th:href="@{/auth/login}">
-                        Đăng nhập để đặt phòng
+                        Login to Book
                     </a>
 
                     <button class="btn-book-now"
                             th:if="${availableRooms != null and availableRooms == 0}"
                             disabled>
-                        Hết phòng
+                        Sold Out
                     </button>
 
                     <a th:href="@{/search}" class="btn-secondary">
-                        ← Quay lại tìm kiếm
+                        ← Back to Search
                     </a>
                 </div>
 
@@ -200,15 +199,15 @@
                 <div class="trust-badges">
                     <div class="trust-badge">
                         <div class="trust-badge-icon">✓</div>
-                        <div>Miễn phí hủy phòng</div>
+                        <div>Free Cancellation</div>
                     </div>
                     <div class="trust-badge">
                         <div class="trust-badge-icon">🔒</div>
-                        <div>Thanh toán an toàn</div>
+                        <div>Secure Payment</div>
                     </div>
                     <div class="trust-badge">
                         <div class="trust-badge-icon">⚡</div>
-                        <div>Xác nhận tức thì</div>
+                        <div>Instant Confirm</div>
                     </div>
                 </div>
 
@@ -222,6 +221,150 @@
 
 <!-- Chatbot Widget -->
 <div th:replace="~{fragments/chatbot :: chatbot}"></div>
+<div id="datePickerModal" class="fixed inset-0 z-[999] hidden flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl border border-gray-100">
+        <h3 class="text-xl font-bold mb-2 text-gray-800 text-center">Chọn thời gian ở</h3>
+        <p class="text-gray-500 mb-6 text-sm text-center">Bạn chưa chọn ngày nhận/trả phòng. Vui lòng bổ sung để tiếp tục đặt cọc.</p>
 
+        <form id="modalDateForm" class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold uppercase mb-2 text-gray-400">Ngày nhận phòng</label>
+                <input type="datetime-local" id="modalCheckin" required
+                       class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary outline-none text-black">
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase mb-2 text-gray-400">Ngày trả phòng</label>
+                <input type="datetime-local" id="modalCheckout" required
+                       class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary outline-none text-black">
+            </div>
+            <div id="modalError" class="text-red-500 text-sm hidden"></div>
+            <div class="flex gap-3 mt-6">
+                <button type="button" onclick="document.getElementById('datePickerModal').classList.add('hidden')"
+                        class="flex-1 py-3 text-sm font-bold text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">Hủy</button>
+                <button type="button" onclick="submitModalDates()"
+                        class="flex-1 py-3 bg-[#c29d31] text-white text-sm font-bold rounded-lg hover:opacity-90 transition-all">
+                    Xác nhận & Đặt
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script th:inline="javascript">
+    /* Cú pháp này giúp IntelliJ hết báo đỏ và không bao giờ lỗi JS khi dữ liệu null */
+    let validateModal;
+;
+    document.addEventListener("DOMContentLoaded", function () {
+        validateModal = setupDateValidation("modalCheckin", "modalCheckout", "modalError");
+    });
+
+    function setupDateValidation(checkinId, checkoutId, errorId) {
+        const checkin = document.getElementById(checkinId);
+        const checkout = document.getElementById(checkoutId);
+        const error = document.getElementById(errorId);
+
+        if (!checkin || !checkout) return;
+
+        const now = new Date();
+        now.setSeconds(0);
+        now.setMilliseconds(0);
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+
+        const min = now.toISOString().slice(0,16);
+
+        checkin.min = min;
+        checkout.min = min;
+
+        if (!checkin.value) checkin.value = min;
+
+        if (!checkout.value) {
+            const next = new Date();
+            next.setDate(next.getDate() + 1);
+            next.setMinutes(next.getMinutes() - next.getTimezoneOffset());
+            checkout.value = next.toISOString().slice(0,16);
+        }
+
+        checkin.addEventListener("change", function () {
+            checkout.min = this.value;
+
+            if (checkout.value <= this.value) {
+                const d = new Date(this.value);
+                d.setHours(d.getHours() + 2);
+                checkout.value = d.toISOString().slice(0,16);
+            }
+        });
+
+        return function validate() {
+            const now = new Date();
+            now.setSeconds(0);
+            now.setMilliseconds(0);
+
+            const ci = new Date(checkin.value);
+            const co = new Date(checkout.value);
+
+            error.classList.add("hidden");
+
+            // 🔥 CHỈ SO SÁNH NGÀY (KHÔNG SO GIỜ)
+            const today = new Date();
+            today.setHours(0,0,0,0);
+
+            const ciDay = new Date(ci);
+            ciDay.setHours(0,0,0,0);
+
+            if (ciDay < today) {
+                error.innerText = "Ngày nhận phòng không hợp lệ";
+                error.classList.remove("hidden");
+                return false;
+            }
+
+            if (co <= ci) {
+                error.innerText = "Ngày trả phòng phải sau ngày nhận phòng";
+                error.classList.remove("hidden");
+                return false;
+            }
+
+            return true;
+        };
+    }
+    function handleBookNow() {
+        // Thymeleaf sẽ thay thế giá trị vào đây, nếu null JS sẽ nhận giá trị null an toàn
+        const checkin = /*[[${checkinDate}]]*/ null;
+        const checkout = /*[[${checkoutDate}]]*/ null;
+
+        // Kiểm tra an toàn: rỗng, null hoặc chuỗi 'null'
+        if (!checkin || checkin === 'null' || checkin === '') {
+            const modal = document.getElementById('datePickerModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+
+            } else {
+                console.error("Không tìm thấy Modal với ID: datePickerModal");
+            }
+        } else {
+            performRedirect(checkin, checkout);
+        }
+    }
+
+    function submitModalDates() {
+        if (!validateModal || !validateModal()) return;
+        const ci = document.getElementById('modalCheckin').value;
+        const co = document.getElementById('modalCheckout').value;
+
+        performRedirect(ci, co);
+    }
+
+    function performRedirect(ci, co) {
+        const roomId = /*[[${roomType.roomTypeId}]]*/ 0;
+
+        const url = new URL("/booking/checkout", window.location.origin);
+        url.searchParams.append("roomTypeId", roomId);
+        url.searchParams.append("checkinDate", ci);
+        url.searchParams.append("checkoutDate", co);
+
+        console.log("Redirect:", url.toString());
+
+        window.location.href = url.toString();
+    }
+</script>
 </body>
+
 </html>
