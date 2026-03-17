@@ -57,11 +57,11 @@ public class SearchController {
     public String roomDetail(
             @PathVariable("id") Long id,
 
-            @RequestParam("checkinDate")
+            @RequestParam(value = "checkinDate", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
             LocalDateTime checkin,
 
-            @RequestParam("checkoutDate")
+            @RequestParam(value = "checkoutDate", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
             LocalDateTime checkout,
 
@@ -69,8 +69,10 @@ public class SearchController {
     ) {
         RoomType roomType = roomTypeRepository.findById(id).orElseThrow();
 
-        int availableRooms =
-                searchService.countAvailableRooms(id, checkin, checkout);
+        int availableRooms = 0;
+        if(checkin != null && checkout != null) {
+            availableRooms = searchService.countAvailableRooms(id, checkin, checkout);
+        }
 
         // 👉 LẤY ẢNH
 

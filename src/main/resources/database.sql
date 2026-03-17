@@ -277,3 +277,141 @@ SET IDENTITY_INSERT room_images OFF
 
 ALTER TABLE rooms
     ADD is_deleted BIT NOT NULL DEFAULT 0;
+
+
+
+/* =========================================================
+   ADDITIONAL DATA SCRIPT - MORE ROOMS & TYPES
+   Copy toàn bộ nội dung dưới đây và chạy trong SQL Server
+   ========================================================= */
+
+USE hotel_booking_system;
+GO
+
+-- Khai báo biến để sử dụng lại
+DECLARE @HotelId INT = 2; -- Thêm vào khách sạn Sunrise (ID=1)
+DECLARE @RoomTypeId INT;
+DECLARE @Counter INT;
+
+-- =========================================================
+-- 1. EXECUTIVE SUITE (Phòng Doanh Nhân) - 15 Phòng
+-- =========================================================
+INSERT INTO room_types (hotel_id, name, description, base_price, capacity, total_rooms)
+VALUES (@HotelId, 'Executive Suite', N'Phòng cao cấp dành cho doanh nhân với không gian làm việc rộng rãi.', 3500000, 2, 15);
+
+SET @RoomTypeId = SCOPE_IDENTITY(); -- Lấy ID vừa tạo
+
+-- Thêm hình ảnh (Dùng link online)
+INSERT INTO room_images (room_type_id, image_url, is_thumbnail) VALUES
+                                                                    (@RoomTypeId, 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800', 1),
+                                                                    (@RoomTypeId, 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800', 0),
+                                                                    (@RoomTypeId, 'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800', 0);
+
+-- Tạo 15 phòng (Mã E101 -> E115)
+SET @Counter = 1;
+WHILE @Counter <= 15
+    BEGIN
+        INSERT INTO rooms (room_type_id, room_number, status)
+        VALUES (@RoomTypeId, CONCAT('E', 100 + @Counter), 'AVAILABLE');
+        SET @Counter = @Counter + 1;
+    END
+PRINT 'Added Executive Suite with 15 rooms';
+
+
+-- =========================================================
+-- 2. HONEYMOON VILLA (Biệt Thự Trăng Mật) - 10 Phòng
+-- =========================================================
+INSERT INTO room_types (hotel_id, name, description, base_price, capacity, total_rooms)
+VALUES (@HotelId, 'Honeymoon Villa', N'Không gian lãng mạn, riêng tư với hồ bơi riêng.', 5500000, 2, 10);
+
+SET @RoomTypeId = SCOPE_IDENTITY();
+
+-- Thêm hình ảnh
+INSERT INTO room_images (room_type_id, image_url, is_thumbnail) VALUES
+                                                                    (@RoomTypeId, 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=800', 1),
+                                                                    (@RoomTypeId, 'https://images.unsplash.com/photo-1540541338287-41700207dee6?w=800', 0),
+                                                                    (@RoomTypeId, 'https://images.unsplash.com/photo-1496417263034-38ec4f0d665a?w=800', 0);
+
+-- Tạo 10 phòng (Mã H201 -> H210)
+SET @Counter = 1;
+WHILE @Counter <= 10
+    BEGIN
+        INSERT INTO rooms (room_type_id, room_number, status)
+        VALUES (@RoomTypeId, CONCAT('H', 200 + @Counter), 'AVAILABLE');
+        SET @Counter = @Counter + 1;
+    END
+PRINT 'Added Honeymoon Villa with 10 rooms';
+
+
+-- =========================================================
+-- 3. BUDGET SINGLE (Phòng Đơn Tiết Kiệm) - 30 Phòng
+-- =========================================================
+INSERT INTO room_types (hotel_id, name, description, base_price, capacity, total_rooms)
+VALUES (@HotelId, 'Budget Single', N'Phòng đơn nhỏ gọn, đầy đủ tiện nghi với giá cả phải chăng.', 600000, 1, 30);
+
+SET @RoomTypeId = SCOPE_IDENTITY();
+
+-- Thêm hình ảnh
+INSERT INTO room_images (room_type_id, image_url, is_thumbnail) VALUES
+                                                                    (@RoomTypeId, 'https://images.unsplash.com/photo-1631049552057-403cdb8f0658?w=800', 1),
+                                                                    (@RoomTypeId, 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=800', 0);
+
+-- Tạo 30 phòng (Mã B301 -> B330)
+SET @Counter = 1;
+WHILE @Counter <= 30
+    BEGIN
+        INSERT INTO rooms (room_type_id, room_number, status)
+        VALUES (@RoomTypeId, CONCAT('B', 300 + @Counter), 'AVAILABLE');
+        SET @Counter = @Counter + 1;
+    END
+PRINT 'Added Budget Single with 30 rooms';
+
+
+-- =========================================================
+-- 4. OCEAN VIEW DOUBLE (Phòng Đôi Hướng Biển) - 25 Phòng
+-- =========================================================
+INSERT INTO room_types (hotel_id, name, description, base_price, capacity, total_rooms)
+VALUES (@HotelId, 'Ocean View Double', N'Tầm nhìn thẳng ra biển, ban công rộng rãi.', 1800000, 2, 25);
+
+SET @RoomTypeId = SCOPE_IDENTITY();
+
+INSERT INTO room_images (room_type_id, image_url, is_thumbnail) VALUES
+                                                                    (@RoomTypeId, 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=800', 1),
+                                                                    (@RoomTypeId, 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800', 0),
+                                                                    (@RoomTypeId, 'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800', 0);
+
+-- Tạo 25 phòng (Mã O401 -> O425)
+SET @Counter = 1;
+WHILE @Counter <= 25
+    BEGIN
+        INSERT INTO rooms (room_type_id, room_number, status)
+        VALUES (@RoomTypeId, CONCAT('O', 400 + @Counter), 'AVAILABLE');
+        SET @Counter = @Counter + 1;
+    END
+PRINT 'Added Ocean View Double with 25 rooms';
+
+
+-- =========================================================
+-- 5. PRESIDENTIAL SUITE (Phòng Tổng Thống) - 5 Phòng
+-- =========================================================
+INSERT INTO room_types (hotel_id, name, description, base_price, capacity, total_rooms)
+VALUES (@HotelId, 'Presidential Suite', N'Sự sang trọng bậc nhất, dịch vụ quản gia 24/7.', 15000000, 4, 5);
+
+SET @RoomTypeId = SCOPE_IDENTITY();
+
+INSERT INTO room_images (room_type_id, image_url, is_thumbnail) VALUES
+                                                                    (@RoomTypeId, 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800', 1),
+                                                                    (@RoomTypeId, 'https://images.unsplash.com/photo-1576675784201-0e142b423952?w=800', 0),
+                                                                    (@RoomTypeId, 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800', 0);
+
+-- Tạo 5 phòng (Mã P901 -> P905)
+SET @Counter = 1;
+WHILE @Counter <= 5
+    BEGIN
+        INSERT INTO rooms (room_type_id, room_number, status)
+        VALUES (@RoomTypeId, CONCAT('P', 900 + @Counter), 'AVAILABLE');
+        SET @Counter = @Counter + 1;
+    END
+PRINT 'Added Presidential Suite with 5 rooms';
+
+GO

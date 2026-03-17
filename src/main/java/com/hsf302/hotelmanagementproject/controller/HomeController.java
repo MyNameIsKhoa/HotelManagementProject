@@ -25,13 +25,16 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(Model model, @RequestParam(required = false) String error) {
         List<RoomType> featuredRooms = roomTypeRepository.findTop3ByOrderByRoomTypeIdAsc();
         LocalDateTime checkin = LocalDateTime.now().plusHours(1);
         LocalDateTime checkout = checkin.plusDays(1);
         model.addAttribute("checkinDate", checkin);
         model.addAttribute("checkoutDate", checkout);
         model.addAttribute("featuredRooms", featuredRooms);
+        if (error != null) {
+            model.addAttribute("error", error);
+        }
         return "home/index";
     }
 

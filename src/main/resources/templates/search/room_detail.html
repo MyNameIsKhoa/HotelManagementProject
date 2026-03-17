@@ -42,11 +42,13 @@
             <!-- IMAGE GALLERY -->
             <div class="gallery-card">
                 <div class="featured-image">
-                    <img th:if="${thumbnail != null}"
+                    <img id="featured-image"
+                         th:if="${thumbnail != null}"
                          th:src="@{${thumbnail.imageUrl}}"
                          alt="Room main image"
                          onerror="this.src='/images/room.jpg'">
-                    <img th:if="${thumbnail == null}"
+                    <img id="featured-image"
+                         th:if="${thumbnail == null}"
                          th:src="@{/images/room.jpg}"
                          alt="Room placeholder">
                 </div>
@@ -56,6 +58,8 @@
                     <div class="gallery-thumbnail" th:each="img : ${images}">
                         <img th:src="@{${img.imageUrl}}"
                              alt="Room image"
+                             onclick="changeImage(this.src)"
+                             style="cursor: pointer;"
                              onerror="this.src='/images/room.jpg'">
                     </div>
                 </div>
@@ -128,20 +132,31 @@
                 <!-- AVAILABILITY -->
                 <div class="availability-section">
                     <div class="availability-status">
-                        <span class="status-indicator"
-                              th:classappend="${availableRooms != null and availableRooms <= 3} ? 'limited' : ''"></span>
+                        <!-- CASE 1: Chưa chọn ngày -->
+                        <span th:if="${checkinDate == null or checkoutDate == null}"
+                              class="status-indicator warning"></span>
+                        <span th:if="${checkinDate == null or checkoutDate == null}"
+                              style="color:#f59e0b">
+                            Vui lòng chọn ngày
+                        </span>
 
-                        <span th:if="${availableRooms != null and availableRooms > 0}">
-                            Còn phòng
-                        </span>
-                        <span th:if="${availableRooms != null and availableRooms == 0}"
-                              style="color:#ef4444">
-                            Hết phòng
-                        </span>
+                        <!-- CASE 2: Đã chọn ngày -> Hiện trạng thái -->
+                        <th:block th:if="${checkinDate != null and checkoutDate != null}">
+                            <span class="status-indicator"
+                                  th:classappend="${availableRooms != null and availableRooms <= 3} ? 'limited' : ''"></span>
+
+                            <span th:if="${availableRooms != null and availableRooms > 0}">
+                                Còn phòng
+                            </span>
+                            <span th:if="${availableRooms != null and availableRooms == 0}"
+                                  style="color:#ef4444">
+                                Hết phòng
+                            </span>
+                        </th:block>
                     </div>
 
                     <p class="availability-count"
-                       th:if="${availableRooms != null and availableRooms > 0}">
+                       th:if="${checkinDate != null and checkoutDate != null and availableRooms != null and availableRooms > 0}">
                         <span th:text="${availableRooms}">5</span> phòng trống
                     </p>
                 </div>
@@ -173,27 +188,44 @@
                 <!-- ACTIONS -->
                 <div class="booking-actions">
 
-                    <a class="btn-book-now"
-                       th:if="${availableRooms != null and availableRooms > 0 and session.currentUser != null}"
-                       th:href="@{/booking/checkout(roomTypeId=${roomType.roomTypeId}, checkinDate=${checkinDate}, checkoutDate=${checkoutDate})}">
-                        Đặt phòng ngay
-                    </a>
+                    <!-- CASE 1: Đủ ngày giờ -->
+                    <th:block th:if="${checkinDate != null and checkoutDate != null}">
+                        <a class="btn-book-now"
+                           th:if="${availableRooms != null and availableRooms > 0 and session.currentUser != null}"
+                           th:href="@{/booking/checkout(roomTypeId=${roomType.roomTypeId}, checkinDate=${checkinDate}, checkoutDate=${checkoutDate})}">
+                            Đặt phòng ngay
+                        </a>
 
-                    <a class="btn-book-now btn-login"
-                       th:if="${availableRooms != null and availableRooms > 0 and session.currentUser == null}"
-                       th:href="@{/auth/login}">
-                        Đăng nhập để đặt phòng
-                    </a>
+                        <a class="btn-book-now btn-login"
+                           th:if="${availableRooms != null and availableRooms > 0 and session.currentUser == null}"
+                           th:href="@{/auth/login}">
+                            Đăng nhập để đặt phòng
+                        </a>
 
-                    <button class="btn-book-now"
-                            th:if="${availableRooms != null and availableRooms == 0}"
-                            disabled>
-                        Hết phòng
-                    </button>
+                        <button class="btn-book-now"
+                                th:if="${availableRooms != null and availableRooms == 0}"
+                                disabled>
+                            Hết phòng
+                        </button>
 
-                    <a th:href="@{/search}" class="btn-secondary">
-                        ← Quay lại tìm kiếm
-                    </a>
+                        <a th:href="@{/search(checkinDate=${checkinDate}, checkoutDate=${checkoutDate})}"
+                           class="btn-secondary">
+                            ← Quay lại tìm kiếm
+                        </a>
+                    </th:block>
+
+                    <!-- CASE 2: Chưa có ngày giờ -> Redirect về Home bắt nhập -->
+                    <th:block th:if="${checkinDate == null or checkoutDate == null}">
+                        <a class="btn-book-now"
+                           th:href="@{/(error='Vui lòng chọn ngày nhận/trả phòng để tiếp tục.')} + '#searchBox'">
+                            Chọn ngày để đặt phòng
+                        </a>
+
+                        <a th:href="@{/}" class="btn-secondary">
+                            ← Quay lại trang chủ
+                        </a>
+                    </th:block>
+
                 </div>
 
                 <!-- TRUST -->
@@ -222,6 +254,14 @@
 
 <!-- Chatbot Widget -->
 <div th:replace="~{fragments/chatbot :: chatbot}"></div>
+
+<script>
+    function changeImage(src) {
+        document.querySelectorAll('#featured-image').forEach(img => {
+            img.src = src;
+        });
+    }
+</script>
 
 </body>
 </html>
