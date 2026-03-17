@@ -139,14 +139,7 @@
                 <h2 class="text-3xl md:text-4xl font-bold text-text-main mb-3">Phòng &amp; Suite Nổi Bật</h2>
                 <p class="text-text-muted max-w-xl">Đắm chìm trong sự thoải mái với bộ sưu tập phòng cao cấp được chọn lọc kỹ lưỡng, mỗi phòng đều được thiết kế cho sự thư giãn và phong cách.</p>
             </div>
-            <a th:if="${session.currentUser == null}"
-               th:href="@{/auth/login}"
-               class="flex items-center gap-1 text-primary font-bold hover:text-primary-dark transition-colors group">
-                Xem tất cả phòng
-            </a>
-
-            <a th:if="${session.currentUser != null}"
-               href="#searchBox"
+            <a th:href="@{/search}"
                class="flex items-center gap-1 text-primary font-bold hover:text-primary-dark transition-colors group">
                 Xem tất cả phòng
             </a>

@@ -28,11 +28,11 @@ public class SearchController {
 
     @GetMapping("/search")
     public String search(
-            @RequestParam("checkinDate")
+            @RequestParam(value = "checkinDate", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
             LocalDateTime checkin,
 
-            @RequestParam("checkoutDate")
+            @RequestParam(value = "checkoutDate", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
             LocalDateTime checkout,
 
@@ -41,10 +41,14 @@ public class SearchController {
 
 
         try {
-            model.addAttribute("results",
-                    searchService.searchAvailableRooms(checkin, checkout));
-            model.addAttribute("checkinDate", checkin);
-            model.addAttribute("checkoutDate", checkout);
+            if (checkin != null && checkout != null) {
+                model.addAttribute("results",
+                        searchService.searchAvailableRooms(checkin, checkout));
+                model.addAttribute("checkinDate", checkin);
+                model.addAttribute("checkoutDate", checkout);
+            } else {
+                model.addAttribute("results", searchService.getAllRoomTypes());
+            }
 
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());

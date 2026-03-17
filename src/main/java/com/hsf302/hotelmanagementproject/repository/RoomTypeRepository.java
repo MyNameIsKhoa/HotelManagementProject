@@ -34,6 +34,14 @@ GROUP BY rt
             @Param("checkin") LocalDateTime checkin,
             @Param("checkout") LocalDateTime checkout
     );
+
+    @Query("""
+    SELECT rt, CAST(rt.totalRooms AS long)
+    FROM RoomType rt
+    WHERE rt.hotel.hotelId = :hotelId
+    """)
+    List<Object[]> findAllRoomTypesByHotel(@Param("hotelId") Long hotelId);
+
     @Query("""
 SELECT DISTINCT rt
 FROM RoomType rt
