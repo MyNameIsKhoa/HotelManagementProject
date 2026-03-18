@@ -70,8 +70,10 @@ public class SearchController {
     ) {
         RoomType roomType = roomTypeRepository.findById(id).orElseThrow();
 
-        int availableRooms =
-                searchService.countAvailableRooms(id, checkin, checkout);
+        int availableRooms = 0;
+        if(checkin != null && checkout != null) {
+            availableRooms = searchService.countAvailableRooms(id, checkin, checkout);
+        }
 
 
         List<RoomImage> images =

@@ -42,11 +42,13 @@
             <!-- IMAGE GALLERY -->
             <div class="gallery-card">
                 <div class="featured-image">
-                    <img th:if="${thumbnail != null}"
+                    <img id="featured-image"
+                         th:if="${thumbnail != null}"
                          th:src="@{${thumbnail.imageUrl}}"
                          alt="Room main image"
                          onerror="this.src='/images/room.jpg'">
-                    <img th:if="${thumbnail == null}"
+                    <img id="featured-image"
+                         th:if="${thumbnail == null}"
                          th:src="@{/images/room.jpg}"
                          alt="Room placeholder">
                 </div>
@@ -56,6 +58,8 @@
                     <div class="gallery-thumbnail" th:each="img : ${images}">
                         <img th:src="@{${img.imageUrl}}"
                              alt="Room image"
+                             onclick="changeImage(this.src)"
+                             style="cursor: pointer;"
                              onerror="this.src='/images/room.jpg'">
                     </div>
                 </div>
@@ -128,21 +132,32 @@
                 <!-- AVAILABILITY -->
                 <div class="availability-section">
                     <div class="availability-status">
-                        <span class="status-indicator"
-                              th:classappend="${availableRooms != null and availableRooms <= 3} ? 'limited' : ''"></span>
+                        <!-- CASE 1: Chưa chọn ngày -->
+                        <span th:if="${checkinDate == null or checkoutDate == null}"
+                              class="status-indicator warning"></span>
+                        <span th:if="${checkinDate == null or checkoutDate == null}"
+                              style="color:#f59e0b">
+                            Vui lòng chọn ngày
+                        </span>
 
-                        <span th:if="${availableRooms != null and availableRooms > 0}">
-                            Available Now
-                        </span>
-                        <span th:if="${availableRooms != null and availableRooms == 0}"
-                              style="color:#ef4444">
-                            Sold Out
-                        </span>
+                        <!-- CASE 2: Đã chọn ngày -> Hiện trạng thái -->
+                        <th:block th:if="${checkinDate != null and checkoutDate != null}">
+                            <span class="status-indicator"
+                                  th:classappend="${availableRooms != null and availableRooms <= 3} ? 'limited' : ''"></span>
+
+                            <span th:if="${availableRooms != null and availableRooms > 0}">
+                                Còn phòng
+                            </span>
+                            <span th:if="${availableRooms != null and availableRooms == 0}"
+                                  style="color:#ef4444">
+                                Hết phòng
+                            </span>
+                        </th:block>
                     </div>
 
                     <p class="availability-count"
-                       th:if="${availableRooms != null and availableRooms > 0}">
-                        <span th:text="${availableRooms}">5</span> rooms available
+                       th:if="${checkinDate != null and checkoutDate != null and availableRooms != null and availableRooms > 0}">
+                        <span th:text="${availableRooms}">5</span> phòng trống
                     </p>
                 </div>
 
@@ -172,27 +187,45 @@
 
                 <!-- ACTIONS -->
                 <div class="booking-actions">
-                    <button type="button" class="btn-book-now"
-                            th:if="${availableRooms != null and availableRooms > 0 and currentUser != null}"
-                            onclick="handleBookNow()">
-                        Book Now
-                    </button>
 
-                    <a class="btn-book-now btn-login"
-                       th:if="${availableRooms != null and availableRooms > 0 and currentUser == null}"
-                       th:href="@{/auth/login}">
-                        Login to Book
-                    </a>
+                    <!-- CASE 1: Đủ ngày giờ -->
+                    <th:block th:if="${checkinDate != null and checkoutDate != null}">
+                        <a class="btn-book-now"
+                           th:if="${availableRooms != null and availableRooms > 0 and session.currentUser != null}"
+                           th:href="@{/booking/checkout(roomTypeId=${roomType.roomTypeId}, checkinDate=${checkinDate}, checkoutDate=${checkoutDate})}">
+                            Đặt phòng ngay
+                        </a>
 
-                    <button class="btn-book-now"
-                            th:if="${availableRooms != null and availableRooms == 0}"
-                            disabled>
-                        Sold Out
-                    </button>
+                        <a class="btn-book-now btn-login"
+                           th:if="${availableRooms != null and availableRooms > 0 and session.currentUser == null}"
+                           th:href="@{/auth/login}">
+                            Đăng nhập để đặt phòng
+                        </a>
 
-                    <a th:href="@{/search}" class="btn-secondary">
-                        ← Back to Search
-                    </a>
+                        <button class="btn-book-now"
+                                th:if="${availableRooms != null and availableRooms == 0}"
+                                disabled>
+                            Hết phòng
+                        </button>
+
+                        <a th:href="@{/search(checkinDate=${checkinDate}, checkoutDate=${checkoutDate})}"
+                           class="btn-secondary">
+                            ← Quay lại tìm kiếm
+                        </a>
+                    </th:block>
+
+                    <!-- CASE 2: Chưa có ngày giờ -> Redirect về Home bắt nhập -->
+                    <th:block th:if="${checkinDate == null or checkoutDate == null}">
+                        <a class="btn-book-now"
+                           th:href="@{/(error='Vui lòng chọn ngày nhận/trả phòng để tiếp tục.')} + '#searchBox'">
+                            Chọn ngày để đặt phòng
+                        </a>
+
+                        <a th:href="@{/}" class="btn-secondary">
+                            ← Quay lại trang chủ
+                        </a>
+                    </th:block>
+
                 </div>
 
                 <!-- TRUST -->
@@ -221,150 +254,15 @@
 
 <!-- Chatbot Widget -->
 <div th:replace="~{fragments/chatbot :: chatbot}"></div>
-<div id="datePickerModal" class="fixed inset-0 z-[999] hidden flex items-center justify-center bg-black/50 backdrop-blur-sm">
-    <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4 shadow-2xl border border-gray-100">
-        <h3 class="text-xl font-bold mb-2 text-gray-800 text-center">Chọn thời gian ở</h3>
-        <p class="text-gray-500 mb-6 text-sm text-center">Bạn chưa chọn ngày nhận/trả phòng. Vui lòng bổ sung để tiếp tục đặt cọc.</p>
 
-        <form id="modalDateForm" class="space-y-4">
-            <div>
-                <label class="block text-xs font-bold uppercase mb-2 text-gray-400">Ngày nhận phòng</label>
-                <input type="datetime-local" id="modalCheckin" required
-                       class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary outline-none text-black">
-            </div>
-            <div>
-                <label class="block text-xs font-bold uppercase mb-2 text-gray-400">Ngày trả phòng</label>
-                <input type="datetime-local" id="modalCheckout" required
-                       class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary outline-none text-black">
-            </div>
-            <div id="modalError" class="text-red-500 text-sm hidden"></div>
-            <div class="flex gap-3 mt-6">
-                <button type="button" onclick="document.getElementById('datePickerModal').classList.add('hidden')"
-                        class="flex-1 py-3 text-sm font-bold text-gray-500 hover:bg-gray-100 rounded-lg transition-colors">Hủy</button>
-                <button type="button" onclick="submitModalDates()"
-                        class="flex-1 py-3 bg-[#c29d31] text-white text-sm font-bold rounded-lg hover:opacity-90 transition-all">
-                    Xác nhận & Đặt
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-<script th:inline="javascript">
-    /* Cú pháp này giúp IntelliJ hết báo đỏ và không bao giờ lỗi JS khi dữ liệu null */
-    let validateModal;
-;
-    document.addEventListener("DOMContentLoaded", function () {
-        validateModal = setupDateValidation("modalCheckin", "modalCheckout", "modalError");
-    });
-
-    function setupDateValidation(checkinId, checkoutId, errorId) {
-        const checkin = document.getElementById(checkinId);
-        const checkout = document.getElementById(checkoutId);
-        const error = document.getElementById(errorId);
-
-        if (!checkin || !checkout) return;
-
-        const now = new Date();
-        now.setSeconds(0);
-        now.setMilliseconds(0);
-        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-
-        const min = now.toISOString().slice(0,16);
-
-        checkin.min = min;
-        checkout.min = min;
-
-        if (!checkin.value) checkin.value = min;
-
-        if (!checkout.value) {
-            const next = new Date();
-            next.setDate(next.getDate() + 1);
-            next.setMinutes(next.getMinutes() - next.getTimezoneOffset());
-            checkout.value = next.toISOString().slice(0,16);
-        }
-
-        checkin.addEventListener("change", function () {
-            checkout.min = this.value;
-
-            if (checkout.value <= this.value) {
-                const d = new Date(this.value);
-                d.setHours(d.getHours() + 2);
-                checkout.value = d.toISOString().slice(0,16);
-            }
+<script>
+    function changeImage(src) {
+        document.querySelectorAll('#featured-image').forEach(img => {
+            img.src = src;
         });
-
-        return function validate() {
-            const now = new Date();
-            now.setSeconds(0);
-            now.setMilliseconds(0);
-
-            const ci = new Date(checkin.value);
-            const co = new Date(checkout.value);
-
-            error.classList.add("hidden");
-
-            // 🔥 CHỈ SO SÁNH NGÀY (KHÔNG SO GIỜ)
-            const today = new Date();
-            today.setHours(0,0,0,0);
-
-            const ciDay = new Date(ci);
-            ciDay.setHours(0,0,0,0);
-
-            if (ciDay < today) {
-                error.innerText = "Ngày nhận phòng không hợp lệ";
-                error.classList.remove("hidden");
-                return false;
-            }
-
-            if (co <= ci) {
-                error.innerText = "Ngày trả phòng phải sau ngày nhận phòng";
-                error.classList.remove("hidden");
-                return false;
-            }
-
-            return true;
-        };
-    }
-    function handleBookNow() {
-        // Thymeleaf sẽ thay thế giá trị vào đây, nếu null JS sẽ nhận giá trị null an toàn
-        const checkin = /*[[${checkinDate}]]*/ null;
-        const checkout = /*[[${checkoutDate}]]*/ null;
-
-        // Kiểm tra an toàn: rỗng, null hoặc chuỗi 'null'
-        if (!checkin || checkin === 'null' || checkin === '') {
-            const modal = document.getElementById('datePickerModal');
-            if (modal) {
-                modal.classList.remove('hidden');
-
-            } else {
-                console.error("Không tìm thấy Modal với ID: datePickerModal");
-            }
-        } else {
-            performRedirect(checkin, checkout);
-        }
-    }
-
-    function submitModalDates() {
-        if (!validateModal || !validateModal()) return;
-        const ci = document.getElementById('modalCheckin').value;
-        const co = document.getElementById('modalCheckout').value;
-
-        performRedirect(ci, co);
-    }
-
-    function performRedirect(ci, co) {
-        const roomId = /*[[${roomType.roomTypeId}]]*/ 0;
-
-        const url = new URL("/booking/checkout", window.location.origin);
-        url.searchParams.append("roomTypeId", roomId);
-        url.searchParams.append("checkinDate", ci);
-        url.searchParams.append("checkoutDate", co);
-
-        console.log("Redirect:", url.toString());
-
-        window.location.href = url.toString();
     }
 </script>
+
 </body>
 
 </html>

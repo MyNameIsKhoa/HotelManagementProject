@@ -59,6 +59,25 @@ public class SearchServiceImpl implements SearchService {
 
         return result;
     }
+
+    @Override
+    public Map<Hotel, List<Object[]>> getAllRoomTypes() {
+        Map<Hotel, List<Object[]>> result = new LinkedHashMap<>();
+        List<Hotel> hotels = hotelRepository.findAll();
+
+        for (Hotel hotel : hotels) {
+            List<Object[]> raw = roomTypeRepository.findAllRoomTypesByHotel(hotel.getHotelId());
+            if (!raw.isEmpty()) {
+                List<RoomType> roomTypes = raw.stream()
+                        .map(r -> (RoomType) r[0])
+                        .toList();
+                roomTypeRepository.fetchImages(roomTypes);
+                result.put(hotel, raw);
+            }
+        }
+        return result;
+    }
+
     @Override
     public int countAvailableRooms(
             Long roomTypeId,
