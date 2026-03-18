@@ -12,6 +12,9 @@ public interface SearchService {
             LocalDateTime checkin,
             LocalDateTime checkout
     );
+
+    Map<Hotel, List<Object[]>> getAllRoomTypes();
+
     int countAvailableRooms(
             Long roomTypeId,
             LocalDateTime checkin,

@@ -156,7 +156,16 @@
                                     </div>
 
                                 </div>
-                                <span class="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-1 rounded-full" th:text="${row[1]} + ' phòng trống'">5+ phòng trống</span>
+                                <span class="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-1 rounded-full"
+                                      th:if="${checkinDate != null and checkoutDate != null}"
+                                      th:text="${row[1]} + ' phòng trống'">
+                                      5+ phòng trống
+                                </span>
+                                <span class="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-1 rounded-full"
+                                      th:if="${checkinDate == null or checkoutDate == null}"
+                                      th:text="${row[1]} + ' phòng'">
+                                      Total rooms
+                                </span>
                             </div>
                             <a th:href="@{/room/{id}(id=${row[0].roomTypeId},checkinDate=${checkinDate},checkoutDate=${checkoutDate})}" class="w-full py-2.5 bg-primary hover:bg-primary-hover text-white text-sm font-semibold rounded-lg shadow-sm transition-colors flex items-center justify-center gap-2 group-hover:bg-primary-hover text-center">
                                 Xem chi tiết
@@ -169,7 +178,8 @@
 
         <!-- Empty State -->
         <div th:if="${results != null and results.isEmpty()}" class="text-center py-12">
-            <p class="text-slate-500">Không tìm thấy phòng nào cho ngày đã chọn.</p>
+            <p class="text-slate-500" th:if="${checkinDate != null}">Không tìm thấy phòng nào cho ngày đã chọn.</p>
+            <p class="text-slate-500" th:if="${checkinDate == null}">Hiện tại không có loại phòng nào.</p>
         </div>
 
 

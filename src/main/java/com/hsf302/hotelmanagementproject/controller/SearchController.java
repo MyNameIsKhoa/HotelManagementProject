@@ -39,10 +39,22 @@ public class SearchController {
 
             Model model
     ) {
-        model.addAttribute("results",
-                searchService.searchAvailableRooms(checkin, checkout));
-        model.addAttribute("checkinDate", checkin);
-        model.addAttribute("checkoutDate", checkout);
+
+
+        try {
+            if (checkin != null && checkout != null) {
+                model.addAttribute("results",
+                        searchService.searchAvailableRooms(checkin, checkout));
+                model.addAttribute("checkinDate", checkin);
+                model.addAttribute("checkoutDate", checkout);
+            } else {
+                model.addAttribute("results", searchService.getAllRoomTypes());
+            }
+
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+            return "home/index";
+        }
         return "search/search";
     }
 
@@ -62,8 +74,10 @@ public class SearchController {
     ) {
         RoomType roomType = roomTypeRepository.findById(id).orElseThrow();
 
-        int availableRooms =
-                searchService.countAvailableRooms(id, checkin, checkout);
+        int availableRooms = 0;
+        if(checkin != null && checkout != null) {
+            availableRooms = searchService.countAvailableRooms(id, checkin, checkout);
+        }
 
         // 👉 LẤY ẢNH
 
