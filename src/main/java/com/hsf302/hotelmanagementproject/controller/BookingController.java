@@ -5,13 +5,17 @@ import com.hsf302.hotelmanagementproject.entity.Booking;
 import com.hsf302.hotelmanagementproject.entity.User;
 import com.hsf302.hotelmanagementproject.entity.enums.BookingStatus;
 import com.hsf302.hotelmanagementproject.service.BookingService;
+import com.hsf302.hotelmanagementproject.utils.MoneyUtils;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.ui.Model;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Controller
@@ -35,8 +39,8 @@ public class BookingController {
 
         Long userId = currentUser.getUserId();
 
-        LocalDate checkIn = LocalDate.parse(checkinDate.substring(0, 10));
-        LocalDate checkOut = LocalDate.parse(checkoutDate.substring(0, 10));
+        LocalDateTime checkIn = LocalDateTime.parse(checkinDate.replace(" ", "T"));
+        LocalDateTime checkOut = LocalDateTime.parse(checkoutDate.replace(" ", "T"));
 
         try {
 
@@ -148,16 +152,31 @@ public class BookingController {
     public String checkout(@RequestParam Long roomTypeId,
                            @RequestParam String checkinDate,
                            @RequestParam String checkoutDate,
+                           HttpSession session,
                            Model model) {
 
+        User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            return "redirect:/auth/login";
+        }
+
+        LocalDateTime checkIn = LocalDateTime.parse(checkinDate);
+        LocalDateTime checkOut = LocalDateTime.parse(checkoutDate);
+
+
+        BigDecimal totalPrice = bookingService
+                .calculateTotalPrice(roomTypeId, checkIn, checkOut);
+
+        String formattedCheckin = checkinDate.replace("T", " ");
+        String formattedCheckout = checkoutDate.replace("T", " ");
+        String totalPriceText = MoneyUtils.numberToVietnamese(totalPrice.longValue());
+        totalPriceText = totalPriceText.substring(0, 1).toUpperCase() + totalPriceText.substring(1);
         model.addAttribute("roomTypeId", roomTypeId);
-        model.addAttribute("checkinDate", checkinDate);
-        model.addAttribute("checkoutDate", checkoutDate);
-
-        // optional – nếu chưa có thì để null cũng không sao
-        model.addAttribute("roomTypeName", "Standard Room");
-        model.addAttribute("totalPrice", null);
-
+        model.addAttribute("checkinDate", formattedCheckin);
+        model.addAttribute("checkoutDate", formattedCheckout);
+        model.addAttribute("depositAmount", 2000);
+        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("totalPriceText", totalPriceText);
         return "booking/checkout";
     }
 

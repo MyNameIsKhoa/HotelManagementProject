@@ -67,7 +67,7 @@
 
             <!-- ROOM INFO -->
             <div class="room-info-card">
-                <h2>Chi Tiết Phòng</h2>
+                <h2>Room Details</h2>
 
                 <p class="room-description"
                    th:text="${roomType.description}">
@@ -78,18 +78,18 @@
                     <div class="feature-item">
                         <span class="feature-icon">👥</span>
                         <div class="feature-content">
-                            <h4>Sức chứa</h4>
-                            <p><span th:text="${roomType.capacity}">2</span> Khách</p>
+                            <h4>Capacity</h4>
+                            <p><span th:text="${roomType.capacity}">2</span> Guests</p>
                         </div>
                     </div>
 
                     <div class="feature-item">
                         <span class="feature-icon">🛏️</span>
                         <div class="feature-content">
-                            <h4>Phòng trống</h4>
+                            <h4>Availability</h4>
                             <p>
                                 <span th:text="${availableRooms != null ? availableRooms : 0}">0</span>
-                                Phòng
+                                Rooms
                             </p>
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                     <div class="feature-item">
                         <span class="feature-icon">📍</span>
                         <div class="feature-content">
-                            <h4>Vị trí</h4>
+                            <h4>Location</h4>
                             <p th:text="${roomType.hotel.address}">City Center</p>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                     <div class="feature-item">
                         <span class="feature-icon">⭐</span>
                         <div class="feature-content">
-                            <h4>Đánh giá</h4>
+                            <h4>Rating</h4>
                             <p>5.0 / 5.0</p>
                         </div>
                     </div>
@@ -120,13 +120,13 @@
 
                 <!-- PRICE -->
                 <div class="price-section">
-                    <p class="price-label">Giá từ</p>
+                    <p class="price-label">From</p>
                     <div class="price-amount">
                         <span th:text="${#numbers.formatDecimal(roomType.basePrice,1,'COMMA',0,'POINT')}">
                             1,500,000
                         </span>
                     </div>
-                    <p class="price-currency">VND / đêm</p>
+                    <p class="price-currency">VND / night</p>
                 </div>
 
                 <!-- AVAILABILITY -->
@@ -164,23 +164,23 @@
                 <!-- BOOKING DETAILS -->
                 <div class="booking-details">
                     <div class="booking-detail-item">
-                        <span class="detail-label">Nhận phòng</span>
+                        <span class="detail-label">Check-in</span>
                         <span class="detail-value"
-                              th:text="${checkinDate != null ? #temporals.format(checkinDate,'dd/MM/yyyy HH:mm') : 'Chọn ngày'}">
+                              th:text="${checkinDate != null ? #temporals.format(checkinDate,'dd/MM/yyyy HH:mm') : 'Select date'}">
                         </span>
                     </div>
 
                     <div class="booking-detail-item">
-                        <span class="detail-label">Trả phòng</span>
+                        <span class="detail-label">Check-out</span>
                         <span class="detail-value"
-                              th:text="${checkoutDate != null ? #temporals.format(checkoutDate,'dd/MM/yyyy HH:mm') : 'Chọn ngày'}">
+                              th:text="${checkoutDate != null ? #temporals.format(checkoutDate,'dd/MM/yyyy HH:mm') : 'Select date'}">
                         </span>
                     </div>
 
                     <div class="booking-detail-item">
-                        <span class="detail-label">Số khách</span>
+                        <span class="detail-label">Guests</span>
                         <span class="detail-value">
-                            Tối đa <span th:text="${roomType.capacity}">2</span>
+                            Up to <span th:text="${roomType.capacity}">2</span>
                         </span>
                     </div>
                 </div>
@@ -232,15 +232,15 @@
                 <div class="trust-badges">
                     <div class="trust-badge">
                         <div class="trust-badge-icon">✓</div>
-                        <div>Miễn phí hủy phòng</div>
+                        <div>Free Cancellation</div>
                     </div>
                     <div class="trust-badge">
                         <div class="trust-badge-icon">🔒</div>
-                        <div>Thanh toán an toàn</div>
+                        <div>Secure Payment</div>
                     </div>
                     <div class="trust-badge">
                         <div class="trust-badge-icon">⚡</div>
-                        <div>Xác nhận tức thì</div>
+                        <div>Instant Confirm</div>
                     </div>
                 </div>
 
@@ -264,4 +264,5 @@
 </script>
 
 </body>
+
 </html>

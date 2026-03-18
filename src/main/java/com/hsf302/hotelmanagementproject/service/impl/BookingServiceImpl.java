@@ -43,53 +43,48 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public Map<String, Object> createBooking(Long userId, CreateBookingRequest req) {
 
-        // 1. Lấy thông tin User
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Tài khoản không tồn tại."));
 
-        // (Giống EV: Check Active/Lock user nếu cần)
-        // if (user.getStatus() != AccountStatus.ACTIVE) ...
-
-        // 2. Validate Ngày tháng
         if (!req.getCheckoutDate().isAfter(req.getCheckinDate())) {
             throw new IllegalArgumentException("Ngày trả phòng phải sau ngày nhận phòng.");
         }
 
-        LocalDateTime checkInTime = req.getCheckinDate().atStartOfDay();
-        LocalDateTime checkOutTime = req.getCheckoutDate().atStartOfDay();
+        LocalDateTime checkInTime = req.getCheckinDate();
+        LocalDateTime checkOutTime = req.getCheckoutDate();
 
-        // 3. Lấy thông tin RoomType (Thay vì lấy Vehicle)
+
         RoomType roomType = roomTypeRepository.findById(req.getRoomTypeId())
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy loại phòng."));
 
-        // 4. Validate số lượng phòng (Logic thay thế cho check trùng lịch xe)
-        // Đếm số đơn đặt phòng đang active trong khoảng thời gian này
+
         long activeBookings = bookingRepository.countActiveBookings(
                 roomType.getRoomTypeId(),
                 checkInTime,
                 checkOutTime
         );
 
-        // Đếm tổng số phòng của loại này
+
         long totalRooms = roomRepository.countByRoomType_RoomTypeId(roomType.getRoomTypeId());
 
-        // Nếu số đơn >= số phòng -> Hết phòng
+
         if (activeBookings >= totalRooms) {
             throw new RuntimeException("Loại phòng này đã hết trong thời gian bạn chọn.");
         }
 
-        // 5. Tính tiền
+
         long nights = ChronoUnit.DAYS.between(req.getCheckinDate(), req.getCheckoutDate());
         BigDecimal totalPrice = roomType.getBasePrice().multiply(BigDecimal.valueOf(nights));
 
-        // Tiền cọc (Ví dụ fix cứng 2000 VND để test PayOS, hoặc 50% giá trị)
+
         BigDecimal depositAmount = BigDecimal.valueOf(2000);
 
-        // 6. Lưu Booking (PENDING_DEPOSIT)
+
         Booking booking = new Booking();
         booking.setUser(user);
         booking.setRoomType(roomType);
-        booking.setRoom(null); // Chưa gán phòng cụ thể (Assign sau)
+        booking.setRoom(null);
         booking.setCheckinDate(checkInTime);
         booking.setCheckoutDate(checkOutTime);
         booking.setStatus(BookingStatus.PENDING_DEPOSIT); // Trạng thái chờ thanh toán
@@ -166,30 +161,34 @@ public class BookingServiceImpl implements BookingService {
     @Override
     @Transactional
     public Booking assignRoom(Long bookingId, Long roomId) {
+
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy booking"));
 
-        // Chỉ cho phép gán phòng nếu khách đã cọc
+        // Chỉ cho phép nếu booking đã cọc
         if (!booking.getStatus().equals(BookingStatus.CONFIRMED)) {
-            // Có thể mở rộng: Nếu là CONFIRMED (đã xác nhận nhưng chưa gán phòng) cũng ok
             throw new RuntimeException("Booking chưa thanh toán cọc hoặc trạng thái không hợp lệ.");
         }
+
+        // ===== KIỂM TRA THỜI GIAN CHECKIN =====
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime allowAssignTime = booking.getCheckinDate().minusMinutes(30);
+
+        if (now.isBefore(allowAssignTime)) {
+            throw new RuntimeException("Chỉ được gán phòng trước giờ check-in 30 phút.");
+        }
+        // ======================================
 
         Room room = roomRepository.findById(roomId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy phòng id: " + roomId));
 
-        // Kiểm tra xem phòng này có đúng loại khách đặt không
-        if (!room.getRoomType().getRoomTypeId().equals(booking.getRoomType().getRoomTypeId())) {
-            throw new RuntimeException("Phòng được gán không thuộc loại phòng khách đã đặt.");
+        if (!room.getRoomType().getRoomTypeId()
+                .equals(booking.getRoomType().getRoomTypeId())) {
+            throw new RuntimeException("Phòng không đúng loại khách đã đặt.");
         }
 
-        // Kiểm tra phòng có trống trong khoảng thời gian đó không (cẩn thận double booking)
-        // ... (Logic kiểm tra phòng trống cụ thể) ...
-
         booking.setRoom(room);
-        booking.setStatus(BookingStatus.ASSIGNED); // Hoặc ASSIGNED, tùy enum của bạn
-
-        // Có thể gửi email thông báo số phòng cho khách tại đây
+        booking.setStatus(BookingStatus.ASSIGNED);
 
         return bookingRepository.save(booking);
     }
@@ -288,7 +287,19 @@ public class BookingServiceImpl implements BookingService {
 
         log.info("Webhook: Xác nhận CHECKOUT thành công cho Booking {}", booking.getBookingId());
     }
+    @Override
+    public BigDecimal calculateTotalPrice(Long roomTypeId,
+                                          LocalDateTime checkIn,
+                                          LocalDateTime checkOut) {
 
+        RoomType roomType = roomTypeRepository.findById(roomTypeId)
+                .orElseThrow(() -> new RuntimeException("Room type not found"));
+
+        long nights = ChronoUnit.DAYS.between(checkIn, checkOut);
+
+        return roomType.getBasePrice()
+                .multiply(BigDecimal.valueOf(nights));
+    }
 
 
 }
