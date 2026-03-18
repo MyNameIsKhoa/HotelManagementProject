@@ -245,13 +245,7 @@ public class BookingServiceImpl implements BookingService {
         bookingRepository.save(booking);
 
 
-        if (oldStatus == BookingStatus.CONFIRMED || oldStatus == BookingStatus.ASSIGNED) {
-            walletService.refund(
-                    booking.getUser(),
-                    booking.getTotalPrice(),
-                    booking.getBookingId()
-            );
-        }
+
     }
 
 

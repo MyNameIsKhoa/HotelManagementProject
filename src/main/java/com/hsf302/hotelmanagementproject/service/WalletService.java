@@ -7,7 +7,8 @@ import java.math.BigDecimal;
 
 public interface WalletService {
     Wallet getOrCreateWallet(User user);
-    void refund(User user, BigDecimal amount, Long bookingId);
+
+    void refundDeposit(Long bookingId, User approver);
 
 
 }
