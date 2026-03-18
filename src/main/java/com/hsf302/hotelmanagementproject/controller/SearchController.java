@@ -39,10 +39,18 @@ public class SearchController {
 
             Model model
     ) {
+
+        if (checkin == null || checkout == null) {
+            checkin = LocalDateTime.now();
+            checkout = checkin.plusDays(1);
+        }
+
         model.addAttribute("results",
                 searchService.searchAvailableRooms(checkin, checkout));
+
         model.addAttribute("checkinDate", checkin);
         model.addAttribute("checkoutDate", checkout);
+
         return "search/search";
     }
 
@@ -65,7 +73,6 @@ public class SearchController {
         int availableRooms =
                 searchService.countAvailableRooms(id, checkin, checkout);
 
-        // 👉 LẤY ẢNH
 
         List<RoomImage> images =
                 roomImageRepository.findByRoomTypeAndIsThumbnailFalse(roomType);
